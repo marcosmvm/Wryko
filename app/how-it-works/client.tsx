@@ -76,6 +76,7 @@ export default function HowItWorksClient() {
                 name={engine.name}
                 tagline={engine.tagline}
                 description={engine.description}
+                slug={engine.slug}
                 index={index}
               />
             ))}
@@ -94,24 +95,15 @@ export default function HowItWorksClient() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {csmEngines.map((engine, index) => (
-              <motion.div
+              <EngineCard
                 key={engine.name}
-                className="bg-card border border-border rounded-xl p-6 hover:border-primary/50 transition-colors"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1, duration: 0.5 }}
-              >
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <engine.icon className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="font-heading font-semibold text-lg mb-1">{engine.name}</h3>
-                <p className="text-sm text-primary font-medium mb-2">{engine.tagline}</p>
-                <p className="text-muted-foreground text-sm mb-3">{engine.description}</p>
-                <div className="inline-block px-2 py-1 text-xs font-medium text-primary bg-primary/10 rounded">
-                  {engine.timeSaved}
-                </div>
-              </motion.div>
+                icon={engine.icon}
+                name={engine.name}
+                tagline={engine.tagline}
+                description={engine.description}
+                slug={engine.slug}
+                index={index}
+              />
             ))}
           </div>
         </div>

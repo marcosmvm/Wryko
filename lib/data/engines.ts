@@ -16,6 +16,7 @@ export const leadGenEngines = [
   {
     icon: Shield,
     name: 'The Guardian',
+    slug: 'the-guardian',
     tagline: 'Compliance & Deliverability',
     description:
       'Protects your sender reputation with real-time domain health monitoring, DNC verification, blacklist checking, and automatic compliance with Gmail/Yahoo 2024-2025 requirements.',
@@ -23,6 +24,7 @@ export const leadGenEngines = [
   {
     icon: Target,
     name: 'The Architect',
+    slug: 'the-architect',
     tagline: 'AI Campaign Design',
     description:
       'Designs personalized email sequences using AI-powered copywriting. Creates subject lines, body copy, and follow-ups tailored to your ICP and value proposition.',
@@ -30,6 +32,7 @@ export const leadGenEngines = [
   {
     icon: Brain,
     name: 'The Scientist',
+    slug: 'the-scientist',
     tagline: 'Continuous Optimization',
     description:
       'Runs A/B tests every Monday and Wednesday, automatically promoting winning variants. Analyzes open rates, reply rates, and meeting conversions to maximize performance.',
@@ -37,6 +40,7 @@ export const leadGenEngines = [
   {
     icon: Zap,
     name: 'The Hunter',
+    slug: 'the-hunter',
     tagline: 'Lead Expansion',
     description:
       'Expands your pipeline from every positive reply. Identifies 25-50 lookalike companies and colleagues, automatically launching targeted campaigns within 24 hours.',
@@ -44,6 +48,7 @@ export const leadGenEngines = [
   {
     icon: Eye,
     name: 'The Sentinel',
+    slug: 'the-sentinel',
     tagline: 'Website Visitor Intelligence',
     description:
       'Identifies anonymous website visitors and reveals company details. Finds 8-15 relevant contacts at each identified company and adds them to your outreach pipeline.',
@@ -54,6 +59,7 @@ export const csmEngines = [
   {
     icon: BarChart3,
     name: 'The Informant',
+    slug: 'the-informant',
     tagline: 'Automated Reporting',
     description:
       'Generates and sends branded weekly performance reports every Sunday at 8 PM. Includes AI-generated executive summaries, trend analysis, and deliverability health status.',
@@ -62,6 +68,7 @@ export const csmEngines = [
   {
     icon: Scale,
     name: 'The Judge',
+    slug: 'the-judge',
     tagline: 'Issue Detection & Auto-Healing',
     description:
       'Monitors infrastructure health every 4 hours. Automatically detects and fixes issues like inbox problems, campaign stalls, and domain reputation drops before they impact performance.',
@@ -70,6 +77,7 @@ export const csmEngines = [
   {
     icon: BookOpen,
     name: 'The Keeper',
+    slug: 'the-keeper',
     tagline: 'AI Knowledge Brain',
     description:
       'Instant answers to operational questions from your knowledge base. Provides confidence-scored responses 24/7 with automatic escalation when answers aren\'t found.',
@@ -78,6 +86,7 @@ export const csmEngines = [
   {
     icon: Rocket,
     name: 'The Launcher',
+    slug: 'the-launcher',
     tagline: 'Automated Onboarding',
     description:
       'Streamlines 14-day client onboarding with automated asset collection, escalating reminders (24/48/72 hour), and automatic provisioning of domains and integrations.',
@@ -86,6 +95,7 @@ export const csmEngines = [
   {
     icon: Activity,
     name: 'The Monitor',
+    slug: 'the-monitor',
     tagline: 'Churn Risk Detection',
     description:
       'Analyzes client health weekly with multi-signal risk scoring. Generates AI-powered intervention playbooks for at-risk accounts and surfaces trends for leadership.',
@@ -94,6 +104,7 @@ export const csmEngines = [
   {
     icon: Compass,
     name: 'The Navigator',
+    slug: 'the-navigator',
     tagline: 'Self-Serve Client Portal',
     description:
       'Empowers clients with 24/7 self-service: update ICP, pause campaigns, download reports. Complex requests are queued for review with automatic status tracking.',
