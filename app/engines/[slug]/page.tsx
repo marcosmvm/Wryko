@@ -38,11 +38,12 @@ export default async function EngineDetailPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const engine = engineDetails[slug]
 
-  if (!engine) {
+  // Check if engine exists (for metadata generation we already import engineDetails)
+  if (!engineDetails[slug]) {
     notFound()
   }
 
-  return <EngineDetailClient engine={engine} />
+  // Pass only the slug - client component will import the data
+  return <EngineDetailClient slug={slug} />
 }

@@ -12,13 +12,21 @@ import { EngineIllustration } from '@/components/marketing/engine-illustration'
 import { RelatedEngines } from '@/components/marketing/related-engines'
 import { FAQAccordion } from '@/components/marketing/faq-accordion'
 import { CTASection } from '@/components/marketing/cta-section'
-import type { EngineDetail } from '@/lib/data/engine-details'
+import { engineDetails } from '@/lib/data/engine-details'
 
 interface EngineDetailClientProps {
-  engine: EngineDetail
+  slug: string
 }
 
-export default function EngineDetailClient({ engine }: EngineDetailClientProps) {
+export default function EngineDetailClient({ slug }: EngineDetailClientProps) {
+  // Get engine data directly in the client component
+  const engine = engineDetails[slug]
+
+  // This shouldn't happen as server component validates, but TypeScript safety
+  if (!engine) {
+    return null
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
