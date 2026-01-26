@@ -167,7 +167,7 @@ export default function SettingsPage() {
           <p className="font-medium">February 1, 2026</p>
         </div>
         <a
-          href="#"
+          href="/contact?subject=billing"
           className="inline-flex items-center gap-2 px-4 py-2 border border-border rounded-lg font-medium hover:bg-muted transition-colors"
         >
           Manage Billing →

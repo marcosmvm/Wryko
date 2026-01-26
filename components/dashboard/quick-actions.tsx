@@ -17,9 +17,8 @@ const actions = [
   },
   {
     label: 'Book Strategy Call',
-    href: 'https://calendly.com',
+    href: '/book-demo',
     icon: Phone,
-    external: true,
   },
   {
     label: 'Contact Support',
@@ -39,29 +38,22 @@ export function QuickActions() {
       <h3 className="font-semibold mb-4">Quick Actions</h3>
 
       <div className="space-y-2">
-        {actions.map((action, index) => {
-          const Component = action.external ? 'a' : Link
-          const props = action.external
-            ? { href: action.href, target: '_blank', rel: 'noopener noreferrer' }
-            : { href: action.href }
-
-          return (
-            <motion.div
-              key={action.label}
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 + index * 0.1, duration: 0.3 }}
+        {actions.map((action, index) => (
+          <motion.div
+            key={action.label}
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4 + index * 0.1, duration: 0.3 }}
+          >
+            <Link
+              href={action.href}
+              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
             >
-              <Component
-                {...props}
-                className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-              >
-                <action.icon className="w-4 h-4" />
-                {action.label}
-              </Component>
-            </motion.div>
-          )
-        })}
+              <action.icon className="w-4 h-4" />
+              {action.label}
+            </Link>
+          </motion.div>
+        ))}
       </div>
     </motion.div>
   )
