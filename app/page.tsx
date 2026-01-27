@@ -15,26 +15,31 @@ const engines = [
   {
     icon: Shield,
     name: 'The Guardian',
+    slug: 'the-guardian',
     description: 'Protects deliverability, ensures compliance, monitors domain health',
   },
   {
     icon: Target,
     name: 'The Architect',
+    slug: 'the-architect',
     description: 'Designs AI-powered campaigns with personalized sequences',
   },
   {
     icon: Brain,
     name: 'The Scientist',
+    slug: 'the-scientist',
     description: 'Runs continuous A/B tests, optimizes for maximum reply rates',
   },
   {
     icon: Zap,
     name: 'The Hunter',
+    slug: 'the-hunter',
     description: 'Expands leads from every positive reply (25-50 new prospects)',
   },
   {
     icon: Eye,
     name: 'The Sentinel',
+    slug: 'the-sentinel',
     description: 'Identifies anonymous website visitors (8-15 contacts each)',
   },
 ]
@@ -108,17 +113,25 @@ export default function HomePage() {
             {engines.map((engine, index) => (
               <motion.div
                 key={engine.name}
-                className="bg-card border border-border rounded-xl p-6 hover:border-primary/50 transition-colors"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
               >
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <engine.icon className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="font-heading font-semibold text-lg mb-2">{engine.name}</h3>
-                <p className="text-muted-foreground">{engine.description}</p>
+                <Link
+                  href={`/engines/${engine.slug}`}
+                  className="block bg-card border border-border rounded-xl p-6 hover:border-primary/50 hover:shadow-lg transition-all group"
+                >
+                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                    <engine.icon className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="font-heading font-semibold text-lg mb-2">{engine.name}</h3>
+                  <p className="text-muted-foreground mb-3">{engine.description}</p>
+                  <span className="inline-flex items-center gap-1 text-sm text-primary font-medium group-hover:gap-2 transition-all">
+                    Learn more
+                    <ChevronRight className="w-4 h-4" />
+                  </span>
+                </Link>
               </motion.div>
             ))}
 
