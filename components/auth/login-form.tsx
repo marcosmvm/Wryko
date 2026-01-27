@@ -15,8 +15,10 @@ export function LoginForm() {
 
   useEffect(() => {
     const authError = searchParams.get('error')
+    const message = searchParams.get('message')
+
     if (authError === 'auth') {
-      setError('Social login failed. Please try again or use email/password.')
+      setError(message || 'Social login failed. Please try again or use email/password.')
       // Clean up URL without refreshing page
       window.history.replaceState({}, '', '/login')
     }

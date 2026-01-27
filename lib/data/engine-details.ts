@@ -142,13 +142,13 @@ export const engineDetails: Record<string, EngineDetail> = {
     triggers: [
       {
         type: 'webhook',
-        description: 'Lead verification on upload',
-        endpoint: '/guardian-verify',
+        description: 'Automatically verifies every new lead before it enters a live campaign',
+        endpoint: 'Authenticated verification API',
       },
       {
         type: 'scheduled',
-        description: 'Domain health check',
-        schedule: 'Every 24 hours',
+        description: 'Proactive domain reputation monitoring—catch issues before they impact deliverability',
+        schedule: 'Continuous daily checks',
       },
     ],
     thresholds: [
@@ -287,8 +287,8 @@ export const engineDetails: Record<string, EngineDetail> = {
     triggers: [
       {
         type: 'webhook',
-        description: 'New campaign creation request',
-        endpoint: '/architect-create',
+        description: 'Instantly generates AI-powered campaigns when you are ready to launch',
+        endpoint: 'Authenticated campaign API',
       },
     ],
     thresholds: [
@@ -405,13 +405,13 @@ export const engineDetails: Record<string, EngineDetail> = {
     triggers: [
       {
         type: 'scheduled',
-        description: 'Launch new A/B tests',
-        schedule: 'Every Monday at 6:00 AM',
+        description: 'Identifies optimization opportunities and launches new experiments automatically',
+        schedule: 'Weekly (every Monday morning)',
       },
       {
         type: 'scheduled',
-        description: 'Analyze test results',
-        schedule: 'Every Wednesday at 6:00 AM',
+        description: 'Evaluates results and deploys winning variants with statistical confidence',
+        schedule: 'Mid-week analysis cycle',
       },
     ],
     thresholds: [
@@ -546,8 +546,8 @@ export const engineDetails: Record<string, EngineDetail> = {
     triggers: [
       {
         type: 'webhook',
-        description: 'Reply detected from Instantly.ai',
-        endpoint: '/hunter-expand',
+        description: 'Triggers instantly when a positive reply is detected—expanding your pipeline in real time',
+        endpoint: 'Authenticated reply webhook',
       },
     ],
     thresholds: [
@@ -673,13 +673,13 @@ export const engineDetails: Record<string, EngineDetail> = {
     triggers: [
       {
         type: 'webhook',
-        description: 'Visitor identification event',
-        endpoint: '/sentinel-process',
+        description: 'Captures and enriches high-intent website visitors the moment they are identified',
+        endpoint: 'Authenticated visitor API',
       },
       {
         type: 'scheduled',
-        description: 'Daily batch processing',
-        schedule: 'Every 24 hours',
+        description: 'Consolidates and prioritizes visitor data for targeted outreach',
+        schedule: 'Daily batch processing',
       },
     ],
     thresholds: [
@@ -808,13 +808,13 @@ export const engineDetails: Record<string, EngineDetail> = {
     triggers: [
       {
         type: 'scheduled',
-        description: 'Weekly report generation',
-        schedule: 'Every Sunday at 8:00 PM',
+        description: 'Delivers polished, AI-summarized performance reports directly to clients',
+        schedule: 'Weekly (Sunday evenings)',
       },
       {
         type: 'scheduled',
-        description: 'Monthly extended analysis',
-        schedule: 'First of each month',
+        description: 'Provides comprehensive monthly trend analysis and strategic insights',
+        schedule: 'Monthly (beginning of each month)',
       },
     ],
     inputs: [
@@ -924,8 +924,8 @@ export const engineDetails: Record<string, EngineDetail> = {
     triggers: [
       {
         type: 'scheduled',
-        description: 'Infrastructure health check',
-        schedule: 'Every 4 hours',
+        description: 'Continuously monitors infrastructure health and auto-resolves issues before clients notice',
+        schedule: 'Multiple times daily',
       },
     ],
     thresholds: [
@@ -1048,13 +1048,13 @@ export const engineDetails: Record<string, EngineDetail> = {
     triggers: [
       {
         type: 'webhook',
-        description: 'Direct query submission',
-        endpoint: '/keeper-query',
+        description: 'Provides instant, AI-powered answers to operational questions',
+        endpoint: 'Authenticated knowledge API',
       },
       {
         type: 'webhook',
-        description: 'Slack /ask command',
-        endpoint: '/slack-ask',
+        description: 'Enables seamless knowledge access directly from Slack',
+        endpoint: 'Slack integration endpoint',
       },
     ],
     thresholds: [
@@ -1176,18 +1176,18 @@ export const engineDetails: Record<string, EngineDetail> = {
     triggers: [
       {
         type: 'webhook',
-        description: 'New client initialization',
-        endpoint: '/new-client',
+        description: 'Kicks off the automated onboarding journey the moment a client signs',
+        endpoint: 'Authenticated onboarding API',
       },
       {
         type: 'scheduled',
-        description: 'Reminder checks',
-        schedule: 'Every 6 hours',
+        description: 'Sends escalating reminders to keep onboarding on track',
+        schedule: 'Throughout the day (multiple check-ins)',
       },
       {
         type: 'webhook',
-        description: 'Asset submission validation',
-        endpoint: '/asset-submission',
+        description: 'Validates client-submitted assets and advances the onboarding workflow',
+        endpoint: 'Authenticated asset API',
       },
     ],
     inputs: [
@@ -1304,8 +1304,8 @@ export const engineDetails: Record<string, EngineDetail> = {
     triggers: [
       {
         type: 'scheduled',
-        description: 'Weekly health analysis',
-        schedule: 'Every Monday at 6:00 AM',
+        description: 'Analyzes account health and generates AI-powered intervention playbooks for at-risk clients',
+        schedule: 'Weekly (every Monday morning)',
       },
     ],
     thresholds: [
@@ -1437,18 +1437,18 @@ export const engineDetails: Record<string, EngineDetail> = {
     triggers: [
       {
         type: 'webhook',
-        description: 'Request submission',
-        endpoint: '/client-portal',
+        description: 'Empowers clients to submit requests 24/7 through the self-serve portal',
+        endpoint: 'Authenticated portal API',
       },
       {
         type: 'webhook',
-        description: 'CSM approval',
-        endpoint: '/approve-request',
+        description: 'Routes complex requests to CSMs for fast, informed approval',
+        endpoint: 'Internal approval workflow',
       },
       {
         type: 'webhook',
-        description: 'Status check',
-        endpoint: '/request-status/:id',
+        description: 'Provides real-time status updates so clients always know where things stand',
+        endpoint: 'Status tracking endpoint',
       },
     ],
     thresholds: [
