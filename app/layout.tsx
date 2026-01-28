@@ -16,18 +16,18 @@ const figtree = Figtree({
 
 export const metadata: Metadata = {
   title: {
-    default: 'XGrowthOS - Autonomous B2B Lead Generation',
+    default: 'XGrowthOS - 25-40 Qualified B2B Meetings Per Month',
     template: '%s | XGrowthOS',
   },
   description:
-    'Book qualified B2B meetings while you sleep. XGrowthOS is an autonomous lead generation platform powered by 11 AI engines that work 24/7 to identify, engage, and book meetings with your ideal customers.',
+    'We book 25-40 qualified sales meetings per month for B2B companies with $25K+ contracts. Proven results: $2.1M pipeline in 90 days. See if you qualify.',
   keywords: [
-    'B2B lead generation',
-    'cold email automation',
-    'AI lead generation',
-    'automated prospecting',
-    'meeting booking service',
-    'sales automation',
+    'B2B meeting booking service',
+    'qualified sales meetings',
+    'outbound lead generation',
+    'sales meeting scheduling',
+    'B2B appointment setting',
+    'enterprise lead generation',
   ],
   authors: [{ name: 'Marcos Matthews' }],
   creator: 'XGrowthOS',
@@ -36,9 +36,9 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://xgrowthos.com',
     siteName: 'XGrowthOS',
-    title: 'XGrowthOS - Autonomous B2B Lead Generation',
+    title: 'XGrowthOS - 25-40 Qualified B2B Meetings Per Month',
     description:
-      'Book qualified B2B meetings while you sleep. Powered by 11 AI engines.',
+      'We book 25-40 qualified sales meetings per month for B2B companies with $25K+ contracts. Proven results: $2.1M pipeline in 90 days.',
     images: [
       {
         url: '/og-image.png',
@@ -50,9 +50,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'XGrowthOS - Autonomous B2B Lead Generation',
+    title: 'XGrowthOS - 25-40 Qualified B2B Meetings Per Month',
     description:
-      'Book qualified B2B meetings while you sleep. Powered by 11 AI engines.',
+      'We book 25-40 qualified sales meetings per month for B2B companies with $25K+ contracts. See if you qualify.',
     images: ['/og-image.png'],
   },
   robots: {

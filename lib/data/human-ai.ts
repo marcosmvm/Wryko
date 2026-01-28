@@ -87,7 +87,7 @@ export const processSteps: ProcessStep[] = [
   {
     number: 3,
     title: 'Launch',
-    description: '11 engines work 24/7 to optimize and protect deliverability',
+    description: 'Smart automation works 24/7 to optimize and protect deliverability',
     type: 'ai',
     icon: Bot,
   },

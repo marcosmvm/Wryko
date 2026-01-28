@@ -123,8 +123,14 @@ export const aboutContent = {
 }
 
 export const heroStats = [
-  { value: '40%+', label: 'Open Rate' },
-  { value: '8%+', label: 'Reply Rate' },
-  { value: '60%+', label: 'Positive Replies' },
-  { value: '17.8x', label: 'Average ROI' },
+  { value: '25-40', label: 'Meetings/Month', subtext: 'Qualified conversations' },
+  { value: '$2.1M', label: 'Pipeline Created', subtext: 'In 90 days (TechFlow)' },
+  { value: '14 Days', label: 'Time to First Meeting', subtext: 'Average launch to reply' },
+  { value: '17.8x', label: 'Average ROI', subtext: 'Across all clients' },
 ]
+
+export const icpWedge = {
+  primary: 'B2B companies with $25K+ contracts',
+  expanded: 'Service businesses, SaaS, and consultancies selling to mid-market and enterprise',
+  qualifier: 'If your deals are worth $25K+ and you need more qualified conversations, this is for you.',
+}
