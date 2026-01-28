@@ -10,6 +10,7 @@ import { CTASection } from '@/components/marketing/cta-section'
 import { ChannelGrid } from '@/components/marketing/channel-grid'
 import { HumanAIComparison } from '@/components/marketing/human-ai-comparison'
 import { ComplianceBadges } from '@/components/marketing/compliance-badges'
+import { ProcessSteps } from '@/components/marketing/process-steps'
 import { HeroBackground } from '@/components/backgrounds'
 import { CaseProofBadge } from '@/components/marketing/case-proof-badge'
 import { CaseSnippetsSection } from '@/components/marketing/case-snippets-section'
@@ -131,6 +132,9 @@ export default function HomePage() {
         {/* Supported Channels Section */}
         <ChannelGrid className="py-20 bg-muted/30" />
 
+        {/* Process Steps - How It Works */}
+        <ProcessSteps className="py-20" />
+
         {/* Human + AI Section */}
         <HumanAIComparison className="py-20 bg-muted/30" />
 
@@ -140,8 +144,12 @@ export default function HomePage() {
         {/* CTA Section */}
         <CTASection
           title="Ready to Fill Your Calendar?"
-          subtitle="Join 50+ B2B companies booking 25-40 qualified meetings per month. See if you qualify."
-          primaryCta={{ href: '/book-demo', label: 'Book Your Discovery Call' }}
+          highlightText="Fill Your Calendar"
+          subtitle="Join 50+ B2B companies booking 25-40 qualified meetings per month."
+          urgencyText="Only 15 Founding Partner spots remaining for Q1 2026"
+          primaryCta={{ href: '/book-demo', label: 'Apply for Your Pilot' }}
+          secondaryCta={{ href: '/case-studies', label: 'See Client Results' }}
+          showTrustLine
           className="bg-muted/30"
         />
 

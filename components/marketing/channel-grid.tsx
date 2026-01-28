@@ -31,10 +31,13 @@ function StatusBadge({ status, label }: { status: Channel['status']; label?: str
   return (
     <span
       className={cn(
-        'inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded-full border',
+        'inline-flex items-center gap-1.5 px-2.5 py-0.5 text-xs font-medium rounded-full border',
         styles[status]
       )}
     >
+      {status === 'active' && (
+        <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+      )}
       {labels[status]}
     </span>
   )
@@ -46,9 +49,11 @@ export function ChannelGrid({ showHeading = true, showFeatures = true, className
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {showHeading && (
           <SectionHeading
+            eyebrow="PLATFORM"
             badge="Outreach Channels"
             title="Multi-Channel Outreach, One Platform"
-            subtitle="Email is our current focus. We're transparent about what's active and what's coming."
+            highlight="Multi-Channel"
+            subtitle="Email is our core strength today. Every channel we add inherits 11 engines of intelligence."
           />
         )}
 
@@ -57,19 +62,29 @@ export function ChannelGrid({ showHeading = true, showFeatures = true, className
             <motion.div
               key={channel.name}
               className={cn(
-                'bg-card border rounded-xl p-6 relative',
+                'rounded-xl p-6 relative transition-all',
                 channel.status === 'active'
-                  ? 'border-primary/30 shadow-sm'
-                  : 'border-border opacity-80'
+                  ? 'glass-card border-t-2 border-t-primary/50 shadow-lg shadow-primary/10 hover:shadow-xl hover:shadow-primary/15'
+                  : 'bg-card/30 border border-border/50 opacity-70'
               )}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ y: -2 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1, duration: 0.5 }}
             >
               <div className="flex items-start justify-between mb-4">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <channel.icon className="w-6 h-6 text-primary" />
+                <div className={cn(
+                  'w-12 h-12 rounded-lg flex items-center justify-center relative',
+                  channel.status === 'active' ? 'bg-primary/10' : 'bg-muted'
+                )}>
+                  <channel.icon className={cn(
+                    'w-6 h-6',
+                    channel.status === 'active' ? 'text-primary' : 'text-muted-foreground'
+                  )} />
+                  {channel.status === 'active' && (
+                    <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-primary/20 animate-ping" />
+                  )}
                 </div>
                 <StatusBadge status={channel.status} label={channel.statusLabel} />
               </div>
@@ -81,7 +96,10 @@ export function ChannelGrid({ showHeading = true, showFeatures = true, className
                 <ul className="space-y-2">
                   {channel.features.slice(0, 3).map((feature) => (
                     <li key={feature} className="flex items-start gap-2 text-sm">
-                      <Check className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                      <Check className={cn(
+                        'w-4 h-4 flex-shrink-0 mt-0.5',
+                        channel.status === 'active' ? 'text-primary' : 'text-muted-foreground/50'
+                      )} />
                       <span className="text-muted-foreground">{feature}</span>
                     </li>
                   ))}
@@ -92,13 +110,13 @@ export function ChannelGrid({ showHeading = true, showFeatures = true, className
         </div>
 
         <motion.p
-          className="text-center text-sm text-muted-foreground mt-8"
+          className="text-center text-sm text-muted-foreground mt-8 max-w-lg mx-auto"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.5, duration: 0.5 }}
         >
-          We believe in transparency. Email is our core strength today, and we&apos;re building toward multi-channel.
+          Email is our foundation. Every channel we add inherits 11 engines of intelligence.
         </motion.p>
       </div>
     </section>
