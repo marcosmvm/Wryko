@@ -49,9 +49,9 @@ export function CTASection({
 
   return (
     <section className={cn('py-20 relative overflow-hidden', className)}>
-      {/* Radial gradient background */}
+      {/* Radial gradient background - Enhanced violet glow */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-gradient-radial from-primary/8 via-transparent to-transparent opacity-60" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-gradient-radial from-violet-500/12 via-purple-500/5 to-transparent opacity-70" />
       </div>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

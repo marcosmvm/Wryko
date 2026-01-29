@@ -25,8 +25,9 @@ export function HeroBackground({ children }: HeroBackgroundProps) {
         {/* Layer 3: Grid pattern overlay */}
         <GridPattern type="dots" spacing={30} opacity={0.04} />
 
-        {/* Layer 4: Accent gradient for depth */}
-        <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-radial from-primary/5 via-transparent to-transparent opacity-60" />
+        {/* Layer 4: Accent gradients for depth */}
+        <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-radial from-violet-500/8 via-transparent to-transparent opacity-70" />
+        <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-gradient-radial from-amber-500/5 via-transparent to-transparent opacity-50" />
 
         {/* Fade to background at bottom for smooth transition */}
         <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-background via-background/80 to-transparent" />

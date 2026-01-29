@@ -130,13 +130,13 @@ export default function HomePage() {
         <CaseSnippetsSection className="py-20" />
 
         {/* Supported Channels Section */}
-        <ChannelGrid className="py-20 bg-muted/30" />
+        <ChannelGrid className="py-20 section-violet" />
 
         {/* Process Steps - How It Works */}
         <ProcessSteps className="py-20" />
 
         {/* Human + AI Section */}
-        <HumanAIComparison className="py-20 bg-muted/30" />
+        <HumanAIComparison className="py-20 section-violet" />
 
         {/* Compliance & Trust Section */}
         <ComplianceBadges className="py-20" />
@@ -150,7 +150,7 @@ export default function HomePage() {
           primaryCta={{ href: '/book-demo', label: 'Apply for Your Pilot' }}
           secondaryCta={{ href: '/case-studies', label: 'See Client Results' }}
           showTrustLine
-          className="bg-muted/30"
+          className="section-violet"
         />
 
         <Footer />

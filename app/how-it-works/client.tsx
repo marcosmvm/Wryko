@@ -90,7 +90,7 @@ export default function HowItWorksClient() {
         </div>
 
         {/* Process Flow */}
-        <ProcessFlow className="py-20 bg-muted/30" />
+        <ProcessFlow className="py-20 section-violet" />
 
         {/* Performance Preview Stats */}
         <section className="py-12 px-4 sm:px-6 lg:px-8">
@@ -133,7 +133,7 @@ export default function HowItWorksClient() {
         </section>
 
         {/* CSM Automation Engines */}
-        <section className="py-20 bg-muted/30">
+        <section className="py-20 section-violet">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeading
               badge="CSM Automation Suite"
@@ -161,7 +161,7 @@ export default function HowItWorksClient() {
         <HumanAIComparison className="py-20" />
 
         {/* Onboarding Timeline */}
-        <section className="py-20 bg-muted/30">
+        <section className="py-20 section-violet">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeading
               badge="14-Day Onboarding"
@@ -179,7 +179,7 @@ export default function HowItWorksClient() {
         <ComplianceDeepDive className="py-20" />
 
         {/* Performance Metrics */}
-        <section className="py-20 bg-muted/30">
+        <section className="py-20 section-violet">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeading
               badge="Results That Matter"
@@ -216,7 +216,7 @@ export default function HowItWorksClient() {
           primaryCta={{ href: '/book-demo', label: 'Book Your Discovery Call' }}
           secondaryCta={{ href: '/case-studies', label: 'See Client Results' }}
           showTrustLine
-          className="bg-muted/30"
+          className="section-violet"
         />
 
         <Footer />

@@ -52,7 +52,7 @@ export default function AboutClient() {
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-20 bg-muted/30">
+      <section className="py-20 section-violet-alt">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12">
             <motion.div
@@ -144,7 +144,7 @@ export default function AboutClient() {
       </section>
 
       {/* Values */}
-      <section className="py-20 bg-muted/30">
+      <section className="py-20 section-violet-alt">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             title="Our Values"
@@ -202,7 +202,7 @@ export default function AboutClient() {
       </section>
 
       {/* By The Numbers */}
-      <section className="py-20 bg-muted/30">
+      <section className="py-20 section-violet-alt">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             title="By The Numbers"

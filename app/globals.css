@@ -48,17 +48,22 @@
     --metric-amber: 38 92% 50%;
     --metric-indigo: 239 84% 67%;
     --metric-violet: 262 83% 58%;
+
+    /* Section Background Colors */
+    --section-violet: 262 83% 98%;
+    --section-violet-alt: 262 60% 96%;
+    --glow-violet: 262 83% 58%;
   }
 
   .dark {
     /* XGrowthOS Dark Mode - Premium Purple Theme */
-    --background: 0 0% 4%; /* #0A0A0A */
+    --background: 262 20% 4%; /* Violet-tinted black */
     --foreground: 210 20% 98%;
-    --card: 0 0% 9%; /* #171717 */
+    --card: 262 10% 9%; /* Subtle violet card */
     --card-foreground: 210 20% 98%;
     --primary: 262 83% 68%; /* #A78BFA - Soft Lavender */
     --primary-foreground: 0 0% 100%;
-    --muted: 0 0% 15%;
+    --muted: 262 15% 15%; /* Violet-tinted muted */
     --muted-foreground: 0 0% 72%;
     --destructive: 0 62% 30%;
     --destructive-foreground: 0 0% 100%;
@@ -94,6 +99,11 @@
     --metric-amber: 38 92% 50%;
     --metric-indigo: 239 84% 67%;
     --metric-violet: 262 83% 68%;
+
+    /* Section Background Colors - Dark Mode */
+    --section-violet: 262 40% 8%;
+    --section-violet-alt: 262 50% 10%;
+    --glow-violet: 262 83% 40%;
   }
 }
 
@@ -150,6 +160,28 @@
 
   .glass-card {
     @apply bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl;
+  }
+
+  .dark .glass-card {
+    background: hsl(262 40% 12% / 0.5);
+  }
+
+  /* Section background utilities */
+  .section-violet {
+    background: hsl(var(--section-violet));
+  }
+
+  .section-violet-alt {
+    background: hsl(var(--section-violet-alt));
+  }
+
+  /* Radial glow utilities */
+  .glow-violet {
+    background: radial-gradient(ellipse at center, hsl(var(--glow-violet) / 0.15), transparent 70%);
+  }
+
+  .glow-violet-strong {
+    background: radial-gradient(ellipse at center, hsl(var(--glow-violet) / 0.25), transparent 60%);
   }
 }
 

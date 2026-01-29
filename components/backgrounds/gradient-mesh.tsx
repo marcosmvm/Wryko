@@ -15,10 +15,10 @@ const intensityMap = {
 }
 
 const blobs = [
-  { x: '10%', y: '20%', size: 600, delay: 0 },
-  { x: '80%', y: '10%', size: 500, delay: 2 },
-  { x: '70%', y: '70%', size: 550, delay: 4 },
-  { x: '20%', y: '80%', size: 450, delay: 6 },
+  { x: '10%', y: '20%', size: 600, delay: 0, color: '262 83% 58%' }, // violet-500
+  { x: '80%', y: '10%', size: 500, delay: 2, color: '262 83% 68%' }, // primary (lighter)
+  { x: '70%', y: '70%', size: 550, delay: 4, color: '270 70% 50%' }, // purple-600
+  { x: '20%', y: '80%', size: 450, delay: 6, color: '280 65% 55%' }, // purple-500
 ]
 
 export function GradientMesh({ intensity = 'medium', animated = true }: GradientMeshProps) {
@@ -47,7 +47,7 @@ export function GradientMesh({ intensity = 'medium', animated = true }: Gradient
             top: blob.y,
             width: blob.size * scale,
             height: blob.size * scale,
-            background: `radial-gradient(circle, hsl(var(--primary) / ${opacity}) 0%, transparent 70%)`,
+            background: `radial-gradient(circle, hsl(${blob.color} / ${opacity}) 0%, transparent 70%)`,
             transform: 'translate(-50%, -50%)',
             filter: 'blur(60px)',
           }}
