@@ -20,9 +20,12 @@ import { RotatingText } from '@/components/marketing/hero/rotating-text'
 import { EnginePipelineVisual } from '@/components/marketing/hero/engine-pipeline-visual'
 import { TrustLogosStrip } from '@/components/marketing/hero/trust-logos-strip'
 import { HeroStatsBar } from '@/components/marketing/hero/hero-stats-bar'
+import { HeroVideoSection } from '@/components/marketing/hero/hero-video-section'
 
 import { heroStatsEnhanced, heroPainPoints, icpWedge } from '@/lib/data/content'
 import { heroCaseHighlight } from '@/lib/data/case-snippets'
+import { ROICalculator } from '@/components/marketing/roi-calculator'
+import { SectionHeading } from '@/components/marketing/section-heading'
 
 export default function HomePage() {
   return (
@@ -126,6 +129,13 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Demo Video Section */}
+        <HeroVideoSection
+          title="See XGrowthOS in Action"
+          // Add your video URL here when ready:
+          // videoUrl="https://www.youtube.com/watch?v=YOUR_VIDEO_ID"
+        />
+
         {/* Case Snippets Section - Social Proof */}
         <CaseSnippetsSection className="py-20" />
 
@@ -141,8 +151,22 @@ export default function HomePage() {
         {/* Process Steps - How It Works */}
         <ProcessSteps className="py-20" />
 
+        {/* ROI Calculator Section */}
+        <section className="py-20 section-violet">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <SectionHeading
+              badge="Calculate Your ROI"
+              title="See Your Potential Results"
+              subtitle="Input your current situation and see how XGrowthOS can transform your pipeline."
+            />
+            <div className="max-w-4xl mx-auto">
+              <ROICalculator />
+            </div>
+          </div>
+        </section>
+
         {/* Human + AI Section */}
-        <HumanAIComparison className="py-20 section-violet" />
+        <HumanAIComparison className="py-20" />
 
         {/* Compliance & Trust Section */}
         <ComplianceBadges className="py-20" />
