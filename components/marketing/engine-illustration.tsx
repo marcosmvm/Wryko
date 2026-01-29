@@ -102,7 +102,7 @@ export function EngineIllustration({ slug, className }: EngineIllustrationProps)
         animate={{ rotate: [0, 5, -5, 0] }}
         transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
       >
-        <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-xl shadow-primary/25">
+        <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-xl shadow-primary/15">
           <PrimaryIcon className="w-12 h-12 text-white" />
         </div>
       </motion.div>

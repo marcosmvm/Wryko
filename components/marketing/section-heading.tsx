@@ -65,7 +65,7 @@ export function SectionHeading({
       </h2>
       {centered && (
         <div className="flex justify-center mb-4">
-          <div className="w-16 h-1 bg-gradient-to-r from-primary to-violet-400 rounded-full" />
+          <div className="w-16 h-1 bg-gradient-to-r from-primary via-secondary/60 to-primary rounded-full" />
         </div>
       )}
       {subtitle && (

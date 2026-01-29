@@ -49,9 +49,9 @@ export function CTASection({
 
   return (
     <section className={cn('py-20 relative overflow-hidden', className)}>
-      {/* Radial gradient background - Enhanced violet glow */}
+      {/* Radial gradient background */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-gradient-radial from-violet-500/12 via-purple-500/5 to-transparent opacity-70" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-gradient-radial from-secondary/8 via-secondary/3 to-transparent opacity-70" />
       </div>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -89,7 +89,7 @@ export function CTASection({
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href={primaryCta.href}
-              className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-violet-500 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:opacity-90 transition-all shadow-lg shadow-primary/25"
+              className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-secondary text-white px-8 py-4 rounded-lg font-semibold text-lg hover:opacity-90 transition-all shadow-lg shadow-primary/15"
             >
               {primaryCta.label}
               <ArrowRight className="w-5 h-5" />

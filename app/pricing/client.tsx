@@ -52,7 +52,7 @@ export default function PricingClient() {
         <PricingPhilosophy className="pb-20" />
 
         {/* Pricing Cards */}
-        <section className="py-20 section-violet-alt">
+        <section className="py-20 section-alt-2">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeading
               badge="Choose Your Tier"
@@ -78,7 +78,7 @@ export default function PricingClient() {
         />
 
         {/* What's Included */}
-        <section className="py-20 section-violet-alt">
+        <section className="py-20 section-alt-2">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeading
               title="Everything You Need to Scale"
@@ -113,7 +113,7 @@ export default function PricingClient() {
         <FlexibilityBanner className="py-20" />
 
         {/* Guarantee Section */}
-        <section className="py-20 section-violet-alt">
+        <section className="py-20 section-alt-2">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               className="max-w-3xl mx-auto bg-card border border-border rounded-2xl p-8 md:p-12"
@@ -159,7 +159,7 @@ export default function PricingClient() {
         </section>
 
         {/* FAQ Section */}
-        <section className="py-20 section-violet-alt">
+        <section className="py-20 section-alt-2">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeading
               title="Frequently Asked Questions"
@@ -178,7 +178,7 @@ export default function PricingClient() {
           subtitle="Book a discovery call to discuss your goals and see if XGrowthOS is the right fit for your team."
           primaryCta={{ href: '/book-demo', label: 'Book Your Discovery Call' }}
           secondaryCta={{ href: '/contact', label: 'Contact Sales' }}
-          className="section-violet-alt"
+          className="section-alt-2"
         />
 
         <Footer />

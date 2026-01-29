@@ -18,7 +18,7 @@ function StatusBadge({ status, label }: { status: Channel['status']; label?: str
     active: 'bg-green-500/10 text-green-600 border-green-500/20',
     'coming-soon': 'bg-amber-500/10 text-amber-600 border-amber-500/20',
     roadmap: 'bg-gray-500/10 text-gray-600 border-gray-500/20',
-    'enterprise-only': 'bg-purple-500/10 text-purple-600 border-purple-500/20',
+    'enterprise-only': 'bg-secondary/10 text-secondary border-secondary/20',
   }
 
   const labels = {

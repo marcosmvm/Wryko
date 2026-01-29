@@ -26,6 +26,7 @@ const iconWrapperVariants = cva(
         amber: 'bg-metric-amber/10',
         indigo: 'bg-metric-indigo/10',
         violet: 'bg-metric-violet/10',
+        secondary: 'bg-secondary/10',
       },
     },
     defaultVariants: {
@@ -57,6 +58,7 @@ const iconColorMap: Record<string, string> = {
   amber: 'text-metric-amber',
   indigo: 'text-metric-indigo',
   violet: 'text-metric-violet',
+  secondary: 'text-secondary',
 }
 
 interface IconWrapperProps extends VariantProps<typeof iconWrapperVariants> {

@@ -4,38 +4,41 @@
 
 @layer base {
   :root {
-    /* XGrowthOS Light Mode - Premium Purple Theme */
+    /* XGrowthOS Light Mode - Refined Purple + Blue Accent */
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 210 20% 98%;
     --card-foreground: 222.2 84% 4.9%;
-    --primary: 262 83% 58%; /* #8B5CF6 - Deep Violet */
+    --primary: 262 72% 54%; /* Refined violet - less saturated, deeper */
     --primary-foreground: 0 0% 100%;
+    --secondary: 224 76% 48%; /* Blue/Indigo accent */
+    --secondary-foreground: 0 0% 100%;
+    --secondary-soft: 224 30% 95%;
     --muted: 210 20% 96%;
     --muted-foreground: 215 16% 47%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 262 83% 58%;
+    --ring: 224 76% 48%; /* Blue for focus rings - accessible, not overwhelming */
     --radius: 0.75rem;
 
-    /* Primary Muted Variants - Desaturated violet for dashboards */
-    --primary-muted: 262 50% 55%;
-    --primary-muted-foreground: 262 50% 30%;
-    --primary-soft: 262 30% 95%;
-    --primary-soft-foreground: 262 60% 45%;
+    /* Primary Muted Variants */
+    --primary-muted: 262 45% 52%;
+    --primary-muted-foreground: 262 45% 28%;
+    --primary-soft: 262 25% 95%;
+    --primary-soft-foreground: 262 50% 42%;
 
-    /* Accent Color - Gold (Premium complement to purple) */
+    /* Accent Color - Gold (Premium complement) */
     --accent: 45 93% 47%;
     --accent-foreground: 45 100% 10%;
     --accent-soft: 45 80% 95%;
 
     /* Solid Button Colors */
-    --primary-button: 262 83% 52%;
-    --primary-button-hover: 262 83% 45%;
+    --primary-button: 262 72% 48%;
+    --primary-button-hover: 262 72% 42%;
 
-    /* Semantic Status Colors (Keep green for success) */
+    /* Semantic Status Colors */
     --success: 142 76% 36%;
     --success-foreground: 0 0% 100%;
     --warning: 45 93% 47%;
@@ -47,46 +50,50 @@
     --metric-blue: 217 91% 60%;
     --metric-amber: 38 92% 50%;
     --metric-indigo: 239 84% 67%;
-    --metric-violet: 262 83% 58%;
+    --metric-violet: 262 68% 58%;
 
-    /* Section Background Colors */
-    --section-violet: 262 83% 98%;
-    --section-violet-alt: 262 60% 96%;
-    --glow-violet: 262 83% 58%;
+    /* Section Background Colors - Neutral */
+    --section-alt: 220 20% 97%;
+    --section-alt-2: 220 15% 95%;
+    --glow-primary: 262 72% 54%;
+    --glow-secondary: 224 76% 48%;
   }
 
   .dark {
-    /* XGrowthOS Dark Mode - Premium Purple Theme */
-    --background: 262 20% 4%; /* Violet-tinted black */
+    /* XGrowthOS Dark Mode - Neutral base with refined accents */
+    --background: 222 47% 4%; /* Neutral dark, no violet tint */
     --foreground: 210 20% 98%;
-    --card: 262 10% 9%; /* Subtle violet card */
+    --card: 222 30% 8%; /* Neutral slate card */
     --card-foreground: 210 20% 98%;
-    --primary: 262 83% 68%; /* #A78BFA - Soft Lavender */
+    --primary: 262 68% 65%; /* Softer lavender */
     --primary-foreground: 0 0% 100%;
-    --muted: 262 15% 15%; /* Violet-tinted muted */
+    --secondary: 224 76% 60%;
+    --secondary-foreground: 0 0% 100%;
+    --secondary-soft: 224 20% 14%;
+    --muted: 222 20% 14%; /* Neutral muted */
     --muted-foreground: 0 0% 72%;
     --destructive: 0 62% 30%;
     --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 15%;
-    --input: 0 0% 15%;
-    --ring: 262 83% 68%;
+    --border: 222 15% 16%;
+    --input: 222 15% 16%;
+    --ring: 224 76% 60%;
 
-    /* Primary Muted Variants - Desaturated violet for dashboards */
-    --primary-muted: 262 50% 60%;
-    --primary-muted-foreground: 262 50% 80%;
-    --primary-soft: 262 30% 15%;
-    --primary-soft-foreground: 262 60% 70%;
+    /* Primary Muted Variants */
+    --primary-muted: 262 45% 58%;
+    --primary-muted-foreground: 262 45% 78%;
+    --primary-soft: 262 20% 14%;
+    --primary-soft-foreground: 262 50% 68%;
 
-    /* Accent Color - Gold (Premium complement to purple) */
+    /* Accent Color - Gold */
     --accent: 45 93% 55%;
     --accent-foreground: 45 100% 95%;
     --accent-soft: 45 60% 15%;
 
     /* Solid Button Colors */
-    --primary-button: 262 83% 62%;
-    --primary-button-hover: 262 83% 70%;
+    --primary-button: 262 68% 58%;
+    --primary-button-hover: 262 68% 66%;
 
-    /* Semantic Status Colors - Dark Mode (Keep green for success) */
+    /* Semantic Status Colors - Dark Mode */
     --success: 142 71% 45%;
     --success-foreground: 0 0% 100%;
     --warning: 45 93% 47%;
@@ -98,12 +105,13 @@
     --metric-blue: 217 91% 60%;
     --metric-amber: 38 92% 50%;
     --metric-indigo: 239 84% 67%;
-    --metric-violet: 262 83% 68%;
+    --metric-violet: 262 68% 65%;
 
-    /* Section Background Colors - Dark Mode */
-    --section-violet: 262 40% 8%;
-    --section-violet-alt: 262 50% 10%;
-    --glow-violet: 262 83% 40%;
+    /* Section Background Colors - Dark Mode - Neutral */
+    --section-alt: 222 30% 6%;
+    --section-alt-2: 222 25% 8%;
+    --glow-primary: 262 60% 40%;
+    --glow-secondary: 224 60% 40%;
   }
 }
 
@@ -149,11 +157,11 @@
 /* Gradient text utility */
 @layer utilities {
   .gradient-text {
-    @apply bg-gradient-to-r from-primary to-violet-400 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent;
   }
 
   .gradient-text-animated {
-    @apply bg-gradient-to-r from-primary via-violet-400 to-primary bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-primary via-blue-400 to-primary bg-clip-text text-transparent;
     background-size: 200% auto;
     animation: gradient-shift 3s ease-in-out infinite;
   }
@@ -163,33 +171,37 @@
   }
 
   .dark .glass-card {
-    background: hsl(262 40% 12% / 0.5);
+    background: hsl(222 30% 10% / 0.5);
   }
 
   /* Section background utilities */
-  .section-violet {
-    background: hsl(var(--section-violet));
+  .section-alt {
+    background: hsl(var(--section-alt));
   }
 
-  .section-violet-alt {
-    background: hsl(var(--section-violet-alt));
+  .section-alt-2 {
+    background: hsl(var(--section-alt-2));
   }
 
   /* Radial glow utilities */
-  .glow-violet {
-    background: radial-gradient(ellipse at center, hsl(var(--glow-violet) / 0.15), transparent 70%);
+  .glow-primary {
+    background: radial-gradient(ellipse at center, hsl(var(--glow-primary) / 0.08), transparent 80%);
   }
 
-  .glow-violet-strong {
-    background: radial-gradient(ellipse at center, hsl(var(--glow-violet) / 0.25), transparent 60%);
+  .glow-primary-strong {
+    background: radial-gradient(ellipse at center, hsl(var(--glow-primary) / 0.15), transparent 70%);
   }
 
-  /* Futuristic glow border utilities */
+  .glow-secondary {
+    background: radial-gradient(ellipse at center, hsl(var(--glow-secondary) / 0.08), transparent 80%);
+  }
+
+  /* Subtle glow border utilities */
   .glow-border {
     box-shadow:
-      0 0 0 1px hsl(var(--primary) / 0.3),
-      0 0 15px hsl(var(--primary) / 0.15),
-      0 0 30px hsl(var(--primary) / 0.05);
+      0 0 0 1px hsl(var(--primary) / 0.15),
+      0 0 10px hsl(var(--primary) / 0.08),
+      0 0 20px hsl(var(--primary) / 0.03);
   }
 
   .glow-border-hover {
@@ -197,34 +209,34 @@
   }
   .glow-border-hover:hover {
     box-shadow:
-      0 0 0 1px hsl(var(--primary) / 0.5),
-      0 0 20px hsl(var(--primary) / 0.25),
-      0 0 40px hsl(var(--primary) / 0.1);
+      0 0 0 1px hsl(var(--primary) / 0.25),
+      0 0 15px hsl(var(--primary) / 0.12),
+      0 0 30px hsl(var(--primary) / 0.04);
   }
 
-  /* Animated glow pulse */
+  /* Animated glow pulse - subtle */
   .glow-pulse {
     animation: glow-pulse 3s ease-in-out infinite;
   }
 
   @keyframes glow-pulse {
-    0%, 100% { box-shadow: 0 0 15px hsl(var(--primary) / 0.15); }
-    50% { box-shadow: 0 0 25px hsl(var(--primary) / 0.3); }
+    0%, 100% { box-shadow: 0 0 10px hsl(var(--primary) / 0.06); }
+    50% { box-shadow: 0 0 18px hsl(var(--primary) / 0.15); }
   }
 
-  /* Enhanced glassmorphism */
+  /* Refined glassmorphism */
   .glass-premium {
-    background: hsl(var(--card) / 0.4);
-    backdrop-filter: blur(12px) saturate(150%);
+    background: hsl(var(--card) / 0.6);
+    backdrop-filter: blur(8px) saturate(120%);
     border: 1px solid hsl(var(--border) / 0.3);
     box-shadow:
       inset 0 1px 0 0 hsl(0 0% 100% / 0.05),
-      0 4px 30px hsl(0 0% 0% / 0.1);
+      0 4px 24px hsl(0 0% 0% / 0.06);
   }
 
   .dark .glass-premium {
-    background: hsl(262 40% 8% / 0.6);
-    border: 1px solid hsl(var(--primary) / 0.15);
+    background: hsl(222 30% 10% / 0.6);
+    border: 1px solid hsl(var(--border) / 0.3);
   }
 
   /* Tech line divider */

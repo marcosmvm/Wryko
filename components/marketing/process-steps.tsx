@@ -47,7 +47,7 @@ export function ProcessSteps({ className }: ProcessStepsProps) {
         <div className="hidden md:block">
           <div className="relative">
             {/* Connecting Line */}
-            <div className="absolute top-12 left-[10%] right-[10%] h-0.5 bg-gradient-to-r from-amber-500/30 via-primary/50 to-primary/30" />
+            <div className="absolute top-12 left-[10%] right-[10%] h-0.5 bg-gradient-to-r from-amber-500/20 via-primary/30 to-secondary/20" />
 
             <div className="grid grid-cols-4 gap-6">
               {processSteps.map((step, index) => {

@@ -10,13 +10,13 @@ interface FloatingOrbsProps {
 }
 
 const orbConfigs = [
-  { x: '15%', y: '20%', size: 300, duration: 25, xOffset: 40, yOffset: -30, color: '262 83% 58%' }, // violet
+  { x: '15%', y: '20%', size: 300, duration: 25, xOffset: 40, yOffset: -30, color: '262 72% 54%' }, // refined purple
   { x: '85%', y: '15%', size: 250, duration: 30, xOffset: -30, yOffset: 40, color: '45 93% 47%' }, // amber accent
-  { x: '75%', y: '75%', size: 280, duration: 22, xOffset: 35, yOffset: 25, color: '270 70% 55%' }, // purple
-  { x: '10%', y: '70%', size: 220, duration: 28, xOffset: -25, yOffset: -35, color: '262 83% 68%' }, // light violet
+  { x: '75%', y: '75%', size: 280, duration: 22, xOffset: 35, yOffset: 25, color: '224 76% 48%' }, // blue accent
+  { x: '10%', y: '70%', size: 220, duration: 28, xOffset: -25, yOffset: -35, color: '215 40% 55%' }, // slate-blue
 ]
 
-export function FloatingOrbs({ count = 4, opacity = 0.12, blur = 100 }: FloatingOrbsProps) {
+export function FloatingOrbs({ count = 4, opacity = 0.08, blur = 100 }: FloatingOrbsProps) {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
 
   useEffect(() => {

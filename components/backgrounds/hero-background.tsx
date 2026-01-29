@@ -20,18 +20,18 @@ export function HeroBackground({ children }: HeroBackgroundProps) {
         <GradientMesh intensity="medium" animated />
 
         {/* Layer 2: Floating orbs */}
-        <FloatingOrbs count={5} opacity={0.15} blur={100} />
+        <FloatingOrbs count={5} opacity={0.08} blur={100} />
 
         {/* Layer 3: Grid pattern overlay */}
         <GridPattern type="dots" spacing={30} opacity={0.04} />
 
         {/* Layer 4: Accent gradients for depth */}
-        <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-radial from-violet-500/8 via-transparent to-transparent opacity-70" />
+        <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-radial from-secondary/6 via-transparent to-transparent opacity-70" />
         <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-gradient-radial from-amber-500/5 via-transparent to-transparent opacity-50" />
 
         {/* Layer 5: Futuristic scan line */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
-          <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent animate-scan-line" />
+          <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent animate-scan-line" />
         </div>
 
         {/* Fade to background at bottom for smooth transition */}

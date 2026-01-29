@@ -34,7 +34,7 @@ export function EngineHero({
   className,
 }: EngineHeroProps) {
   const suiteName = suite === 'lead-gen' ? 'Lead Generation Suite' : 'CSM Automation Suite'
-  const suiteColor = suite === 'lead-gen' ? 'text-primary' : 'text-violet-400'
+  const suiteColor = suite === 'lead-gen' ? 'text-primary' : 'text-secondary'
 
   return (
     <section className={cn('pt-32 pb-20 px-4 sm:px-6 lg:px-8', className)}>

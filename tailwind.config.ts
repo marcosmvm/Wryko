@@ -21,6 +21,11 @@ const config: Config = {
           button: 'hsl(var(--primary-button))',
           'button-hover': 'hsl(var(--primary-button-hover))',
         },
+        secondary: {
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
+          soft: 'hsl(var(--secondary-soft))',
+        },
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {

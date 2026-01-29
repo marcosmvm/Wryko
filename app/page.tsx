@@ -89,7 +89,7 @@ export default function HomePage() {
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Link
                     href="/book-demo"
-                    className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-violet-500 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:opacity-90 transition-all shadow-lg shadow-primary/25"
+                    className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-secondary text-white px-8 py-4 rounded-lg font-semibold text-lg hover:opacity-90 transition-all shadow-lg shadow-primary/15"
                   >
                     Apply for Your Pilot
                     <ArrowRight className="w-5 h-5" />
@@ -143,7 +143,7 @@ export default function HomePage() {
         <div className="tech-line w-full max-w-md mx-auto" />
 
         {/* Supported Channels Section */}
-        <ChannelGrid className="py-20 section-violet" />
+        <ChannelGrid className="py-20 section-alt" />
 
         {/* Tech Line Divider */}
         <div className="tech-line w-full max-w-md mx-auto" />
@@ -152,7 +152,7 @@ export default function HomePage() {
         <ProcessSteps className="py-20" />
 
         {/* ROI Calculator Section */}
-        <section className="py-20 section-violet">
+        <section className="py-20 section-alt">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeading
               badge="Calculate Your ROI"
@@ -180,7 +180,7 @@ export default function HomePage() {
           primaryCta={{ href: '/book-demo', label: 'Apply for Your Pilot' }}
           secondaryCta={{ href: '/case-studies', label: 'See Client Results' }}
           showTrustLine
-          className="section-violet"
+          className="section-alt"
         />
 
         <Footer />

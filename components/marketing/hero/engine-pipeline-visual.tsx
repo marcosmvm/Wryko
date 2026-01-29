@@ -102,7 +102,7 @@ export function EnginePipelineVisual({ className }: EnginePipelineVisualProps) {
         transition={{ delay: 0.2, duration: 0.6 }}
       >
         <motion.div
-          className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary to-violet-500 flex items-center justify-center shadow-xl shadow-primary/25"
+          className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-xl shadow-primary/15"
           animate={reducedMotion ? {} : { scale: [1, 1.02, 1] }}
           transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
         >

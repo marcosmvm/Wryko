@@ -26,7 +26,7 @@ export function CaseSnippetsSection({ className }: CaseSnippetsSectionProps) {
           {caseSnippets.map((snippet, index) => (
             <motion.div
               key={snippet.company}
-              className="glass-card p-6 border-t-2 border-t-primary/50 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all"
+              className="glass-card p-6 border-t-2 border-t-secondary/40 hover:border-secondary/30 hover:shadow-lg hover:shadow-secondary/5 transition-all"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               whileHover={{ y: -4 }}

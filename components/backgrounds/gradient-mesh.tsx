@@ -10,15 +10,15 @@ interface GradientMeshProps {
 
 const intensityMap = {
   high: { opacity: 0.25, scale: 1.2 },
-  medium: { opacity: 0.15, scale: 1 },
+  medium: { opacity: 0.10, scale: 1 },
   low: { opacity: 0.08, scale: 0.9 },
 }
 
 const blobs = [
-  { x: '10%', y: '20%', size: 600, delay: 0, color: '262 83% 58%' }, // violet-500
-  { x: '80%', y: '10%', size: 500, delay: 2, color: '262 83% 68%' }, // primary (lighter)
-  { x: '70%', y: '70%', size: 550, delay: 4, color: '270 70% 50%' }, // purple-600
-  { x: '20%', y: '80%', size: 450, delay: 6, color: '280 65% 55%' }, // purple-500
+  { x: '10%', y: '20%', size: 600, delay: 0, color: '262 72% 54%' }, // refined purple
+  { x: '80%', y: '10%', size: 500, delay: 2, color: '224 76% 48%' }, // blue accent
+  { x: '70%', y: '70%', size: 550, delay: 4, color: '262 55% 60%' }, // soft lavender
+  { x: '20%', y: '80%', size: 450, delay: 6, color: '215 40% 50%' }, // slate-blue
 ]
 
 export function GradientMesh({ intensity = 'medium', animated = true }: GradientMeshProps) {

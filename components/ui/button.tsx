@@ -18,7 +18,7 @@ const buttonVariants = cva(
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
         // Corporate variants
-        gradient: 'bg-gradient-to-r from-primary to-violet-500 text-white hover:opacity-90 active:scale-[0.98] shadow-md shadow-primary/25 hover:shadow-lg hover:shadow-primary/30 transition-shadow',
+        gradient: 'bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 active:scale-[0.98] shadow-md shadow-primary/15 hover:shadow-lg hover:shadow-primary/20 transition-shadow',
         success: 'bg-success text-success-foreground hover:bg-success/90 active:scale-[0.98]',
         // Solid alternatives to gradient (timeless, non-trendy)
         solid: 'bg-primary-button text-white hover:bg-primary-button-hover active:scale-[0.98] shadow-sm',

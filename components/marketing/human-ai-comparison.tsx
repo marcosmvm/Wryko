@@ -76,7 +76,7 @@ export function HumanAIComparison({ showHeading = true, className }: HumanAIComp
             viewport={{ once: true }}
             transition={{ delay: 0.3, duration: 0.5 }}
           >
-            <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary to-violet-500 text-white rounded-full text-xs font-semibold shadow-lg shadow-primary/25">
+            <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-full text-xs font-semibold shadow-lg shadow-primary/15">
               <ArrowLeftRight className="w-3 h-3" />
               Working Together
             </div>

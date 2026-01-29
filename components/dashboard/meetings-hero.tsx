@@ -12,7 +12,7 @@ export function MeetingsHero() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
       {/* Primary Meetings Card */}
-      <Card className="md:col-span-2 bg-gradient-to-br from-primary to-violet-600 text-white border-0">
+      <Card className="md:col-span-2 bg-gradient-to-br from-primary to-secondary text-white border-0">
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
             <div>
