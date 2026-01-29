@@ -11,7 +11,7 @@ import { ChannelGrid } from '@/components/marketing/channel-grid'
 import { HumanAIComparison } from '@/components/marketing/human-ai-comparison'
 import { ComplianceBadges } from '@/components/marketing/compliance-badges'
 import { ProcessSteps } from '@/components/marketing/process-steps'
-import { HeroBackground } from '@/components/backgrounds'
+import { HeroBackground, SectionBackground } from '@/components/backgrounds'
 import { CaseProofBadge } from '@/components/marketing/case-proof-badge'
 import { CaseSnippetsSection } from '@/components/marketing/case-snippets-section'
 
@@ -130,58 +130,73 @@ export default function HomePage() {
         </section>
 
         {/* Demo Video Section */}
-        <HeroVideoSection
-          title="See XGrowthOS in Action"
-          // Add your video URL here when ready:
-          // videoUrl="https://www.youtube.com/watch?v=YOUR_VIDEO_ID"
-        />
+        <SectionBackground variant="demo" fadeEdges="top">
+          <HeroVideoSection
+            title="See XGrowthOS in Action"
+            // Add your video URL here when ready:
+            // videoUrl="https://www.youtube.com/watch?v=YOUR_VIDEO_ID"
+          />
+        </SectionBackground>
 
         {/* Case Snippets Section - Social Proof */}
-        <CaseSnippetsSection className="py-20" />
+        <SectionBackground variant="proof" fadeEdges="both">
+          <CaseSnippetsSection className="py-20" />
+        </SectionBackground>
 
         {/* Tech Line Divider */}
         <div className="tech-line w-full max-w-md mx-auto" />
 
         {/* Supported Channels Section */}
-        <ChannelGrid className="py-20 section-alt" />
+        <SectionBackground variant="channels" fadeEdges="both">
+          <ChannelGrid className="py-20" />
+        </SectionBackground>
 
         {/* Tech Line Divider */}
         <div className="tech-line w-full max-w-md mx-auto" />
 
         {/* Process Steps - How It Works */}
-        <ProcessSteps className="py-20" />
+        <SectionBackground variant="process" fadeEdges="both">
+          <ProcessSteps className="py-20" />
+        </SectionBackground>
 
         {/* ROI Calculator Section */}
-        <section className="py-20 section-alt">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <SectionHeading
-              badge="Calculate Your ROI"
-              title="See Your Potential Results"
-              subtitle="Input your current situation and see how XGrowthOS can transform your pipeline."
-            />
-            <div className="max-w-4xl mx-auto">
-              <ROICalculator />
+        <SectionBackground variant="roi" fadeEdges="both">
+          <section className="py-20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <SectionHeading
+                badge="Calculate Your ROI"
+                title="See Your Potential Results"
+                subtitle="Input your current situation and see how XGrowthOS can transform your pipeline."
+              />
+              <div className="max-w-4xl mx-auto">
+                <ROICalculator />
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </SectionBackground>
 
         {/* Human + AI Section */}
-        <HumanAIComparison className="py-20" />
+        <SectionBackground variant="comparison" fadeEdges="both">
+          <HumanAIComparison className="py-20" />
+        </SectionBackground>
 
         {/* Compliance & Trust Section */}
-        <ComplianceBadges className="py-20" />
+        <SectionBackground variant="compliance" fadeEdges="both">
+          <ComplianceBadges className="py-20" />
+        </SectionBackground>
 
         {/* CTA Section */}
-        <CTASection
-          title="Ready to Fill Your Calendar?"
-          highlightText="Fill Your Calendar"
-          subtitle="Join 50+ B2B companies booking 25-40 qualified meetings per month."
-          urgencyText="Only 15 Founding Partner spots remaining for Q1 2026"
-          primaryCta={{ href: '/book-demo', label: 'Apply for Your Pilot' }}
-          secondaryCta={{ href: '/case-studies', label: 'See Client Results' }}
-          showTrustLine
-          className="section-alt"
-        />
+        <SectionBackground variant="cta" fadeEdges="top">
+          <CTASection
+            title="Ready to Fill Your Calendar?"
+            highlightText="Fill Your Calendar"
+            subtitle="Join 50+ B2B companies booking 25-40 qualified meetings per month."
+            urgencyText="Only 15 Founding Partner spots remaining for Q1 2026"
+            primaryCta={{ href: '/book-demo', label: 'Apply for Your Pilot' }}
+            secondaryCta={{ href: '/case-studies', label: 'See Client Results' }}
+            showTrustLine
+          />
+        </SectionBackground>
 
         <Footer />
       </main>

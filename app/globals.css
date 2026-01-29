@@ -248,6 +248,29 @@
     );
     height: 1px;
   }
+
+  /* Section edge fades for smooth background transitions */
+  .section-fade-top {
+    mask-image: linear-gradient(to bottom, transparent, black 80px);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 80px);
+  }
+
+  .section-fade-bottom {
+    mask-image: linear-gradient(to top, transparent, black 80px);
+    -webkit-mask-image: linear-gradient(to top, transparent, black 80px);
+  }
+
+  .section-fade-both {
+    mask-image: linear-gradient(to bottom, transparent, black 60px, black calc(100% - 60px), transparent);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 60px, black calc(100% - 60px), transparent);
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .animate-node-pulse {
+    animation: none;
+  }
 }
 
 /* Animation delays */
