@@ -23,7 +23,7 @@ export function AnnouncementBar({ className }: AnnouncementBarProps) {
         <Zap className="w-4 h-4 text-primary" />
         <span className="text-muted-foreground">Founding Partner Program</span>
         <span className="font-semibold text-primary">
-          Only 15 spots available for Q1 2026
+          Now accepting pilot applications
         </span>
       </p>
     </motion.div>

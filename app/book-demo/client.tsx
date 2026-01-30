@@ -127,8 +127,8 @@ export default function BookDemoClient() {
               <span className="gradient-text">In Action</span>
             </h1>
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Schedule a 30-minute discovery call to see how we book 25-40 qualified
-              meetings per month for B2B companies like yours.
+              Schedule a 30-minute discovery call to see how 11 AI engines can
+              handle your outbound lead generation.
             </p>
           </motion.div>
         </div>

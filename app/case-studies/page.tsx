@@ -3,7 +3,7 @@ import CaseStudiesClient from './client'
 
 export const metadata: Metadata = {
   title: 'Case Studies | XGrowthOS',
-  description: 'See how XGrowthOS helps B2B companies achieve exceptional ROI with autonomous AI-powered lead generation.',
+  description: 'Case studies from XGrowthOS founding partners coming soon. Apply for a pilot to experience AI-powered B2B lead generation.',
 }
 
 export default function CaseStudiesPage() {

@@ -53,7 +53,7 @@ export default function FAQClient() {
               {[
                 { value: '11', label: 'AI Engines' },
                 { value: '14 Days', label: 'Onboarding' },
-                { value: '25-40', label: 'Meetings/Month' },
+                { value: '24/7', label: 'Autonomous' },
                 { value: '90 Days', label: 'Pilot Period' },
               ].map((stat, index) => (
                 <div

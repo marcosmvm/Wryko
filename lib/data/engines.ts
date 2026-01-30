@@ -146,30 +146,30 @@ export const onboardingTimeline = [
   {
     day: 'Day 12-14',
     title: 'Launch',
-    description: 'Campaigns activated. All 11 AI engines begin autonomous operation. First replies typically within 48-72 hours.',
+    description: 'Campaigns activated. All 11 AI engines begin autonomous operation.',
   },
 ]
 
 export const performanceStats = [
   {
     value: '40%+',
-    label: 'Open Rate',
-    subtext: 'vs. 27.7% industry avg',
+    label: 'Open Rate Target',
+    subtext: 'Our optimization goal',
   },
   {
     value: '8%+',
-    label: 'Reply Rate',
-    subtext: 'vs. 5.1% industry avg',
+    label: 'Reply Rate Target',
+    subtext: 'Through continuous A/B testing',
   },
   {
     value: '60%+',
-    label: 'Positive Replies',
-    subtext: 'vs. 42% industry avg',
+    label: 'Positive Reply Goal',
+    subtext: 'Via AI-powered personalization',
   },
   {
-    value: '2%+',
-    label: 'Meeting Conversion',
-    subtext: 'vs. 1% industry avg',
+    value: '24/7',
+    label: 'Autonomous Operation',
+    subtext: 'Continuous monitoring & optimization',
   },
 ]
 

@@ -19,11 +19,9 @@ import { ComplianceDeepDive } from '@/components/marketing/compliance-deep-dive'
 import { RotatingText } from '@/components/marketing/hero/rotating-text'
 import { TrustLogosStrip } from '@/components/marketing/hero/trust-logos-strip'
 import { HeroStatsBar } from '@/components/marketing/hero/hero-stats-bar'
-import { CaseProofBadge } from '@/components/marketing/case-proof-badge'
 
 import { leadGenEngines, csmEngines, onboardingTimeline, performanceStats, howItWorksRotatingText } from '@/lib/data/engines'
 import { heroStatsEnhanced } from '@/lib/data/content'
-import { heroCaseHighlight } from '@/lib/data/case-snippets'
 
 export default function HowItWorksClient() {
   return (
@@ -58,9 +56,6 @@ export default function HowItWorksClient() {
                 AI engines with human strategic oversight—handling every aspect of B2B lead generation
                 from compliance to campaign optimization.
               </p>
-              <div className="mb-8">
-                <CaseProofBadge snippet={heroCaseHighlight} />
-              </div>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   href="/book-demo"
@@ -101,7 +96,7 @@ export default function HowItWorksClient() {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
             >
-              What These Engines Deliver
+              What These Engines Do
             </motion.p>
             <HeroStatsBar stats={heroStatsEnhanced} />
           </div>
@@ -166,7 +161,7 @@ export default function HowItWorksClient() {
             <SectionHeading
               badge="14-Day Onboarding"
               title="From Signup to First Meetings"
-              subtitle="Our streamlined onboarding process gets you up and running quickly, with first replies typically within 48-72 hours of launch."
+              subtitle="Our streamlined onboarding process gets you up and running quickly."
             />
 
             <div className="max-w-4xl mx-auto">
@@ -182,9 +177,9 @@ export default function HowItWorksClient() {
         <section className="py-20 section-alt">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeading
-              badge="Results That Matter"
-              title="Performance That Beats Industry Averages"
-              subtitle="Our AI engines consistently outperform industry benchmarks across all key metrics."
+              badge="Performance Targets"
+              title="What Our Engines Optimize Toward"
+              subtitle="Our AI engines are designed to continuously optimize toward these performance targets."
             />
 
             <StatsGrid stats={performanceStats} columns={4} />
@@ -197,10 +192,10 @@ export default function HowItWorksClient() {
               transition={{ delay: 0.5, duration: 0.5 }}
             >
               <Link
-                href="/case-studies"
+                href="/book-demo"
                 className="inline-flex items-center gap-1 text-primary font-medium hover:underline"
               >
-                See client case studies
+                Apply for a pilot to see these engines in action
                 <ChevronRight className="w-4 h-4" />
               </Link>
             </motion.div>
@@ -211,10 +206,9 @@ export default function HowItWorksClient() {
         <CTASection
           title="Ready to Transform Your Pipeline?"
           highlightText="Transform Your Pipeline"
-          subtitle="Join our founding partners and let 11 AI engines handle your lead generation while you focus on closing deals."
-          urgencyText="Only 15 Founding Partner spots remaining for Q1 2026"
+          subtitle="Become a founding partner and let 11 AI engines handle your lead generation while you focus on closing deals."
           primaryCta={{ href: '/book-demo', label: 'Book Your Discovery Call' }}
-          secondaryCta={{ href: '/case-studies', label: 'See Client Results' }}
+          secondaryCta={{ href: '/pricing', label: 'View Pricing' }}
           showTrustLine
           className="section-alt"
         />

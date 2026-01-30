@@ -54,9 +54,9 @@ export const includedFeatures = [
 ]
 
 export const guarantee = {
-  title: '90-Day Pilot Guarantee',
+  title: '90-Day Pilot Program',
   description:
-    'We stand behind our results. If your reply rate stays below 3% for 30 consecutive days during your pilot period, you can exit with 15 days notice and receive a pro-rated refund of your unused retainer.',
+    'Start with a 90-day pilot at full capacity. If your reply rate stays below 3% for 30 consecutive days, you can exit with 15 days notice and receive a pro-rated refund of your unused retainer. We are committed to earning your business.',
   terms: [
     'Full access to all 11 engines during pilot',
     'Month-to-month after 90-day pilot',

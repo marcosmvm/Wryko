@@ -12,7 +12,6 @@ import { HumanAIComparison } from '@/components/marketing/human-ai-comparison'
 import { ComplianceBadges } from '@/components/marketing/compliance-badges'
 import { ProcessSteps } from '@/components/marketing/process-steps'
 import { HeroBackground } from '@/components/backgrounds'
-import { CaseProofBadge } from '@/components/marketing/case-proof-badge'
 import { CaseSnippetsSection } from '@/components/marketing/case-snippets-section'
 
 import { AnnouncementBar } from '@/components/marketing/hero/announcement-bar'
@@ -23,9 +22,6 @@ import { HeroStatsBar } from '@/components/marketing/hero/hero-stats-bar'
 import { HeroVideoSection } from '@/components/marketing/hero/hero-video-section'
 
 import { heroStatsEnhanced, heroPainPoints, icpWedge } from '@/lib/data/content'
-import { heroCaseHighlight } from '@/lib/data/case-snippets'
-import { ROICalculator } from '@/components/marketing/roi-calculator'
-import { SectionHeading } from '@/components/marketing/section-heading'
 
 export default function HomePage() {
   return (
@@ -74,16 +70,11 @@ export default function HomePage() {
                 </h1>
 
                 {/* Subtitle */}
-                <p className="text-lg sm:text-xl text-muted-foreground mb-6 max-w-lg">
-                  XGrowthOS replaces your $120K/year SDR with 11 autonomous AI engines
-                  that book 25-40 qualified meetings per month — launched in 14 days,
-                  not 6 weeks.
+                <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-lg">
+                  XGrowthOS gives your team 11 autonomous AI engines designed to handle
+                  every aspect of outbound lead generation — from prospecting to meeting
+                  booking. Launched in as little as 14 days.
                 </p>
-
-                {/* Social Proof Badge */}
-                <div className="mb-8">
-                  <CaseProofBadge snippet={heroCaseHighlight} />
-                </div>
 
                 {/* CTAs */}
                 <div className="flex flex-col sm:flex-row gap-4">
@@ -95,11 +86,11 @@ export default function HomePage() {
                     <ArrowRight className="w-5 h-5" />
                   </Link>
                   <Link
-                    href="/case-studies"
+                    href="/how-it-works"
                     className="inline-flex items-center justify-center gap-2 border border-border px-8 py-4 rounded-lg font-semibold text-lg hover:bg-muted transition-colors"
                   >
                     <Play className="w-4 h-4" />
-                    See Client Results
+                    See How It Works
                   </Link>
                 </div>
 
@@ -151,20 +142,6 @@ export default function HomePage() {
         {/* Process Steps - How It Works */}
         <ProcessSteps className="py-20" />
 
-        {/* ROI Calculator Section */}
-        <section className="py-20 section-alt">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <SectionHeading
-              badge="Calculate Your ROI"
-              title="See Your Potential Results"
-              subtitle="Input your current situation and see how XGrowthOS can transform your pipeline."
-            />
-            <div className="max-w-4xl mx-auto">
-              <ROICalculator />
-            </div>
-          </div>
-        </section>
-
         {/* Human + AI Section */}
         <HumanAIComparison className="py-20" />
 
@@ -173,12 +150,11 @@ export default function HomePage() {
 
         {/* CTA Section */}
         <CTASection
-          title="Ready to Fill Your Calendar?"
-          highlightText="Fill Your Calendar"
-          subtitle="Join 50+ B2B companies booking 25-40 qualified meetings per month."
-          urgencyText="Only 15 Founding Partner spots remaining for Q1 2026"
+          title="Ready to Transform Your Pipeline?"
+          highlightText="Transform Your Pipeline"
+          subtitle="Apply for a founding partner pilot and let 11 AI engines handle your outbound lead generation."
           primaryCta={{ href: '/book-demo', label: 'Apply for Your Pilot' }}
-          secondaryCta={{ href: '/case-studies', label: 'See Client Results' }}
+          secondaryCta={{ href: '/how-it-works', label: 'See How It Works' }}
           showTrustLine
           className="section-alt"
         />

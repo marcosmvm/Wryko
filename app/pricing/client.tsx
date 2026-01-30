@@ -16,7 +16,6 @@ import { SubtleBackground } from '@/components/backgrounds'
 
 import { pricingTiers, includedFeatures, guarantee } from '@/lib/data/pricing'
 import { pricingFAQs } from '@/lib/data/content'
-import { ROICalculator } from '@/components/marketing/roi-calculator'
 
 export default function PricingClient() {
   return (
@@ -141,20 +140,6 @@ export default function PricingClient() {
                 ))}
               </div>
             </motion.div>
-          </div>
-        </section>
-
-        {/* ROI Calculator Section */}
-        <section className="py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <SectionHeading
-              badge="Calculate Your ROI"
-              title="See Your Potential Return"
-              subtitle="Estimate your results with XGrowthOS based on your industry and deal size."
-            />
-            <div className="max-w-4xl mx-auto">
-              <ROICalculator />
-            </div>
           </div>
         </section>
 

@@ -27,7 +27,7 @@ export const faqCategories: FAQCategory[] = [
       {
         question: 'What makes XGrowthOS different from other lead gen agencies?',
         answer:
-          'Traditional agencies rely on manual processes and human SDRs. XGrowthOS uses 11 AI engines that work autonomously around the clock—optimizing campaigns, detecting issues before they impact performance, and expanding your pipeline from every positive reply. We deliver enterprise-grade results at a fraction of the cost of hiring in-house SDRs.',
+          'Traditional agencies rely on manual processes and human SDRs. XGrowthOS uses 11 AI engines that work autonomously around the clock—optimizing campaigns, detecting issues before they impact performance, and expanding your pipeline from every positive reply. We provide enterprise-grade outbound capabilities at a fraction of the cost of hiring in-house SDRs.',
       },
       {
         question: 'What types of companies is XGrowthOS best suited for?',
@@ -37,7 +37,7 @@ export const faqCategories: FAQCategory[] = [
       {
         question: 'How many meetings can I expect per month?',
         answer:
-          'Our clients typically receive 25-40 qualified meetings per month once campaigns are fully ramped. Results vary based on industry, ICP, and offer, but our average client sees their first meeting within 14 days of launch and reaches full capacity within 60-90 days.',
+          'Meeting volume depends on your industry, ICP, offer, and deal size. Our platform is designed to scale your outbound pipeline through AI-powered optimization, with most campaigns reaching full capacity within 60-90 days of launch.',
       },
       {
         question: 'What is considered a "qualified meeting"?',
@@ -134,7 +134,7 @@ export const faqCategories: FAQCategory[] = [
       {
         question: 'How long does it take to get started?',
         answer:
-          'Our standard onboarding is 14 days from signed agreement to campaign launch. This includes domain provisioning and warmup, CRM integration, ICP definition, and AI-powered campaign creation. First replies typically come within 48-72 hours of launch.',
+          'Our standard onboarding is 14 days from signed agreement to campaign launch. This includes domain provisioning and warmup, CRM integration, ICP definition, and AI-powered campaign creation.',
       },
       {
         question: 'What does the onboarding process look like?',

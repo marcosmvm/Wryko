@@ -205,8 +205,8 @@ export default function AboutClient() {
       <section className="py-20 section-alt-2">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
-            title="By The Numbers"
-            subtitle="Results our AI engines consistently deliver for clients."
+            title="Our Platform at a Glance"
+            subtitle="Key capabilities of our AI engine platform."
           />
 
           <StatsGrid stats={heroStats} columns={4} />

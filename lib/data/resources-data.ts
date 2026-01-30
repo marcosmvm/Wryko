@@ -31,7 +31,7 @@ export const resources: Resource[] = [
     id: 'roi-calculator-spreadsheet',
     title: 'ROI Calculator Spreadsheet',
     description:
-      'Calculate your potential ROI with outbound lead generation. Input your deal size, close rate, and current pipeline to see projected returns.',
+      'Estimate potential outcomes for outbound lead generation. Input your deal size, close rate, and current pipeline to model different scenarios.',
     category: 'tool',
     icon: Table,
     downloadUrl: '/downloads/roi-calculator.xlsx',
@@ -71,28 +71,6 @@ export const resources: Resource[] = [
     downloadUrl: '/downloads/deliverability-checklist.pdf',
     fileType: 'PDF',
     fileSize: '680 KB',
-  },
-  {
-    id: 'case-study-techflow',
-    title: 'Case Study: TechFlow Solutions',
-    description:
-      'How a mid-market SaaS company generated $2.1M in pipeline and 47 qualified meetings in 90 days using XGrowthOS.',
-    category: 'case-study',
-    icon: BarChart3,
-    downloadUrl: '/downloads/case-study-techflow.pdf',
-    fileType: 'PDF',
-    fileSize: '1.2 MB',
-  },
-  {
-    id: 'case-study-pinnacle',
-    title: 'Case Study: Pinnacle Consulting',
-    description:
-      'Professional services firm achieves 127% meeting quota attainment and 22.4x ROI with autonomous AI lead generation.',
-    category: 'case-study',
-    icon: BarChart3,
-    downloadUrl: '/downloads/case-study-pinnacle.pdf',
-    fileType: 'PDF',
-    fileSize: '980 KB',
   },
   {
     id: 'subject-line-swipe-file',
@@ -137,7 +115,6 @@ export interface ResourceCategoryOption {
 export const resourceCategories: ResourceCategoryOption[] = [
   { id: 'all', label: 'All Resources' },
   { id: 'guide', label: 'Guides & Whitepapers' },
-  { id: 'case-study', label: 'Case Studies' },
   { id: 'template', label: 'Email Templates' },
   { id: 'tool', label: 'Tools & Calculators' },
 ]

@@ -16,14 +16,14 @@ const figtree = Figtree({
 
 export const metadata: Metadata = {
   title: {
-    default: 'XGrowthOS - 25-40 Qualified B2B Meetings Per Month',
+    default: 'XGrowthOS - AI-Powered B2B Lead Generation Platform',
     template: '%s | XGrowthOS',
   },
   description:
-    'We book 25-40 qualified sales meetings per month for B2B companies with $25K+ contracts. Proven results: $2.1M pipeline in 90 days. See if you qualify.',
+    'XGrowthOS is an autonomous B2B lead generation platform powered by 11 AI engines. Designed for companies with $25K+ deals who want scalable, compliant outbound.',
   keywords: [
-    'B2B meeting booking service',
-    'qualified sales meetings',
+    'B2B lead generation platform',
+    'AI-powered outbound',
     'outbound lead generation',
     'sales meeting scheduling',
     'B2B appointment setting',
@@ -36,9 +36,9 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://xgrowthos.com',
     siteName: 'XGrowthOS',
-    title: 'XGrowthOS - 25-40 Qualified B2B Meetings Per Month',
+    title: 'XGrowthOS - AI-Powered B2B Lead Generation Platform',
     description:
-      'We book 25-40 qualified sales meetings per month for B2B companies with $25K+ contracts. Proven results: $2.1M pipeline in 90 days.',
+      'Autonomous B2B lead generation powered by 11 AI engines. Designed for companies with $25K+ deals who want scalable, compliant outbound.',
     images: [
       {
         url: '/og-image.png',
@@ -50,9 +50,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'XGrowthOS - 25-40 Qualified B2B Meetings Per Month',
+    title: 'XGrowthOS - AI-Powered B2B Lead Generation Platform',
     description:
-      'We book 25-40 qualified sales meetings per month for B2B companies with $25K+ contracts. See if you qualify.',
+      'Autonomous B2B lead generation powered by 11 AI engines. Designed for companies with $25K+ deals.',
     images: ['/og-image.png'],
   },
   robots: {

@@ -1,13 +1,8 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { Shield, Zap, Clock } from 'lucide-react'
 import { cn } from '@/lib/utils'
-
-const trustedCompanies = [
-  'TechFlow Solutions',
-  'CloudSecure Pro',
-  'DataBridge Analytics',
-]
 
 interface TrustLogosStripProps {
   className?: string
@@ -22,22 +17,22 @@ export function TrustLogosStrip({ className }: TrustLogosStripProps) {
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: 0.4 }}
     >
-      <p className="text-xs uppercase tracking-widest text-muted-foreground text-center mb-6">
-        Trusted by growth-focused B2B teams
+      <p className="text-xs uppercase tracking-widest text-muted-foreground text-center mb-4">
+        Built for growth-focused B2B teams
       </p>
-      <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
-        {trustedCompanies.map((company, index) => (
-          <motion.span
-            key={company}
-            className="font-heading font-semibold text-lg text-muted-foreground/40 select-none"
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.5 + index * 0.1, duration: 0.4 }}
-          >
-            {company}
-          </motion.span>
-        ))}
+      <div className="flex flex-wrap items-center justify-center gap-6 md:gap-10 text-sm text-muted-foreground">
+        <span className="flex items-center gap-2">
+          <Shield className="w-4 h-4 text-primary" />
+          GDPR & CAN-SPAM Compliant
+        </span>
+        <span className="flex items-center gap-2">
+          <Zap className="w-4 h-4 text-primary" />
+          11 AI Engines
+        </span>
+        <span className="flex items-center gap-2">
+          <Clock className="w-4 h-4 text-primary" />
+          14-Day Onboarding
+        </span>
       </div>
     </motion.div>
   )

@@ -37,7 +37,7 @@ export const pricingFAQs = [
   {
     question: 'How quickly can I get started?',
     answer:
-      "Our standard onboarding is 14 days from signed agreement to campaign launch. This includes domain provisioning, warmup initiation, CRM integration, and campaign development. First replies typically come within 48-72 hours of launch.",
+      "Our standard onboarding is 14 days from signed agreement to campaign launch. This includes domain provisioning, warmup initiation, CRM integration, and campaign development.",
   },
   {
     question: 'What outreach channels do you support?',
@@ -105,7 +105,7 @@ export const aboutContent = {
     },
     {
       title: 'Self-Learning System',
-      description: 'Master Library of proven templates grows with every campaign',
+      description: 'Growing template library that improves with every campaign',
     },
     {
       title: 'Built-in Compliance',
@@ -117,23 +117,23 @@ export const aboutContent = {
     },
     {
       title: 'Lead Expansion',
-      description: '25-50 new prospects from every positive reply',
+      description: 'Designed to identify new prospects from every positive reply',
     },
   ],
 }
 
 export const heroStats = [
-  { value: '25-40', label: 'Meetings/Month', subtext: 'Qualified conversations' },
-  { value: '$2.1M', label: 'Pipeline Created', subtext: 'In 90 days (TechFlow)' },
-  { value: '14 Days', label: 'Time to First Meeting', subtext: 'Average launch to reply' },
-  { value: '17.8x', label: 'Average ROI', subtext: 'Across all clients' },
+  { value: '11', label: 'AI Engines', subtext: 'Working autonomously, 24/7' },
+  { value: '14-Day', label: 'Onboarding', subtext: 'From signup to campaign launch' },
+  { value: '24/7', label: 'Monitoring', subtext: 'Continuous optimization & protection' },
+  { value: '5+', label: 'Channels Planned', subtext: 'Email, LinkedIn, and more' },
 ]
 
 export const heroStatsEnhanced = [
-  { value: 40, suffix: '+', label: 'Meetings/Month', subtext: 'Qualified conversations booked', iconName: 'Calendar' as const, decimals: 0 },
-  { value: 2.1, prefix: '$', suffix: 'M', label: 'Pipeline Created', subtext: 'TechFlow: 90 days', iconName: 'TrendingUp' as const, decimals: 1 },
-  { value: 14, suffix: ' Days', label: 'Launch to First Meeting', subtext: 'Average across clients', iconName: 'Clock' as const, decimals: 0 },
-  { value: 17.8, suffix: 'x', label: 'Average ROI', subtext: 'Across all client campaigns', iconName: 'BarChart3' as const, decimals: 1 },
+  { value: 11, suffix: '', label: 'AI Engines', subtext: 'Working autonomously around the clock', iconName: 'BarChart3' as const, decimals: 0 },
+  { value: 14, suffix: '-Day', label: 'Onboarding', subtext: 'From signup to campaign launch', iconName: 'Clock' as const, decimals: 0 },
+  { value: 24, suffix: '/7', label: 'Monitoring', subtext: 'Continuous optimization & compliance', iconName: 'Calendar' as const, decimals: 0 },
+  { value: 6, suffix: '+', label: 'Integrations', subtext: 'CRM, calendar, and communication tools', iconName: 'TrendingUp' as const, decimals: 0 },
 ]
 
 export const heroPainPoints = [
