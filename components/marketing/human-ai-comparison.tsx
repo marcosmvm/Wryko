@@ -25,7 +25,21 @@ export function HumanAIComparison({ showHeading = true, className }: HumanAIComp
           />
         )}
 
-        <div className="relative grid md:grid-cols-2 gap-8">
+        {/* Bridge Element */}
+        <motion.div
+          className="flex justify-center mb-8"
+          initial={{ opacity: 0, scale: 0.8 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+        >
+          <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-full text-xs font-semibold shadow-lg shadow-primary/15">
+            <ArrowLeftRight className="w-3 h-3" />
+            Working Together
+          </div>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-8">
           {/* AI Column */}
           <motion.div
             className="glass-card border-l-4 border-l-primary p-6 md:p-8"
@@ -66,20 +80,6 @@ export function HumanAIComparison({ showHeading = true, className }: HumanAIComp
                 </motion.li>
               ))}
             </ul>
-          </motion.div>
-
-          {/* Bridge Element - Desktop only */}
-          <motion.div
-            className="hidden md:flex absolute left-1/2 top-8 -translate-x-1/2 z-10"
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-          >
-            <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-full text-xs font-semibold shadow-lg shadow-primary/15">
-              <ArrowLeftRight className="w-3 h-3" />
-              Working Together
-            </div>
           </motion.div>
 
           {/* Human Column */}
