@@ -10,19 +10,19 @@ const principles = [
     icon: Handshake,
     title: 'Aligned Incentives',
     description:
-      'Our per-meeting bonus means we\'re financially motivated to book you more meetings. We only win when you win.',
+      'Our per-meeting bonus structure means we are financially invested in your pipeline growth. We only succeed when you succeed.',
   },
   {
     icon: Eye,
     title: 'Transparent Value',
     description:
-      'Know exactly what you\'re paying for: a base retainer for platform access plus a bonus for every qualified meeting delivered.',
+      'A clear base retainer for full platform access, plus a performance bonus for every qualified meeting we deliver. No hidden costs.',
   },
   {
     icon: Calendar,
-    title: 'No Lock-In',
+    title: 'Risk-Free Pilot',
     description:
-      '90-day pilot, then month-to-month. We earn your business every month. No long-term contracts required.',
+      'Start with a 90-day pilot at full capacity. If results fall short, exit with pro-rated refund. Month-to-month after that.',
   },
 ]
 

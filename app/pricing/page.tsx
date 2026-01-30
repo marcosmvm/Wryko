@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import PricingClient from './client'
 
 export const metadata: Metadata = {
-  title: 'Pricing',
+  title: 'Pilot Program Pricing',
   description:
-    'Simple, performance-aligned pricing for autonomous B2B lead generation. Starting at $2,000/month with a 90-day pilot program.',
+    'Join the XGrowthOS pilot program. Lock in founding partner pricing with full access to 11 autonomous AI engines for B2B lead generation. 90-day pilot, no long-term contracts.',
 }
 
 export default function PricingPage() {

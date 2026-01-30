@@ -1,20 +1,19 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Check, Shield } from 'lucide-react'
+import { Check, Shield, Calendar } from 'lucide-react'
 
 import { Navigation } from '@/components/marketing/navigation'
 import { Footer } from '@/components/marketing/footer'
 import { SectionHeading } from '@/components/marketing/section-heading'
-import { PricingCard } from '@/components/marketing/pricing-card'
 import { FAQAccordion } from '@/components/marketing/faq-accordion'
 import { CTASection } from '@/components/marketing/cta-section'
 import { PricingPhilosophy } from '@/components/marketing/pricing-philosophy'
-import { ChannelGrid } from '@/components/marketing/channel-grid'
-import { FlexibilityBanner } from '@/components/marketing/flexibility-banner'
+import { PilotPricingHero } from '@/components/marketing/pilot-pricing-hero'
+import { FutureTiersPreview } from '@/components/marketing/future-tiers-preview'
 import { SubtleBackground } from '@/components/backgrounds'
 
-import { pricingTiers, includedFeatures, guarantee } from '@/lib/data/pricing'
+import { pilotTier, futureTiers, includedFeatures, guarantee } from '@/lib/data/pricing'
 import { pricingFAQs } from '@/lib/data/content'
 
 export default function PricingClient() {
@@ -32,16 +31,21 @@ export default function PricingClient() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <span className="inline-block px-4 py-1.5 mb-6 text-sm font-medium text-primary bg-primary/10 rounded-full">
-                Pricing
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 text-sm font-medium text-primary bg-primary/10 border border-primary/20 rounded-full">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                Pilot Program
               </span>
               <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-                Simple, Performance-Aligned{' '}
-                <span className="gradient-text">Pricing</span>
+                Join Our{' '}
+                <span className="gradient-text">Pilot Program</span>
               </h1>
-              <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-                We succeed when you succeed. Our per-meeting bonus model ensures
-                our incentives are fully aligned with your growth goals.
+              <p className="text-xl text-muted-foreground mb-4 max-w-2xl mx-auto">
+                We are onboarding a select cohort of founding partners to validate the
+                power of 11 autonomous AI engines. Lock in the lowest pricing and
+                help shape the future of B2B lead generation.
+              </p>
+              <p className="text-sm font-medium text-primary">
+                Performance-aligned pricing. We succeed when you succeed.
               </p>
             </motion.div>
           </div>
@@ -50,42 +54,20 @@ export default function PricingClient() {
         {/* Pricing Philosophy */}
         <PricingPhilosophy className="pb-20" />
 
-        {/* Pricing Cards */}
-        <section className="py-20 section-alt-2">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <SectionHeading
-              badge="Choose Your Tier"
-              title="Plans for Every Growth Stage"
-              subtitle="All tiers include our full 11-engine platform. The difference is scale and support level."
-            />
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {pricingTiers.map((tier, index) => (
-                <PricingCard
-                  key={tier.name}
-                  {...tier}
-                  index={index}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Supported Channels */}
-        <ChannelGrid
-          className="py-20"
-          showFeatures={false}
-        />
+        {/* Pilot Program Pricing */}
+        <PilotPricingHero tier={pilotTier} className="section-alt-2" />
 
         {/* What's Included */}
-        <section className="py-20 section-alt-2">
+        <section className="py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeading
+              badge="Platform Included"
               title="Everything You Need to Scale"
-              subtitle="All tiers include access to our complete platform. No hidden fees, no feature limitations."
+              subtitle="Every pilot partner gets full access to our complete platform. No hidden fees, no feature limitations."
             />
 
             <motion.div
-              className="max-w-3xl mx-auto grid sm:grid-cols-2 gap-4"
+              className="max-w-4xl mx-auto grid sm:grid-cols-2 gap-3"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -94,28 +76,25 @@ export default function PricingClient() {
               {includedFeatures.map((feature, index) => (
                 <motion.div
                   key={feature}
-                  className="flex items-start gap-3"
+                  className="flex items-start gap-3 bg-card/50 border border-border/50 rounded-lg px-4 py-3"
                   initial={{ opacity: 0, x: -10 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: index * 0.05, duration: 0.3 }}
+                  transition={{ delay: index * 0.06, duration: 0.3 }}
                 >
                   <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span>{feature}</span>
+                  <span className="text-sm">{feature}</span>
                 </motion.div>
               ))}
             </motion.div>
           </div>
         </section>
 
-        {/* Flexibility Banner */}
-        <FlexibilityBanner className="py-20" />
-
-        {/* Guarantee Section */}
+        {/* Guarantee + Flexibility Section (merged) */}
         <section className="py-20 section-alt-2">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
-              className="max-w-3xl mx-auto bg-card border border-border rounded-2xl p-8 md:p-12"
+              className="max-w-3xl mx-auto bg-gradient-to-br from-primary/8 via-primary/3 to-transparent border border-primary/20 rounded-2xl p-8 md:p-12"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -131,7 +110,7 @@ export default function PricingClient() {
                 </div>
               </div>
 
-              <div className="grid sm:grid-cols-2 gap-3 mt-6">
+              <div className="grid sm:grid-cols-2 gap-3 mt-6 mb-8">
                 {guarantee.terms.map((term, index) => (
                   <div key={index} className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-primary flex-shrink-0" />
@@ -139,19 +118,42 @@ export default function PricingClient() {
                   </div>
                 ))}
               </div>
+
+              {/* Flexibility section */}
+              <div className="pt-6 border-t border-primary/10">
+                <div className="flex items-center gap-3 mb-4">
+                  <Calendar className="w-5 h-5 text-primary" />
+                  <h3 className="font-heading text-lg font-semibold">No Long-Term Contracts. Ever.</h3>
+                </div>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Unlike traditional agencies that lock you in for 6-12 months, we earn your business every month.
+                </p>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  {guarantee.flexibility.map((point, index) => (
+                    <div key={index} className="flex items-center gap-2">
+                      <Check className="w-4 h-4 text-primary flex-shrink-0" />
+                      <span className="text-sm">{point}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </motion.div>
           </div>
         </section>
+
+        {/* Future Pricing Tiers */}
+        <FutureTiersPreview tiers={futureTiers} className="py-20" />
 
         {/* FAQ Section */}
         <section className="py-20 section-alt-2">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeading
+              badge="Common Questions"
               title="Frequently Asked Questions"
-              subtitle="Everything you need to know about pricing, payments, and getting started."
+              subtitle="Everything you need to know about the pilot program, pricing, and getting started."
             />
 
-            <div className="max-w-3xl mx-auto">
+            <div className="max-w-3xl mx-auto bg-card/50 border border-border/50 rounded-2xl p-6 md:p-8">
               <FAQAccordion items={pricingFAQs} />
             </div>
           </div>
@@ -163,6 +165,8 @@ export default function PricingClient() {
           subtitle="Book a discovery call to discuss your goals and see if XGrowthOS is the right fit for your team."
           primaryCta={{ href: '/book-demo', label: 'Book Your Discovery Call' }}
           secondaryCta={{ href: '/contact', label: 'Contact Sales' }}
+          showTrustLine
+          urgencyText="Limited pilot partner spots available"
           className="section-alt-2"
         />
 
