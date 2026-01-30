@@ -121,7 +121,7 @@ export const aboutContent = {
     name: 'Marcos Matthews',
     title: 'Founder & CEO',
     location: 'Los Angeles, CA',
-    background: 'CSUN Entrepreneurship',
+    background: 'B.A. Management, California State University, Northridge',
     story:
       'After years of experiencing the inefficiencies of traditional SDR teams and the limitations of basic outreach tools, Marcos built XGrowthOS to solve the problem at its root: 11 specialized AI engines that scale personalized outreach without scaling headcount.',
   },
