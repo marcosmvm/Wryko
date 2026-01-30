@@ -61,63 +61,122 @@ export const pricingFAQs = [
   },
 ]
 
+export const aboutProblem = {
+  heading: 'B2B Lead Generation Is Broken',
+  subtitle: 'Most companies face the same bottlenecks that stall pipeline growth.',
+  problems: [
+    {
+      iconName: 'Users' as const,
+      title: 'Expensive Headcount',
+      description:
+        'Hiring SDRs costs $70-90K+ each. Ramp time is 3-6 months. Turnover averages 35% annually. Scaling headcount does not scale results.',
+    },
+    {
+      iconName: 'Clock' as const,
+      title: 'Manual Processes',
+      description:
+        'List building, email sequencing, domain monitoring, compliance checks — your team spends more time on operations than conversations.',
+    },
+    {
+      iconName: 'AlertTriangle' as const,
+      title: 'Reactive, Not Proactive',
+      description:
+        'By the time you notice a deliverability issue, campaign underperformance, or compliance gap, the damage is already done.',
+    },
+  ],
+}
+
+export const aboutSolution = {
+  heading: 'One Platform. 11 Engines. Zero Guesswork.',
+  subtitle:
+    'XGrowthOS replaces fragmented tools and expensive headcount with a unified autonomous system.',
+  pillars: [
+    {
+      iconName: 'Bot' as const,
+      title: 'Autonomous AI Engines',
+      description:
+        '11 specialized engines handle prospecting, campaign optimization, compliance, deliverability, and client success — around the clock.',
+    },
+    {
+      iconName: 'ShieldCheck' as const,
+      title: 'Proactive Intelligence',
+      description:
+        'Issues are detected and resolved before they impact performance. Domain health, blacklists, and campaign quality — all monitored continuously.',
+    },
+    {
+      iconName: 'TrendingUp' as const,
+      title: 'Self-Learning System',
+      description:
+        'Every campaign, reply, and conversion feeds back into the system. Templates improve, targeting sharpens, and results compound over time.',
+    },
+  ],
+}
+
 export const aboutContent = {
   mission:
-    'To democratize enterprise-grade B2B lead generation through autonomous AI systems, making scalable outbound accessible to every growth-focused company.',
+    'To replace fragmented outbound tools and expensive headcount with a single autonomous platform that delivers qualified meetings on autopilot.',
   vision:
-    'A world where every B2B company has access to 24/7 intelligent prospecting, freeing sales teams to focus on what they do best—building relationships and closing deals.',
+    'A world where every B2B company — from startup to enterprise — has access to 24/7 intelligent prospecting, freeing sales teams to focus on relationships and revenue.',
   founderBio: {
     name: 'Marcos Matthews',
     title: 'Founder & CEO',
     location: 'Los Angeles, CA',
     background: 'CSUN Entrepreneurship',
     story:
-      "After experiencing firsthand the inefficiencies of traditional SDR teams and the limitations of basic email tools, I built XGrowthOS to solve the problem I lived every day: how do you scale personalized outreach without scaling headcount? The answer was 11 specialized AI engines working together, 24/7.",
-    commitment:
-      "I'm personally committed to your success. As a Founding Partner, you'll have direct access to me and our team as we build the future of B2B lead generation together.",
+      'After years of experiencing the inefficiencies of traditional SDR teams and the limitations of basic outreach tools, Marcos built XGrowthOS to solve the problem at its root: 11 specialized AI engines that scale personalized outreach without scaling headcount.',
   },
   values: [
     {
       name: 'Innovation',
-      description: 'AI-powered, cutting-edge technology that continuously evolves',
+      description:
+        'We build technology that evolves continuously — 11 engines learning and adapting in real time.',
     },
     {
       name: 'Trust',
-      description: 'Professional, reliable, and enterprise-ready from day one',
+      description:
+        'Enterprise-grade compliance, dedicated infrastructure, and full transparency from day one.',
     },
     {
       name: 'Growth',
-      description: 'Forward momentum for both our clients and our platform',
+      description:
+        'Everything we build is designed to compound results for our clients and our platform alike.',
     },
     {
       name: 'Transparency',
-      description: 'Data-driven decisions with full visibility into performance',
+      description:
+        'Real-time dashboards, honest reporting, and performance-aligned pricing. No black boxes.',
     },
   ],
   differentiators: [
     {
       title: '11 AI Engines',
-      description: 'Not limited by human capacity—our engines work 24/7',
+      description: 'Not limited by human capacity — our engines work 24/7 across every aspect of outbound.',
+      iconName: 'Cpu' as const,
     },
     {
       title: 'Proactive, Not Reactive',
-      description: 'Issues detected and fixed before they impact performance',
+      description: 'Issues detected and resolved before they impact your pipeline or reputation.',
+      iconName: 'ShieldCheck' as const,
     },
     {
       title: 'Self-Learning System',
-      description: 'Growing template library that improves with every campaign',
+      description: 'A growing intelligence layer that improves with every campaign and conversation.',
+      iconName: 'Brain' as const,
     },
     {
       title: 'Built-in Compliance',
-      description: 'GDPR, CCPA, and Gmail/Yahoo 2024-2025 requirements handled',
+      description: 'GDPR, CCPA, CAN-SPAM, and Gmail/Yahoo 2024-2025 sender requirements handled automatically.',
+      iconName: 'Scale' as const,
     },
     {
       title: '2x CSM Capacity',
-      description: 'One success manager handles 20-25 clients, not 10-12',
+      description: 'AI automation lets one success manager handle 20-25 clients instead of 10-12.',
+      iconName: 'Users' as const,
     },
     {
       title: 'Lead Expansion',
-      description: 'Designed to identify new prospects from every positive reply',
+      description: 'Automatically identifies new prospects from every positive reply to grow your pipeline.',
+      iconName: 'Expand' as const,
     },
   ],
 }

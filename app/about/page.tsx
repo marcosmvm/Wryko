@@ -4,7 +4,7 @@ import AboutClient from './client'
 export const metadata: Metadata = {
   title: 'About',
   description:
-    'Meet Marcos Matthews and learn about the XGrowthOS mission to democratize enterprise-grade B2B lead generation through AI.',
+    'XGrowthOS deploys 11 autonomous AI engines to handle every aspect of B2B outbound lead generation. Learn about our platform, our approach, and our team.',
 }
 
 export default function AboutPage() {
