@@ -2,16 +2,25 @@
 
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Shield, Target, Brain, Zap, Eye, Users, Calendar } from 'lucide-react'
+import { Shield, Target, Brain, Zap, Eye, BarChart3, Scale, BookOpen, Rocket, Activity, Compass, Users, Calendar } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Logo } from '@/components/ui/logo'
 
-const engines = [
+const leadGenEngines = [
   { icon: Shield, label: 'Guardian', angle: -60 },
   { icon: Target, label: 'Architect', angle: -20 },
   { icon: Brain, label: 'Scientist', angle: 20 },
   { icon: Zap, label: 'Hunter', angle: 60 },
   { icon: Eye, label: 'Sentinel', angle: 100 },
+]
+
+const csmEngines = [
+  { icon: BarChart3, label: 'Informant', angle: -75 },
+  { icon: Scale, label: 'Judge', angle: -35 },
+  { icon: BookOpen, label: 'Keeper', angle: 5 },
+  { icon: Rocket, label: 'Launcher', angle: 60 },
+  { icon: Activity, label: 'Monitor', angle: 100 },
+  { icon: Compass, label: 'Navigator', angle: 140 },
 ]
 
 interface EnginePipelineVisualProps {
@@ -27,12 +36,13 @@ export function EnginePipelineVisual({ className }: EnginePipelineVisualProps) {
     )
   }, [])
 
-  const radius = 130
+  const innerRadius = 120
+  const outerRadius = 180
 
   return (
     <div
       className={cn(
-        'relative w-full max-w-lg mx-auto aspect-square',
+        'relative w-full max-w-xl mx-auto aspect-square',
         className
       )}
     >
@@ -42,6 +52,11 @@ export function EnginePipelineVisual({ className }: EnginePipelineVisualProps) {
       {/* Pulsing rings */}
       {!reducedMotion && (
         <>
+          <motion.div
+            className="absolute inset-0 rounded-full border border-primary/8"
+            animate={{ scale: [1, 1.02, 1] }}
+            transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
+          />
           <motion.div
             className="absolute inset-4 rounded-full border border-primary/15"
             animate={{ scale: [1, 1.04, 1] }}
@@ -111,11 +126,11 @@ export function EnginePipelineVisual({ className }: EnginePipelineVisualProps) {
         </motion.div>
       </motion.div>
 
-      {/* Engine nodes */}
-      {engines.map((engine, index) => {
+      {/* Inner ring: Lead-gen engines */}
+      {leadGenEngines.map((engine, index) => {
         const angleRad = (engine.angle * Math.PI) / 180
-        const x = Math.cos(angleRad) * radius
-        const y = Math.sin(angleRad) * radius
+        const x = Math.cos(angleRad) * innerRadius
+        const y = Math.sin(angleRad) * innerRadius
         const EngineIcon = engine.icon
 
         return (
@@ -138,16 +153,76 @@ export function EnginePipelineVisual({ className }: EnginePipelineVisualProps) {
         )
       })}
 
+      {/* Outer ring: CSM engines */}
+      {csmEngines.map((engine, index) => {
+        const angleRad = (engine.angle * Math.PI) / 180
+        const x = Math.cos(angleRad) * outerRadius
+        const y = Math.sin(angleRad) * outerRadius
+        const EngineIcon = engine.icon
+
+        return (
+          <motion.div
+            key={engine.label}
+            className="absolute w-9 h-9 rounded-lg bg-card/80 border border-primary/15 flex items-center justify-center shadow-md z-10"
+            style={{
+              top: `calc(50% - 18px + ${y}px)`,
+              left: `calc(50% - 18px + ${x}px)`,
+            }}
+            initial={{ opacity: 0, scale: 0 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.8 + index * 0.08, duration: 0.4 }}
+            animate={reducedMotion ? {} : { y: [0, -3, 0] }}
+            whileHover={{ scale: 1.15 }}
+          >
+            <EngineIcon className="w-4 h-4 text-primary/60" />
+          </motion.div>
+        )
+      })}
+
       {/* SVG connection lines */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
-        {engines.map((engine, index) => {
+        {/* Inner ring orbit path */}
+        <motion.circle
+          cx="50%"
+          cy="50%"
+          r="20.8%"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="0.5"
+          strokeDasharray="3 6"
+          className="text-primary/8"
+          initial={{ pathLength: 0 }}
+          whileInView={{ pathLength: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5, duration: 0.8 }}
+        />
+
+        {/* Outer ring orbit path */}
+        <motion.circle
+          cx="50%"
+          cy="50%"
+          r="31.2%"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="0.5"
+          strokeDasharray="4 8"
+          className="text-primary/10"
+          initial={{ pathLength: 0 }}
+          whileInView={{ pathLength: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.7, duration: 1.0 }}
+        />
+
+        {/* Center to inner ring lines */}
+        {leadGenEngines.map((engine, index) => {
           const angleRad = (engine.angle * Math.PI) / 180
-          const x2 = 50 + Math.cos(angleRad) * 26
-          const y2 = 50 + Math.sin(angleRad) * 26
+          const x2 = 50 + Math.cos(angleRad) * 21
+          const y2 = 50 + Math.sin(angleRad) * 21
 
           return (
             <motion.line
-              key={engine.label}
+              key={`inner-${engine.label}`}
               x1="50%"
               y1="50%"
               x2={`${x2}%`}
@@ -159,6 +234,33 @@ export function EnginePipelineVisual({ className }: EnginePipelineVisualProps) {
               whileInView={{ pathLength: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.6 + index * 0.1, duration: 0.5 }}
+            />
+          )
+        })}
+
+        {/* Outer to inner ring connector lines */}
+        {csmEngines.map((engine, index) => {
+          const angleRad = (engine.angle * Math.PI) / 180
+          const x1 = 50 + Math.cos(angleRad) * 31.2
+          const y1 = 50 + Math.sin(angleRad) * 31.2
+          const x2 = 50 + Math.cos(angleRad) * 23.5
+          const y2 = 50 + Math.sin(angleRad) * 23.5
+
+          return (
+            <motion.line
+              key={`outer-${engine.label}`}
+              x1={`${x1}%`}
+              y1={`${y1}%`}
+              x2={`${x2}%`}
+              y2={`${y2}%`}
+              stroke="currentColor"
+              strokeWidth="0.5"
+              strokeDasharray="2 4"
+              className="text-primary/12"
+              initial={{ pathLength: 0 }}
+              whileInView={{ pathLength: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 1.0 + index * 0.08, duration: 0.4 }}
             />
           )
         })}
