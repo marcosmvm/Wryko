@@ -7,7 +7,6 @@ import { ArrowRight, Shield, Play } from 'lucide-react'
 import { Navigation } from '@/components/marketing/navigation'
 import { Footer } from '@/components/marketing/footer'
 import { CTASection } from '@/components/marketing/cta-section'
-import { ChannelGrid } from '@/components/marketing/channel-grid'
 import { HumanAIComparison } from '@/components/marketing/human-ai-comparison'
 import { ComplianceBadges } from '@/components/marketing/compliance-badges'
 import { ProcessSteps } from '@/components/marketing/process-steps'
@@ -129,12 +128,6 @@ export default function HomePage() {
 
         {/* Case Snippets Section - Social Proof */}
         <CaseSnippetsSection className="py-20" />
-
-        {/* Tech Line Divider */}
-        <div className="tech-line w-full max-w-md mx-auto" />
-
-        {/* Supported Channels Section */}
-        <ChannelGrid className="py-20 section-alt" />
 
         {/* Tech Line Divider */}
         <div className="tech-line w-full max-w-md mx-auto" />
