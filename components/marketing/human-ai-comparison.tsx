@@ -70,7 +70,7 @@ export function HumanAIComparison({ showHeading = true, className }: HumanAIComp
 
           {/* Bridge Element - Desktop only */}
           <motion.div
-            className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10"
+            className="hidden md:flex absolute left-1/2 top-8 -translate-x-1/2 z-10"
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
