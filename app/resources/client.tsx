@@ -136,6 +136,7 @@ export default function ResourcesClient() {
               {sortedResources.map((resource, index) => (
                 <ResourceCard
                   key={resource.id}
+                  id={resource.id}
                   title={resource.title}
                   description={resource.description}
                   icon={resource.icon}

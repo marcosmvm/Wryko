@@ -1,10 +1,12 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Download, LucideIcon } from 'lucide-react'
+import { ArrowRight, LucideIcon } from 'lucide-react'
+import Link from 'next/link'
 import { cn } from '@/lib/utils'
 
 interface ResourceCardProps {
+  id: string
   title: string
   description: string
   icon: LucideIcon
@@ -22,6 +24,7 @@ const fileTypeBadgeStyles = {
 }
 
 export function ResourceCard({
+  id,
   title,
   description,
   icon: Icon,
@@ -92,10 +95,9 @@ export function ResourceCard({
         {/* Description */}
         <p className="text-sm text-muted-foreground flex-1 mb-6">{description}</p>
 
-        {/* Download button */}
-        <a
-          href={downloadUrl}
-          download
+        {/* View Resource button */}
+        <Link
+          href={`/resources/${id}`}
           className={cn(
             'flex items-center justify-center gap-2 w-full',
             'px-4 py-3 rounded-lg font-medium text-sm',
@@ -105,9 +107,9 @@ export function ResourceCard({
               : 'bg-muted text-foreground hover:bg-primary hover:text-primary-foreground'
           )}
         >
-          <Download className="w-4 h-4" />
-          Download {fileType}
-        </a>
+          View Resource
+          <ArrowRight className="w-4 h-4" />
+        </Link>
       </div>
     </motion.div>
   )
