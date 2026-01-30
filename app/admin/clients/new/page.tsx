@@ -3,9 +3,13 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { motion } from 'framer-motion'
 import { ArrowLeft, Loader2, AlertCircle } from 'lucide-react'
 import { useToastActions } from '@/components/ui/toast'
 import { PLAN_OPTIONS } from '@/lib/constants/admin'
+import { fadeInUp, defaultTransition, getStaggerDelay } from '@/lib/animations'
+import { Card } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 
 interface FormErrors {
   companyName?: string
@@ -149,7 +153,7 @@ export default function AddClientPage() {
 
   const inputClassName = (fieldName: keyof FormErrors) => {
     const hasError = touched[fieldName] && errors[fieldName]
-    return `w-full px-4 py-2 bg-background border rounded-lg text-sm focus:outline-none focus:ring-2 transition-colors ${
+    return `w-full px-4 py-2 bg-background border rounded-lg text-sm focus:outline-none focus:ring-2 focus:border-primary/30 transition-all ${
       hasError
         ? 'border-red-500 focus:ring-red-500/20'
         : 'border-border focus:ring-primary/20'
@@ -159,195 +163,226 @@ export default function AddClientPage() {
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       {/* Back Button */}
-      <Link
-        href="/admin/clients"
-        className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors focus:outline-none focus-visible:underline"
+      <motion.div
+        initial={{ opacity: 0, x: -10 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={defaultTransition}
       >
-        <ArrowLeft className="w-4 h-4" aria-hidden="true" />
-        Back to Clients
-      </Link>
+        <Link
+          href="/admin/clients"
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors focus:outline-none focus-visible:underline"
+        >
+          <ArrowLeft className="w-4 h-4" aria-hidden="true" />
+          Back to Clients
+        </Link>
+      </motion.div>
 
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold">Add New Client</h1>
+      <motion.div
+        {...fadeInUp}
+        transition={defaultTransition}
+      >
+        <h1 className="text-2xl font-bold font-heading">Add New Client</h1>
         <p className="text-muted-foreground">
           Create a new client account and start onboarding
         </p>
-      </div>
+        <div className="mt-3 h-1 w-16 rounded-full bg-gradient-to-r from-primary to-primary/40" />
+      </motion.div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-6" noValidate>
-        <fieldset className="bg-card border border-border rounded-xl p-6 space-y-4">
-          <legend className="font-semibold px-1">Company Information</legend>
-
-          <div className="space-y-2">
-            <label htmlFor="companyName" className="text-sm font-medium">
-              Company Name <span className="text-destructive" aria-hidden="true">*</span>
-              <span className="sr-only">(required)</span>
-            </label>
-            <input
-              type="text"
-              id="companyName"
-              name="companyName"
-              value={formData.companyName}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              aria-invalid={touched.companyName && !!errors.companyName}
-              aria-describedby={errors.companyName ? 'companyName-error' : undefined}
-              placeholder="Acme Corp"
-              className={inputClassName('companyName')}
-            />
-            {touched.companyName && errors.companyName && (
-              <p id="companyName-error" className="flex items-center gap-1 text-xs text-red-500" role="alert">
-                <AlertCircle className="w-3 h-3" aria-hidden="true" />
-                {errors.companyName}
-              </p>
-            )}
-          </div>
-
-          <div className="grid sm:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label htmlFor="contactName" className="text-sm font-medium">
-                Contact Name <span className="text-destructive" aria-hidden="true">*</span>
-                <span className="sr-only">(required)</span>
-              </label>
-              <input
-                type="text"
-                id="contactName"
-                name="contactName"
-                value={formData.contactName}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                aria-invalid={touched.contactName && !!errors.contactName}
-                aria-describedby={errors.contactName ? 'contactName-error' : undefined}
-                placeholder="John Smith"
-                className={inputClassName('contactName')}
-              />
-              {touched.contactName && errors.contactName && (
-                <p id="contactName-error" className="flex items-center gap-1 text-xs text-red-500" role="alert">
-                  <AlertCircle className="w-3 h-3" aria-hidden="true" />
-                  {errors.contactName}
-                </p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor="contactEmail" className="text-sm font-medium">
-                Contact Email <span className="text-destructive" aria-hidden="true">*</span>
-                <span className="sr-only">(required)</span>
-              </label>
-              <input
-                type="email"
-                id="contactEmail"
-                name="contactEmail"
-                value={formData.contactEmail}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                aria-invalid={touched.contactEmail && !!errors.contactEmail}
-                aria-describedby={errors.contactEmail ? 'contactEmail-error' : undefined}
-                placeholder="john@company.com"
-                className={inputClassName('contactEmail')}
-              />
-              {touched.contactEmail && errors.contactEmail && (
-                <p id="contactEmail-error" className="flex items-center gap-1 text-xs text-red-500" role="alert">
-                  <AlertCircle className="w-3 h-3" aria-hidden="true" />
-                  {errors.contactEmail}
-                </p>
-              )}
-            </div>
-          </div>
-
-          <div className="grid sm:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label htmlFor="phone" className="text-sm font-medium">
-                Phone Number
-              </label>
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                aria-invalid={touched.phone && !!errors.phone}
-                aria-describedby={errors.phone ? 'phone-error' : undefined}
-                placeholder="+1 (555) 123-4567"
-                className={inputClassName('phone')}
-              />
-              {touched.phone && errors.phone && (
-                <p id="phone-error" className="flex items-center gap-1 text-xs text-red-500" role="alert">
-                  <AlertCircle className="w-3 h-3" aria-hidden="true" />
-                  {errors.phone}
-                </p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor="plan" className="text-sm font-medium">
-                Plan <span className="text-destructive" aria-hidden="true">*</span>
-                <span className="sr-only">(required)</span>
-              </label>
-              <select
-                id="plan"
-                name="plan"
-                value={formData.plan}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                className="w-full px-4 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
-              >
-                {PLAN_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset className="bg-card border border-border rounded-xl p-6 space-y-4">
-          <legend className="font-semibold px-1">Additional Information</legend>
-
-          <div className="space-y-2">
-            <label htmlFor="notes" className="text-sm font-medium">
-              Notes
-            </label>
-            <textarea
-              id="notes"
-              name="notes"
-              value={formData.notes}
-              onChange={handleChange}
-              rows={4}
-              placeholder="Any additional information about this client..."
-              className="w-full px-4 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none"
-            />
-          </div>
-        </fieldset>
-
-        {/* Actions */}
-        <div className="flex items-center justify-end gap-3">
-          <Link
-            href="/admin/clients"
-            className="px-4 py-2 text-sm font-medium bg-muted rounded-lg hover:bg-muted/80 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+      <motion.div
+        {...fadeInUp}
+        transition={{ ...defaultTransition, delay: 0.1 }}
+      >
+        <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+          <motion.div
+            initial={fadeInUp.initial}
+            animate={fadeInUp.animate}
+            transition={getStaggerDelay(0, 0.2)}
           >
-            Cancel
-          </Link>
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+            <Card variant="elevated" className="border-l-4 border-l-primary/20 p-6 space-y-4">
+              <legend className="font-semibold font-heading px-1">Company Information</legend>
+
+              <div className="space-y-2">
+                <label htmlFor="companyName" className="text-sm font-medium">
+                  Company Name <span className="text-destructive" aria-hidden="true">*</span>
+                  <span className="sr-only">(required)</span>
+                </label>
+                <input
+                  type="text"
+                  id="companyName"
+                  name="companyName"
+                  value={formData.companyName}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  aria-invalid={touched.companyName && !!errors.companyName}
+                  aria-describedby={errors.companyName ? 'companyName-error' : undefined}
+                  placeholder="Acme Corp"
+                  className={inputClassName('companyName')}
+                />
+                {touched.companyName && errors.companyName && (
+                  <p id="companyName-error" className="flex items-center gap-1 text-xs text-red-500" role="alert">
+                    <AlertCircle className="w-3 h-3" aria-hidden="true" />
+                    {errors.companyName}
+                  </p>
+                )}
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label htmlFor="contactName" className="text-sm font-medium">
+                    Contact Name <span className="text-destructive" aria-hidden="true">*</span>
+                    <span className="sr-only">(required)</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="contactName"
+                    name="contactName"
+                    value={formData.contactName}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    aria-invalid={touched.contactName && !!errors.contactName}
+                    aria-describedby={errors.contactName ? 'contactName-error' : undefined}
+                    placeholder="John Smith"
+                    className={inputClassName('contactName')}
+                  />
+                  {touched.contactName && errors.contactName && (
+                    <p id="contactName-error" className="flex items-center gap-1 text-xs text-red-500" role="alert">
+                      <AlertCircle className="w-3 h-3" aria-hidden="true" />
+                      {errors.contactName}
+                    </p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="contactEmail" className="text-sm font-medium">
+                    Contact Email <span className="text-destructive" aria-hidden="true">*</span>
+                    <span className="sr-only">(required)</span>
+                  </label>
+                  <input
+                    type="email"
+                    id="contactEmail"
+                    name="contactEmail"
+                    value={formData.contactEmail}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    aria-invalid={touched.contactEmail && !!errors.contactEmail}
+                    aria-describedby={errors.contactEmail ? 'contactEmail-error' : undefined}
+                    placeholder="john@company.com"
+                    className={inputClassName('contactEmail')}
+                  />
+                  {touched.contactEmail && errors.contactEmail && (
+                    <p id="contactEmail-error" className="flex items-center gap-1 text-xs text-red-500" role="alert">
+                      <AlertCircle className="w-3 h-3" aria-hidden="true" />
+                      {errors.contactEmail}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label htmlFor="phone" className="text-sm font-medium">
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    aria-invalid={touched.phone && !!errors.phone}
+                    aria-describedby={errors.phone ? 'phone-error' : undefined}
+                    placeholder="+1 (555) 123-4567"
+                    className={inputClassName('phone')}
+                  />
+                  {touched.phone && errors.phone && (
+                    <p id="phone-error" className="flex items-center gap-1 text-xs text-red-500" role="alert">
+                      <AlertCircle className="w-3 h-3" aria-hidden="true" />
+                      {errors.phone}
+                    </p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="plan" className="text-sm font-medium">
+                    Plan <span className="text-destructive" aria-hidden="true">*</span>
+                    <span className="sr-only">(required)</span>
+                  </label>
+                  <select
+                    id="plan"
+                    name="plan"
+                    value={formData.plan}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    className="w-full px-4 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all"
+                  >
+                    {PLAN_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </Card>
+          </motion.div>
+
+          <motion.div
+            initial={fadeInUp.initial}
+            animate={fadeInUp.animate}
+            transition={getStaggerDelay(1, 0.2)}
           >
-            {isLoading ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
-                Creating...
-              </>
-            ) : (
-              'Create Client'
-            )}
-          </button>
-        </div>
-      </form>
+            <Card variant="elevated" className="border-l-4 border-l-primary/20 p-6 space-y-4">
+              <legend className="font-semibold font-heading px-1">Additional Information</legend>
+
+              <div className="space-y-2">
+                <label htmlFor="notes" className="text-sm font-medium">
+                  Notes
+                </label>
+                <textarea
+                  id="notes"
+                  name="notes"
+                  value={formData.notes}
+                  onChange={handleChange}
+                  rows={4}
+                  placeholder="Any additional information about this client..."
+                  className="w-full px-4 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all resize-none"
+                />
+              </div>
+            </Card>
+          </motion.div>
+
+          {/* Actions */}
+          <motion.div
+            initial={fadeInUp.initial}
+            animate={fadeInUp.animate}
+            transition={getStaggerDelay(2, 0.2)}
+            className="flex items-center justify-end gap-3"
+          >
+            <Button variant="secondary" asChild>
+              <Link href="/admin/clients">
+                Cancel
+              </Link>
+            </Button>
+            <Button
+              variant="elevated"
+              type="submit"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
+                  Creating...
+                </>
+              ) : (
+                'Create Client'
+              )}
+            </Button>
+          </motion.div>
+        </form>
+      </motion.div>
     </div>
   )
 }

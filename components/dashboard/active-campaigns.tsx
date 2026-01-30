@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 import { ArrowRight, Mail, MessageSquare, Calendar, FlaskConical } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -12,7 +13,7 @@ export function ActiveCampaigns() {
   const campaigns = getActiveCampaigns()
 
   return (
-    <Card>
+    <Card variant="futuristic">
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="text-base font-medium">Active Campaigns</CardTitle>
         <Link
@@ -29,74 +30,75 @@ export function ActiveCampaigns() {
           const positivePercent = totalReplies > 0 ? (campaign.positiveReplies / totalReplies) * 100 : 0
 
           return (
-            <Link
-              key={campaign.id}
-              href={`/dashboard/campaigns/${campaign.id}`}
-              className="block p-4 rounded-lg border bg-card hover:bg-muted/50 transition-colors"
-            >
-              <div className="flex items-start justify-between mb-3">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-medium">{campaign.name}</h3>
-                    {hasActiveTests && (
-                      <Badge variant="info" className="text-[10px] gap-1">
-                        <FlaskConical className="w-3 h-3" />
-                        A/B Test
-                      </Badge>
-                    )}
+            <motion.div key={campaign.id} whileHover={{ y: -1 }}>
+              <Link
+                href={`/dashboard/campaigns/${campaign.id}`}
+                className="block p-4 rounded-lg glass-card glow-border-hover group transition-all"
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-medium">{campaign.name}</h3>
+                      {hasActiveTests && (
+                        <Badge variant="info" className="text-[10px] gap-1">
+                          <FlaskConical className="w-3 h-3" />
+                          A/B Test
+                        </Badge>
+                      )}
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">{campaign.target}</p>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-1">{campaign.target}</p>
+                  <Badge variant="success" className="shrink-0">Active</Badge>
                 </div>
-                <Badge variant="success" className="shrink-0">Active</Badge>
-              </div>
 
-              <div className="grid grid-cols-4 gap-4 mb-3">
-                <MetricItem
-                  icon={Mail}
-                  value={campaign.sent.toLocaleString()}
-                  label="Sent"
-                />
-                <MetricItem
-                  icon={MessageSquare}
-                  value={`${campaign.replyRate}%`}
-                  label="Reply"
-                  highlight={campaign.replyRate >= 8}
-                />
-                <MetricItem
-                  icon={Calendar}
-                  value={campaign.meetings.toString()}
-                  label="Meetings"
-                  highlight
-                />
-                <MetricItem
-                  value={`${Math.round(positivePercent)}%`}
-                  label="Positive"
-                />
-              </div>
+                <div className="grid grid-cols-4 gap-4 mb-3">
+                  <MetricItem
+                    icon={Mail}
+                    value={campaign.sent.toLocaleString()}
+                    label="Sent"
+                  />
+                  <MetricItem
+                    icon={MessageSquare}
+                    value={`${campaign.replyRate}%`}
+                    label="Reply"
+                    highlight={campaign.replyRate >= 8}
+                  />
+                  <MetricItem
+                    icon={Calendar}
+                    value={campaign.meetings.toString()}
+                    label="Meetings"
+                    highlight
+                  />
+                  <MetricItem
+                    value={`${Math.round(positivePercent)}%`}
+                    label="Positive"
+                  />
+                </div>
 
-              {/* Reply Breakdown Bar */}
-              <div className="space-y-1">
-                <div className="flex h-2 rounded-full overflow-hidden bg-muted">
-                  <div
-                    className="bg-success"
-                    style={{ width: `${positivePercent}%` }}
-                  />
-                  <div
-                    className="bg-warning"
-                    style={{ width: `${totalReplies > 0 ? (campaign.neutralReplies / totalReplies) * 100 : 0}%` }}
-                  />
-                  <div
-                    className="bg-destructive/70"
-                    style={{ width: `${totalReplies > 0 ? (campaign.negativeReplies / totalReplies) * 100 : 0}%` }}
-                  />
+                {/* Reply Breakdown Bar */}
+                <div className="space-y-1">
+                  <div className="flex h-2 rounded-full overflow-hidden bg-muted shadow-inner">
+                    <div
+                      className="bg-success"
+                      style={{ width: `${positivePercent}%` }}
+                    />
+                    <div
+                      className="bg-warning"
+                      style={{ width: `${totalReplies > 0 ? (campaign.neutralReplies / totalReplies) * 100 : 0}%` }}
+                    />
+                    <div
+                      className="bg-destructive/70"
+                      style={{ width: `${totalReplies > 0 ? (campaign.negativeReplies / totalReplies) * 100 : 0}%` }}
+                    />
+                  </div>
+                  <div className="flex justify-between text-[10px] text-muted-foreground">
+                    <span>{campaign.positiveReplies} positive</span>
+                    <span>{campaign.neutralReplies} neutral</span>
+                    <span>{campaign.negativeReplies} negative</span>
+                  </div>
                 </div>
-                <div className="flex justify-between text-[10px] text-muted-foreground">
-                  <span>{campaign.positiveReplies} positive</span>
-                  <span>{campaign.neutralReplies} neutral</span>
-                  <span>{campaign.negativeReplies} negative</span>
-                </div>
-              </div>
-            </Link>
+              </Link>
+            </motion.div>
           )
         })}
 
@@ -125,7 +127,7 @@ function MetricItem({
   return (
     <div className="text-center">
       <div className={cn(
-        "text-lg font-bold",
+        "text-lg font-heading font-bold",
         highlight && "text-primary"
       )}>
         {value}

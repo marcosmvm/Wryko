@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
+import { fadeInUp } from '@/lib/animations'
 import {
   Download,
   Mail,
@@ -141,23 +142,25 @@ export default function ReportsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Weekly Reports</h1>
-          <p className="text-muted-foreground">AI-generated performance insights delivered every Monday</p>
+      <motion.div {...fadeInUp} transition={{ duration: 0.5 }}>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight"><span className="gradient-text">Weekly Reports</span></h1>
+            <p className="text-muted-foreground">AI-generated performance insights delivered every Monday</p>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Clock className="w-4 h-4" />
+            <span>Next report: Monday, Feb 3</span>
+          </div>
         </div>
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Clock className="w-4 h-4" />
-          <span>Next report: Monday, Feb 3</span>
-        </div>
-      </div>
+      </motion.div>
 
       {/* Latest Report - Featured */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <Card className="border-primary/20 bg-gradient-to-br from-card to-primary/5">
+        <Card variant="futuristic" className="border-primary/20 bg-gradient-to-br from-card to-primary/5 glow-border">
           <CardContent className="p-6">
             <div className="flex items-start justify-between mb-6">
               <div>
@@ -173,7 +176,7 @@ export default function ReportsPage() {
                 <button
                   onClick={() => handleDownloadReport(latestReport.id)}
                   disabled={downloadingReport === latestReport.id}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-lg font-medium hover:opacity-90 transition-all shadow-lg shadow-primary/15 disabled:opacity-50"
                 >
                   {downloadingReport === latestReport.id ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -198,7 +201,7 @@ export default function ReportsPage() {
             </div>
 
             {/* AI Executive Summary */}
-            <div className="bg-background/60 rounded-xl p-5 mb-6">
+            <div className="glass-card rounded-xl p-5 mb-6">
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
                   <Star className="w-4 h-4 text-primary" />
@@ -212,36 +215,36 @@ export default function ReportsPage() {
 
             {/* Key Metrics with WoW */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-              <div className="bg-background/60 rounded-xl p-4">
+              <div className="glass-card rounded-xl p-4">
                 <div className="flex items-center justify-between mb-1">
                   <p className="text-sm text-muted-foreground">Emails Sent</p>
                   <TrendIndicator value={weekOverWeek.sent} suffix="" />
                 </div>
-                <p className="text-2xl font-bold">{latestReport.metrics.emailsSent.toLocaleString()}</p>
+                <p className="text-2xl font-bold font-heading">{latestReport.metrics.emailsSent.toLocaleString()}</p>
                 <p className="text-xs text-muted-foreground">vs last week</p>
               </div>
-              <div className="bg-background/60 rounded-xl p-4">
+              <div className="glass-card rounded-xl p-4">
                 <div className="flex items-center justify-between mb-1">
                   <p className="text-sm text-muted-foreground">Open Rate</p>
                   <TrendIndicator value={weekOverWeek.openRate} />
                 </div>
-                <p className="text-2xl font-bold">{latestReport.metrics.openRate}%</p>
+                <p className="text-2xl font-bold font-heading">{latestReport.metrics.openRate}%</p>
                 <p className="text-xs text-muted-foreground">Industry avg: 18%</p>
               </div>
-              <div className="bg-background/60 rounded-xl p-4">
+              <div className="glass-card rounded-xl p-4">
                 <div className="flex items-center justify-between mb-1">
                   <p className="text-sm text-muted-foreground">Reply Rate</p>
                   <TrendIndicator value={weekOverWeek.replyRate} />
                 </div>
-                <p className="text-2xl font-bold">{latestReport.metrics.replyRate}%</p>
+                <p className="text-2xl font-bold font-heading">{latestReport.metrics.replyRate}%</p>
                 <p className="text-xs text-muted-foreground">Industry avg: 5.1%</p>
               </div>
-              <div className="bg-background/60 rounded-xl p-4">
+              <div className="glass-card rounded-xl p-4">
                 <div className="flex items-center justify-between mb-1">
                   <p className="text-sm text-muted-foreground">Meetings Booked</p>
                   <TrendIndicator value={weekOverWeek.meetings} suffix="" />
                 </div>
-                <p className="text-2xl font-bold text-primary">{latestReport.metrics.meetingsBooked}</p>
+                <p className="text-2xl font-bold font-heading text-primary">{latestReport.metrics.meetingsBooked}</p>
                 <p className="text-xs text-muted-foreground">Target: 4/week</p>
               </div>
             </div>
@@ -249,7 +252,7 @@ export default function ReportsPage() {
             {/* Key Wins & Recommendations */}
             <div className="grid md:grid-cols-2 gap-4">
               {/* Key Wins */}
-              <div className="bg-background/60 rounded-xl p-5">
+              <div className="glass-card rounded-xl p-5">
                 <div className="flex items-center gap-2 mb-4">
                   <CheckCircle2 className="w-5 h-5 text-emerald-500" />
                   <h3 className="font-semibold">Key Wins This Week</h3>
@@ -267,7 +270,7 @@ export default function ReportsPage() {
               </div>
 
               {/* Recommendations */}
-              <div className="bg-background/60 rounded-xl p-5">
+              <div className="glass-card rounded-xl p-5">
                 <div className="flex items-center gap-2 mb-4">
                   <Lightbulb className="w-5 h-5 text-amber-500" />
                   <h3 className="font-semibold">AI Recommendations</h3>
@@ -316,7 +319,7 @@ export default function ReportsPage() {
           </div>
         </div>
 
-        <Card>
+        <Card variant="futuristic">
           <CardContent className="p-0">
             {filteredReports.length > 0 ? (
               <div className="divide-y divide-border">
@@ -326,11 +329,11 @@ export default function ReportsPage() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: index * 0.05 }}
-                    className="flex items-center justify-between p-4 hover:bg-muted/30 transition-colors"
+                    className="flex items-center justify-between p-4 hover:bg-primary/5 transition-colors"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
-                        <FileText className="w-5 h-5 text-muted-foreground" />
+                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <FileText className="w-5 h-5 text-primary" />
                       </div>
                       <div>
                         <p className="font-medium">
@@ -384,7 +387,7 @@ export default function ReportsPage() {
       </div>
 
       {/* Report Schedule Info */}
-      <Card className="bg-muted/30">
+      <Card variant="futuristic">
         <CardContent className="p-4">
           <div className="flex items-center gap-4">
             <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">

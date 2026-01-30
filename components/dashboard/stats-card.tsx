@@ -19,22 +19,25 @@ export function StatsCard({ label, value, change, index = 0 }: StatsCardProps) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -2 }}
       transition={{ delay: index * 0.1, duration: 0.5 }}
-      className="bg-card border border-border rounded-xl p-6"
+      className="glass-premium glow-border-hover rounded-xl p-6"
     >
       <p className="text-sm text-muted-foreground mb-1">{label}</p>
-      <p className="text-3xl font-bold text-primary-muted">{value}</p>
+      <p className="text-3xl font-bold font-heading text-primary-muted">{value}</p>
       {change && (
-        <div className={cn(
-          'flex items-center gap-1 mt-2 text-sm',
-          change.trend === 'up' ? 'text-success' : 'text-destructive'
-        )}>
-          {change.trend === 'up' ? (
-            <TrendingUp className="w-4 h-4" />
-          ) : (
-            <TrendingDown className="w-4 h-4" />
-          )}
-          <span>{change.value}</span>
+        <div className="mt-2">
+          <span className={cn(
+            'inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium',
+            change.trend === 'up' ? 'bg-success/10 text-success' : 'bg-destructive/10 text-destructive'
+          )}>
+            {change.trend === 'up' ? (
+              <TrendingUp className="w-4 h-4" />
+            ) : (
+              <TrendingDown className="w-4 h-4" />
+            )}
+            <span>{change.value}</span>
+          </span>
         </div>
       )}
     </motion.div>

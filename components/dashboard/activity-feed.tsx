@@ -36,7 +36,7 @@ export function ActivityFeed({ items }: ActivityFeedProps) {
       initial={fadeInUp.initial}
       animate={fadeInUp.animate}
       transition={{ delay: 0.4, duration: 0.5 }}
-      className="bg-card border border-border rounded-xl p-6"
+      className="glass-premium glow-border-hover rounded-xl p-6"
     >
       <h3 className="heading-xs mb-4">Recent Activity</h3>
 

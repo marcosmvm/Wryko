@@ -1,6 +1,8 @@
 'use client'
 
 import { useState, useCallback } from 'react'
+import { motion } from 'framer-motion'
+import { fadeInUp, getStaggerDelay } from '@/lib/animations'
 import { Pause, Play, FileText, Calendar, PenLine, Upload, CheckCircle, Clock, AlertCircle, Zap, Plus, Loader2 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -132,27 +134,29 @@ export default function RequestsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Self-Serve Requests</h1>
-          <p className="text-muted-foreground">Submit requests and track their status</p>
+      <motion.div {...fadeInUp} transition={{ duration: 0.5 }}>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight"><span className="gradient-text">Self-Serve Requests</span></h1>
+            <p className="text-muted-foreground">Submit requests and track their status</p>
+          </div>
+          <Button
+            className="gap-2"
+            onClick={handleNewRequest}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <Plus className="w-4 h-4" />
+            )}
+            New Request
+          </Button>
         </div>
-        <Button
-          className="gap-2"
-          onClick={handleNewRequest}
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
-          ) : (
-            <Plus className="w-4 h-4" />
-          )}
-          New Request
-        </Button>
-      </div>
+      </motion.div>
 
       {/* Quick Actions */}
-      <Card>
+      <Card variant="futuristic">
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
             <Zap className="w-5 h-5 text-primary" />
@@ -163,25 +167,27 @@ export default function RequestsPage() {
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
             {quickActions.map((action) => (
-              <button
-                key={action.id}
-                onClick={() => handleQuickAction(action.id, action.label)}
-                disabled={activeAction === action.id}
-                className={cn(
-                  "flex flex-col items-center gap-2 p-4 rounded-xl transition-colors disabled:opacity-50",
-                  action.color
-                )}
-              >
-                {activeAction === action.id ? (
-                  <Loader2 className="w-6 h-6 animate-spin" />
-                ) : (
-                  <action.icon className="w-6 h-6" />
-                )}
-                <span className="text-sm font-medium text-center">{action.label}</span>
-                {action.type === 'review' && (
-                  <Badge variant="outline" className="text-[10px]">Review Required</Badge>
-                )}
-              </button>
+              <motion.div key={action.id} whileHover={{ y: -3, scale: 1.02 }} transition={{ type: 'spring', stiffness: 400, damping: 30 }}>
+                <button
+                  onClick={() => handleQuickAction(action.id, action.label)}
+                  disabled={activeAction === action.id}
+                  className={cn(
+                    "flex flex-col items-center gap-2 p-4 rounded-xl glass-card glow-border-hover transition-all disabled:opacity-50 relative overflow-hidden w-full",
+                    action.color
+                  )}
+                >
+                  <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary via-secondary/60 to-primary opacity-50" />
+                  {activeAction === action.id ? (
+                    <Loader2 className="w-8 h-8 animate-spin" />
+                  ) : (
+                    <action.icon className="w-8 h-8" />
+                  )}
+                  <span className="text-sm font-medium font-heading text-center">{action.label}</span>
+                  {action.type === 'review' && (
+                    <Badge variant="outline" className="text-[10px]">Review Required</Badge>
+                  )}
+                </button>
+              </motion.div>
             ))}
           </div>
         </CardContent>
@@ -189,40 +195,48 @@ export default function RequestsPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Pending</p>
-            <p className="text-3xl font-bold">{pendingRequests.length}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Completed This Month</p>
-            <p className="text-3xl font-bold">{completedRequests.length}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Avg Processing Time</p>
-            <p className="text-3xl font-bold">
-              {avgProcessingTime < 1 ? '<1' : Math.round(avgProcessingTime)}
-              <span className="text-lg font-normal text-muted-foreground">min</span>
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Instant Actions</p>
-            <p className="text-3xl font-bold text-emerald-500">
-              {completedRequests.filter(r => r.category === 'instant').length}
-            </p>
-          </CardContent>
-        </Card>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={getStaggerDelay(0)} whileHover={{ y: -2 }}>
+          <Card variant="futuristic">
+            <CardContent className="p-4">
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Pending</p>
+              <p className="text-3xl font-bold font-heading">{pendingRequests.length}</p>
+            </CardContent>
+          </Card>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={getStaggerDelay(1)} whileHover={{ y: -2 }}>
+          <Card variant="futuristic">
+            <CardContent className="p-4">
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Completed This Month</p>
+              <p className="text-3xl font-bold font-heading">{completedRequests.length}</p>
+            </CardContent>
+          </Card>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={getStaggerDelay(2)} whileHover={{ y: -2 }}>
+          <Card variant="futuristic">
+            <CardContent className="p-4">
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Avg Processing Time</p>
+              <p className="text-3xl font-bold font-heading">
+                {avgProcessingTime < 1 ? '<1' : Math.round(avgProcessingTime)}
+                <span className="text-lg font-normal text-muted-foreground">min</span>
+              </p>
+            </CardContent>
+          </Card>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={getStaggerDelay(3)} whileHover={{ y: -2 }}>
+          <Card variant="futuristic">
+            <CardContent className="p-4">
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Instant Actions</p>
+              <p className="text-3xl font-bold font-heading text-emerald-500">
+                {completedRequests.filter(r => r.category === 'instant').length}
+              </p>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
 
       {/* Pending Requests */}
       {pendingRequests.length > 0 && (
-        <Card>
+        <Card variant="futuristic">
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
               <Clock className="w-5 h-5 text-amber-500" />
@@ -231,36 +245,37 @@ export default function RequestsPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {pendingRequests.map((request) => {
+              {pendingRequests.map((request, index) => {
                 const config = statusConfig[request.status]
                 const StatusIcon = config.icon
 
                 return (
-                  <div
-                    key={request.id}
-                    className="flex items-center gap-4 p-4 rounded-lg border bg-amber-500/5 border-amber-500/20"
-                  >
-                    <div className={cn("w-10 h-10 rounded-full flex items-center justify-center", config.bg)}>
-                      <StatusIcon className={cn("w-5 h-5", config.color)} />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <p className="font-medium">{request.title}</p>
-                        <Badge variant="outline" className="text-xs">
-                          {typeLabels[request.type]}
-                        </Badge>
-                        <Badge variant={request.category === 'instant' ? 'success' : 'secondary'} className="text-xs">
-                          {request.category === 'instant' ? 'Instant' : 'Review Required'}
-                        </Badge>
+                  <motion.div key={request.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={getStaggerDelay(index)}>
+                    <div
+                      className="flex items-center gap-4 p-4 rounded-lg glass-card border-l-[3px] border-l-amber-500"
+                    >
+                      <div className={cn("w-10 h-10 rounded-full flex items-center justify-center", config.bg)}>
+                        <StatusIcon className={cn("w-5 h-5", config.color)} />
                       </div>
-                      <p className="text-sm text-muted-foreground">{request.description}</p>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <p className="font-medium">{request.title}</p>
+                          <Badge variant="outline" className="text-xs">
+                            {typeLabels[request.type]}
+                          </Badge>
+                          <Badge variant={request.category === 'instant' ? 'success' : 'secondary'} className="text-xs">
+                            {request.category === 'instant' ? 'Instant' : 'Review Required'}
+                          </Badge>
+                        </div>
+                        <p className="text-sm text-muted-foreground">{request.description}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm text-muted-foreground">
+                          {formatDistanceToNow(parseISO(request.submittedAt), { addSuffix: true })}
+                        </p>
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <p className="text-sm text-muted-foreground">
-                        {formatDistanceToNow(parseISO(request.submittedAt), { addSuffix: true })}
-                      </p>
-                    </div>
-                  </div>
+                  </motion.div>
                 )
               })}
             </div>
@@ -269,7 +284,7 @@ export default function RequestsPage() {
       )}
 
       {/* Request History */}
-      <Card>
+      <Card variant="futuristic">
         <CardHeader>
           <CardTitle className="text-lg">Request History</CardTitle>
         </CardHeader>
@@ -291,7 +306,7 @@ export default function RequestsPage() {
                 const StatusIcon = config.icon
 
                 return (
-                  <TableRow key={request.id}>
+                  <TableRow key={request.id} className="hover:bg-muted/50 transition-colors">
                     <TableCell className="font-medium">
                       {format(parseISO(request.submittedAt), 'MMM d, yyyy')}
                     </TableCell>

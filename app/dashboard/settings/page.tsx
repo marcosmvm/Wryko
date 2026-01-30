@@ -213,13 +213,13 @@ export default function SettingsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Settings</h1>
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+        <h1 className="text-2xl font-bold tracking-tight"><span className="gradient-text">Settings</span></h1>
         <p className="text-muted-foreground">Manage your account, team, and integrations</p>
-      </div>
+      </motion.div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="bg-muted/50 p-1">
+        <TabsList className="glass-premium p-1.5 glow-border">
           <TabsTrigger value="profile" className="gap-2">
             <User className="w-4 h-4" />
             Profile
@@ -252,7 +252,7 @@ export default function SettingsPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <Card>
+            <Card variant="futuristic">
               <CardHeader>
                 <CardTitle>Profile Information</CardTitle>
                 <CardDescription>Update your personal and company details</CardDescription>
@@ -260,8 +260,10 @@ export default function SettingsPage() {
               <CardContent>
                 <form onSubmit={handleProfileSave} className="space-y-6">
                   <div className="flex items-center gap-6">
-                    <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center text-2xl font-semibold text-primary">
-                      JS
+                    <div className="bg-gradient-to-br from-primary to-secondary p-[2px] rounded-full">
+                      <div className="w-20 h-20 rounded-full bg-card flex items-center justify-center text-2xl font-semibold text-primary">
+                        JS
+                      </div>
                     </div>
                     <div>
                       <button type="button" className="px-4 py-2 text-sm font-medium border border-border rounded-lg hover:bg-muted transition-colors">
@@ -339,7 +341,7 @@ export default function SettingsPage() {
                     <button
                       type="submit"
                       disabled={profileLoading}
-                      className="px-6 py-2.5 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 flex items-center gap-2"
+                      className="px-6 py-2.5 bg-gradient-to-r from-primary to-secondary text-white rounded-lg font-medium hover:opacity-90 transition-all shadow-lg shadow-primary/15 disabled:opacity-50 flex items-center gap-2"
                     >
                       {profileLoading && <Loader2 className="w-4 h-4 animate-spin" />}
                       Save Changes
@@ -356,7 +358,7 @@ export default function SettingsPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
-            <Card>
+            <Card variant="futuristic">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Shield className="w-5 h-5" />
@@ -365,7 +367,7 @@ export default function SettingsPage() {
                 <CardDescription>Manage your password and security settings</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
+                <div className="flex items-center justify-between p-4 glass-card rounded-lg">
                   <div>
                     <p className="font-medium">Password</p>
                     <p className="text-sm text-muted-foreground">Last changed 30 days ago</p>
@@ -374,7 +376,7 @@ export default function SettingsPage() {
                     Change Password
                   </button>
                 </div>
-                <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
+                <div className="flex items-center justify-between p-4 glass-card rounded-lg">
                   <div>
                     <p className="font-medium">Two-Factor Authentication</p>
                     <p className="text-sm text-muted-foreground">Add an extra layer of security</p>
@@ -394,14 +396,14 @@ export default function SettingsPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <Card>
+            <Card variant="futuristic">
               <CardHeader>
                 <CardTitle>Email Notifications</CardTitle>
                 <CardDescription>Choose what updates you want to receive</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
+                  <div className="flex items-center justify-between p-4 glass-card rounded-lg">
                     <div>
                       <p className="font-medium">Weekly Performance Reports</p>
                       <p className="text-sm text-muted-foreground">AI-generated insights delivered every Monday</p>
@@ -411,7 +413,7 @@ export default function SettingsPage() {
                       onCheckedChange={(checked) => handleNotificationChange('weeklyReports', checked)}
                     />
                   </div>
-                  <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
+                  <div className="flex items-center justify-between p-4 glass-card rounded-lg">
                     <div>
                       <p className="font-medium">Meeting Booked Alerts</p>
                       <p className="text-sm text-muted-foreground">Instant notification when a prospect books a meeting</p>
@@ -421,7 +423,7 @@ export default function SettingsPage() {
                       onCheckedChange={(checked) => handleNotificationChange('meetingBooked', checked)}
                     />
                   </div>
-                  <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
+                  <div className="flex items-center justify-between p-4 glass-card rounded-lg">
                     <div>
                       <p className="font-medium">Campaign Alerts</p>
                       <p className="text-sm text-muted-foreground">Important updates about campaign performance</p>
@@ -431,7 +433,7 @@ export default function SettingsPage() {
                       onCheckedChange={(checked) => handleNotificationChange('campaignAlerts', checked)}
                     />
                   </div>
-                  <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
+                  <div className="flex items-center justify-between p-4 glass-card rounded-lg">
                     <div>
                       <p className="font-medium">Domain Health Alerts</p>
                       <p className="text-sm text-muted-foreground">Warnings about deliverability issues</p>
@@ -441,7 +443,7 @@ export default function SettingsPage() {
                       onCheckedChange={(checked) => handleNotificationChange('domainAlerts', checked)}
                     />
                   </div>
-                  <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
+                  <div className="flex items-center justify-between p-4 glass-card rounded-lg">
                     <div>
                       <p className="font-medium">Optimization Recommendations</p>
                       <p className="text-sm text-muted-foreground">AI suggestions to improve campaign performance</p>
@@ -451,7 +453,7 @@ export default function SettingsPage() {
                       onCheckedChange={(checked) => handleNotificationChange('optimizationTips', checked)}
                     />
                   </div>
-                  <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
+                  <div className="flex items-center justify-between p-4 glass-card rounded-lg">
                     <div>
                       <p className="font-medium">Daily Digest</p>
                       <p className="text-sm text-muted-foreground">Summary of all activity from the previous day</p>
@@ -473,14 +475,14 @@ export default function SettingsPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <Card>
+            <Card variant="futuristic">
               <CardHeader>
                 <CardTitle>Calendar Integration</CardTitle>
                 <CardDescription>Connect your calendar for seamless meeting scheduling</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-4">
-                  <div className="p-4 border border-border rounded-lg hover:border-primary/50 transition-colors">
+                  <div className="p-4 glass-card glow-border-hover rounded-lg transition-all">
                     <div className="flex items-center gap-3 mb-3">
                       <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center text-xl">
                         📅
@@ -497,7 +499,7 @@ export default function SettingsPage() {
                       Connect
                     </button>
                   </div>
-                  <div className="p-4 border border-border rounded-lg hover:border-primary/50 transition-colors">
+                  <div className="p-4 glass-card glow-border-hover rounded-lg transition-all">
                     <div className="flex items-center gap-3 mb-3">
                       <div className="w-10 h-10 bg-blue-600/10 rounded-lg flex items-center justify-center text-xl">
                         📆
@@ -518,7 +520,7 @@ export default function SettingsPage() {
 
                 <div className="border-t border-border pt-6">
                   <h3 className="font-medium mb-4">Calendly Settings</h3>
-                  <div className="p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-lg">
+                  <div className="p-4 glass-card border-l-[3px] border-l-emerald-500 rounded-lg">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <CheckCircle2 className="w-5 h-5 text-emerald-500" />
@@ -570,7 +572,7 @@ export default function SettingsPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <Card>
+            <Card variant="futuristic">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
@@ -607,10 +609,12 @@ export default function SettingsPage() {
                 {/* Team Members List */}
                 <div className="divide-y divide-border rounded-lg border border-border overflow-hidden">
                   {teamMembers.map((member) => (
-                    <div key={member.id} className="flex items-center justify-between p-4 hover:bg-muted/30 transition-colors">
+                    <div key={member.id} className="flex items-center justify-between p-4 hover:bg-primary/5 glow-border-hover transition-colors">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-sm font-medium text-primary">
-                          {member.avatar}
+                        <div className="bg-gradient-to-br from-primary to-secondary p-[1.5px] rounded-full">
+                          <div className="w-10 h-10 rounded-full bg-card flex items-center justify-center text-sm font-medium text-primary">
+                            {member.avatar}
+                          </div>
                         </div>
                         <div>
                           <div className="flex items-center gap-2">
@@ -654,7 +658,7 @@ export default function SettingsPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <Card>
+            <Card variant="futuristic">
               <CardHeader>
                 <CardTitle>Connected Apps</CardTitle>
                 <CardDescription>Integrate XGrowthOS with your existing tools</CardDescription>
@@ -667,13 +671,13 @@ export default function SettingsPage() {
                       className={cn(
                         "p-4 border rounded-lg transition-colors",
                         integration.connected
-                          ? "border-emerald-500/30 bg-emerald-500/5"
-                          : "border-border hover:border-primary/50"
+                          ? "glass-premium glow-border border-emerald-500/30"
+                          : "glass-card glow-border-hover"
                       )}
                     >
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center text-xl">
+                          <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center text-xl">
                             {integration.icon}
                           </div>
                           <div>
@@ -719,13 +723,13 @@ export default function SettingsPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
-            <Card>
+            <Card variant="futuristic">
               <CardHeader>
                 <CardTitle>API Access</CardTitle>
                 <CardDescription>Use our API to build custom integrations</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="p-4 bg-muted/30 rounded-lg">
+                <div className="p-4 glass-premium rounded-lg">
                   <div className="flex items-center justify-between mb-3">
                     <p className="font-medium">API Key</p>
                     <button
@@ -738,7 +742,7 @@ export default function SettingsPage() {
                     </button>
                   </div>
                   <div className="flex items-center gap-2">
-                    <code className="flex-1 px-4 py-2 bg-background rounded-lg border border-border text-sm font-mono">
+                    <code className="flex-1 px-4 py-2 glass-card rounded-lg border border-border text-sm font-mono">
                       {apiKey}
                     </code>
                     <button
@@ -768,21 +772,21 @@ export default function SettingsPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <Card>
+            <Card variant="futuristic">
               <CardHeader>
                 <CardTitle>Current Plan</CardTitle>
                 <CardDescription>Your subscription details</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="p-6 bg-gradient-to-br from-primary/10 to-primary/5 rounded-xl border border-primary/20">
+                <div className="p-6 bg-gradient-to-br from-primary/10 to-primary/5 rounded-xl border border-primary/20 glow-border glow-pulse">
                   <div className="flex items-start justify-between mb-4">
                     <div>
                       <Badge className="mb-2">Active</Badge>
-                      <h3 className="text-2xl font-bold">Founding Partner</h3>
+                      <h3 className="text-2xl font-bold"><span className="gradient-text">Founding Partner</span></h3>
                       <p className="text-muted-foreground">Full access to all features</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-3xl font-bold">$2,000</p>
+                      <p className="text-3xl font-bold font-heading">$2,000</p>
                       <p className="text-sm text-muted-foreground">per month</p>
                     </div>
                   </div>
@@ -809,15 +813,15 @@ export default function SettingsPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
-            <Card>
+            <Card variant="futuristic">
               <CardHeader>
                 <CardTitle>Payment Method</CardTitle>
                 <CardDescription>Your default payment method</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
+                <div className="flex items-center justify-between p-4 glass-card rounded-lg">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-8 bg-gradient-to-r from-blue-600 to-blue-400 rounded flex items-center justify-center text-white text-xs font-bold">
+                    <div className="w-12 h-8 bg-gradient-to-r from-blue-600 to-blue-400 rounded flex items-center justify-center text-white text-xs font-bold shadow-md">
                       VISA
                     </div>
                     <div>
@@ -842,7 +846,7 @@ export default function SettingsPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <Card>
+            <Card variant="futuristic">
               <CardHeader>
                 <CardTitle>Billing History</CardTitle>
                 <CardDescription>Download past invoices</CardDescription>
@@ -850,10 +854,10 @@ export default function SettingsPage() {
               <CardContent>
                 <div className="divide-y divide-border rounded-lg border border-border overflow-hidden">
                   {billingHistory.map((item) => (
-                    <div key={item.id} className="flex items-center justify-between p-4 hover:bg-muted/30 transition-colors">
+                    <div key={item.id} className="flex items-center justify-between p-4 hover:bg-primary/5 glow-border-hover transition-colors">
                       <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
-                          <CreditCard className="w-5 h-5 text-muted-foreground" />
+                        <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                          <CreditCard className="w-5 h-5 text-primary" />
                         </div>
                         <div>
                           <p className="font-medium">{item.invoice}</p>

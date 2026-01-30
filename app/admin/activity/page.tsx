@@ -1,8 +1,11 @@
 'use client'
 
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import { Search, Filter, ChevronDown, User, Users, Cog, Settings, Mail } from 'lucide-react'
 import { mockAdminActivity, AdminActivity } from '@/lib/data/admin-mock'
+import { fadeInUp, defaultTransition, getStaggerDelay } from '@/lib/animations'
+import { Card } from '@/components/ui/card'
 
 type ResourceFilter = AdminActivity['resourceType'] | 'all'
 
@@ -95,15 +98,23 @@ export default function ActivityPage() {
   return (
     <div className="space-y-6">
       {/* Page Header */}
-      <div>
-        <h1 className="text-2xl font-bold">Activity Log</h1>
+      <motion.div
+        {...fadeInUp}
+        transition={defaultTransition}
+      >
+        <h1 className="text-2xl font-bold font-heading">Activity Log</h1>
         <p className="text-muted-foreground">
           Track all admin actions and changes
         </p>
-      </div>
+        <div className="w-16 h-1 bg-gradient-to-r from-primary via-secondary/60 to-primary rounded-full mt-3" />
+      </motion.div>
 
       {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-4">
+      <motion.div
+        {...fadeInUp}
+        transition={getStaggerDelay(1)}
+        className="flex flex-col sm:flex-row gap-4"
+      >
         {/* Search */}
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -112,7 +123,7 @@ export default function ActivityPage() {
             placeholder="Search activity..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-card border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+            className="w-full pl-10 pr-4 py-2 bg-card border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all"
           />
         </div>
 
@@ -121,7 +132,7 @@ export default function ActivityPage() {
           <select
             value={resourceFilter}
             onChange={(e) => setResourceFilter(e.target.value as ResourceFilter)}
-            className="appearance-none pl-4 pr-10 py-2 bg-card border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+            className="appearance-none pl-4 pr-10 py-2 bg-card border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all"
           >
             <option value="all">All Resources</option>
             <option value="client">Clients</option>
@@ -131,23 +142,31 @@ export default function ActivityPage() {
           </select>
           <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
         </div>
-      </div>
+      </motion.div>
 
       {/* Activity Feed */}
       <div className="space-y-6">
-        {Object.entries(groupedActivities).map(([date, activities]) => (
+        {Object.entries(groupedActivities).map(([date, activities], groupIndex) => (
           <div key={date}>
-            <h3 className="text-sm font-medium text-muted-foreground mb-3">
-              {date}
-            </h3>
-            <div className="bg-card border border-border rounded-xl divide-y divide-border">
-              {activities.map((activity) => (
-                <div
+            <motion.div
+              {...fadeInUp}
+              transition={getStaggerDelay(groupIndex, 0.2)}
+            >
+              <h3 className="text-sm font-medium text-muted-foreground mb-3">
+                {date}
+              </h3>
+              <div className="w-10 h-0.5 bg-gradient-to-r from-primary/40 to-transparent rounded-full mb-3" />
+            </motion.div>
+            <Card variant="elevated" className="divide-y divide-border">
+              {activities.map((activity, index) => (
+                <motion.div
                   key={activity.id}
-                  className="flex items-start gap-4 p-4"
+                  {...fadeInUp}
+                  transition={getStaggerDelay(index, 0.3)}
+                  className="flex items-start gap-4 p-4 hover:bg-muted/30 transition-colors"
                 >
                   {/* Avatar */}
-                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 ring-2 ring-primary/5 flex items-center justify-center flex-shrink-0">
                     <span className="text-sm font-medium text-primary">
                       {activity.adminName.charAt(0)}
                     </span>
@@ -184,16 +203,16 @@ export default function ActivityPage() {
                       minute: '2-digit',
                     })}
                   </div>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </Card>
           </div>
         ))}
 
         {filteredActivity.length === 0 && (
-          <div className="bg-card border border-border rounded-xl p-8 text-center">
+          <Card variant="elevated" className="p-8 text-center">
             <p className="text-muted-foreground">No activity found matching your criteria.</p>
-          </div>
+          </Card>
         )}
       </div>
     </div>

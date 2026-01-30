@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useCallback } from 'react'
+import { motion } from 'framer-motion'
 import { Calendar, Download, Building2, User, Clock, CheckCircle, XCircle, AlertCircle, Filter, Loader2 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -24,6 +25,7 @@ import { mockMeetings, getUpcomingMeetings } from '@/lib/data/dashboard'
 import { format, parseISO, isToday, isTomorrow } from 'date-fns'
 import { useToastActions } from '@/components/ui/toast'
 import { meetingsWorkflows } from '@/lib/n8n/client'
+import { fadeInUp, getStaggerDelay } from '@/lib/animations'
 
 function formatMeetingDate(dateStr: string): string {
   const date = parseISO(dateStr)
@@ -81,9 +83,9 @@ export default function MeetingsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <motion.div {...fadeInUp} transition={{ duration: 0.5 }} className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Meetings</h1>
+          <h1 className="text-2xl font-bold tracking-tight"><span className="gradient-text">Meetings</span></h1>
           <p className="text-muted-foreground">Track all your booked meetings and their outcomes</p>
         </div>
         <Button
@@ -99,69 +101,78 @@ export default function MeetingsPage() {
           )}
           Export CSV
         </Button>
-      </div>
+      </motion.div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wider">Upcoming</p>
-                <p className="text-3xl font-bold text-primary-muted">{upcomingMeetings.length}</p>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={getStaggerDelay(0)} whileHover={{ y: -2 }}>
+          <Card variant="futuristic" className="relative overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary via-secondary/60 to-primary" />
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Upcoming</p>
+                  <p className="text-3xl font-bold font-heading text-primary-muted">{upcomingMeetings.length}</p>
+                </div>
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                  <Calendar className="w-5 h-5 text-primary" />
+                </div>
               </div>
-              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                <Calendar className="w-5 h-5 text-primary" />
+            </CardContent>
+          </Card>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={getStaggerDelay(1)} whileHover={{ y: -2 }}>
+          <Card variant="futuristic">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider">This Month</p>
+                  <p className="text-3xl font-bold font-heading">{totalMeetings}</p>
+                </div>
+                <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center">
+                  <CheckCircle className="w-5 h-5 text-emerald-500" />
+                </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wider">This Month</p>
-                <p className="text-3xl font-bold">{totalMeetings}</p>
+            </CardContent>
+          </Card>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={getStaggerDelay(2)} whileHover={{ y: -2 }}>
+          <Card variant="futuristic">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Show Rate</p>
+                  <p className="text-3xl font-bold font-heading">{showRate}%</p>
+                  <p className="text-xs text-muted-foreground">Industry avg: 70%</p>
+                </div>
+                <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center">
+                  <User className="w-5 h-5 text-blue-500" />
+                </div>
               </div>
-              <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-                <CheckCircle className="w-5 h-5 text-emerald-500" />
+            </CardContent>
+          </Card>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={getStaggerDelay(3)} whileHover={{ y: -2 }}>
+          <Card variant="futuristic">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Top Source</p>
+                  <p className="text-xl font-bold font-heading">Campaign Alpha</p>
+                  <p className="text-xs text-muted-foreground">5 meetings</p>
+                </div>
+                <div className="w-10 h-10 rounded-lg bg-indigo-500/10 flex items-center justify-center">
+                  <Building2 className="w-5 h-5 text-indigo-500" />
+                </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wider">Show Rate</p>
-                <p className="text-3xl font-bold">{showRate}%</p>
-                <p className="text-xs text-muted-foreground">Industry avg: 70%</p>
-              </div>
-              <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center">
-                <User className="w-5 h-5 text-blue-500" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wider">Top Source</p>
-                <p className="text-xl font-bold">Campaign Alpha</p>
-                <p className="text-xs text-muted-foreground">5 meetings</p>
-              </div>
-              <div className="w-10 h-10 rounded-lg bg-indigo-500/10 flex items-center justify-center">
-                <Building2 className="w-5 h-5 text-indigo-500" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
 
       {/* Upcoming Meetings */}
       {upcomingMeetings.length > 0 && (
-        <Card>
+        <Card variant="futuristic">
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
               <Calendar className="w-5 h-5 text-primary" />
@@ -170,35 +181,42 @@ export default function MeetingsPage() {
           </CardHeader>
           <CardContent>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {upcomingMeetings.map((meeting) => (
-                <div
+              {upcomingMeetings.map((meeting, index) => (
+                <motion.div
                   key={meeting.id}
-                  className="p-4 rounded-xl border bg-gradient-to-br from-primary/5 to-primary/0 hover:from-primary/10 transition-colors"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={getStaggerDelay(index)}
+                  whileHover={{ y: -3 }}
                 >
-                  <div className="flex items-start justify-between mb-3">
-                    <div>
-                      <p className="font-semibold">{meeting.contactName}</p>
-                      <p className="text-sm text-muted-foreground">{meeting.contactTitle}</p>
+                  <div
+                    className="p-4 rounded-xl glass-premium glow-border-hover transition-all"
+                  >
+                    <div className="flex items-start justify-between mb-3">
+                      <div>
+                        <p className="font-semibold">{meeting.contactName}</p>
+                        <p className="text-sm text-muted-foreground">{meeting.contactTitle}</p>
+                      </div>
+                      <Badge variant="outline" className="shrink-0">
+                        {meeting.meetingType}
+                      </Badge>
                     </div>
-                    <Badge variant="outline" className="shrink-0">
-                      {meeting.meetingType}
-                    </Badge>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
+                      <Building2 className="w-4 h-4" />
+                      <span>{meeting.companyName}</span>
+                      {meeting.companySize && (
+                        <span className="text-xs">({meeting.companySize})</span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2 text-sm font-medium text-primary">
+                      <Clock className="w-4 h-4" />
+                      <span>{formatMeetingDate(meeting.scheduledAt)}</span>
+                    </div>
+                    <div className="mt-3 pt-3 border-t flex items-center justify-between">
+                      <span className="text-xs text-muted-foreground">via {meeting.campaignName}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-                    <Building2 className="w-4 h-4" />
-                    <span>{meeting.companyName}</span>
-                    {meeting.companySize && (
-                      <span className="text-xs">({meeting.companySize})</span>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-2 text-sm font-medium text-primary">
-                    <Clock className="w-4 h-4" />
-                    <span>{formatMeetingDate(meeting.scheduledAt)}</span>
-                  </div>
-                  <div className="mt-3 pt-3 border-t flex items-center justify-between">
-                    <span className="text-xs text-muted-foreground">via {meeting.campaignName}</span>
-                  </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           </CardContent>
@@ -206,7 +224,7 @@ export default function MeetingsPage() {
       )}
 
       {/* Past Meetings Table */}
-      <Card>
+      <Card variant="futuristic">
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className="text-lg">Meeting History</CardTitle>
@@ -245,7 +263,7 @@ export default function MeetingsPage() {
                 const StatusIcon = config.icon
 
                 return (
-                  <TableRow key={meeting.id}>
+                  <TableRow key={meeting.id} className="hover:bg-muted/50 transition-colors">
                     <TableCell className="font-medium">
                       {format(parseISO(meeting.scheduledAt), 'MMM d, yyyy')}
                     </TableCell>

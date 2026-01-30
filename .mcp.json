@@ -1,8 +1,0 @@
-{
-  "mcpServers": {
-    "n8n": {
-      "type": "url",
-      "url": "https://marcosmatthews.app.n8n.cloud/mcp-server/http"
-    }
-  }
-}

@@ -1,6 +1,8 @@
 'use client'
 
 import { useState, useCallback } from 'react'
+import { motion } from 'framer-motion'
+import { fadeInUp } from '@/lib/animations'
 import { RefreshCw } from 'lucide-react'
 import { MeetingsHero } from '@/components/dashboard/meetings-hero'
 import { MetricCards } from '@/components/dashboard/metric-cards'
@@ -53,24 +55,36 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Welcome back</h1>
-          <p className="text-muted-foreground">Here&apos;s how your campaigns are performing</p>
+      <motion.div
+        initial={fadeInUp.initial}
+        animate={fadeInUp.animate}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight">Welcome back, <span className="gradient-text">User</span></h1>
+            <p className="text-muted-foreground">Here&apos;s how your campaigns are performing</p>
+            <div className="flex items-center gap-2 mt-2">
+              <span className="inline-flex items-center gap-2 px-3 py-1 text-sm font-medium text-primary bg-primary/10 border border-primary/20 rounded-full">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                All Systems Operational
+              </span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <span>Last updated: {formatLastUpdated(lastUpdated)}</span>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 w-8 p-0"
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+            >
+              <RefreshCw className={cn("h-4 w-4", isRefreshing && "animate-spin")} />
+            </Button>
+          </div>
         </div>
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <span>Last updated: {formatLastUpdated(lastUpdated)}</span>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-8 w-8 p-0"
-            onClick={handleRefresh}
-            disabled={isRefreshing}
-          >
-            <RefreshCw className={cn("h-4 w-4", isRefreshing && "animate-spin")} />
-          </Button>
-        </div>
-      </div>
+      </motion.div>
 
       {/* Meetings Hero Section - Primary Focus */}
       <MeetingsHero />

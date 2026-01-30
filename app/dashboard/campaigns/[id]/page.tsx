@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react'
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 import { ArrowLeft, Check, X, Minus, Pause, Play, FlaskConical, TrendingUp, AlertCircle, Mail, Calendar, Users, Target, Download, Loader2 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -12,6 +13,7 @@ import { cn } from '@/lib/utils'
 import { format, parseISO } from 'date-fns'
 import { useToastActions } from '@/components/ui/toast'
 import { campaignWorkflows } from '@/lib/n8n/client'
+import { fadeInUp, getStaggerDelay } from '@/lib/animations'
 
 export default function CampaignDetailPage({
   params,
@@ -116,143 +118,155 @@ export default function CampaignDetailPage({
       </Link>
 
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-3 mb-2">
-            <h1 className="text-2xl font-bold">{campaign.name}</h1>
-            <Badge variant={
-              campaign.status === 'active' ? 'success' :
-              campaign.status === 'paused' ? 'warning' :
-              campaign.status === 'completed' ? 'info' : 'secondary'
-            } className="capitalize gap-1">
-              <StatusIcon className="w-3 h-3" />
-              {campaign.status}
-            </Badge>
+      <motion.div {...fadeInUp} transition={{ duration: 0.5 }}>
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-3 mb-2">
+              <h1 className="text-2xl font-bold"><span className="gradient-text">{campaign.name}</span></h1>
+              <Badge variant={
+                campaign.status === 'active' ? 'success' :
+                campaign.status === 'paused' ? 'warning' :
+                campaign.status === 'completed' ? 'info' : 'secondary'
+              } className="capitalize gap-1">
+                <StatusIcon className="w-3 h-3" />
+                {campaign.status}
+              </Badge>
+            </div>
+            <p className="text-muted-foreground">{campaign.target}</p>
+            <p className="text-sm text-muted-foreground mt-1">
+              Started {format(parseISO(campaign.startDate), 'MMMM d, yyyy')}
+            </p>
           </div>
-          <p className="text-muted-foreground">{campaign.target}</p>
-          <p className="text-sm text-muted-foreground mt-1">
-            Started {format(parseISO(campaign.startDate), 'MMMM d, yyyy')}
-          </p>
-        </div>
-        <div className="flex gap-2">
-          <Button
-            variant="outline"
-            className="gap-2"
-            onClick={handleExportCSV}
-            disabled={isExporting}
-          >
-            {isExporting ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            ) : (
-              <Download className="w-4 h-4" />
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              className="gap-2"
+              onClick={handleExportCSV}
+              disabled={isExporting}
+            >
+              {isExporting ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Download className="w-4 h-4" />
+              )}
+              Export CSV
+            </Button>
+            {campaign.status === 'active' && (
+              <Button
+                variant="outline"
+                className="gap-2"
+                onClick={handlePause}
+                disabled={isPausing}
+              >
+                {isPausing ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Pause className="w-4 h-4" />
+                )}
+                Pause
+              </Button>
             )}
-            Export CSV
-          </Button>
-          {campaign.status === 'active' && (
-            <Button
-              variant="outline"
-              className="gap-2"
-              onClick={handlePause}
-              disabled={isPausing}
-            >
-              {isPausing ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <Pause className="w-4 h-4" />
-              )}
-              Pause
-            </Button>
-          )}
-          {campaign.status === 'paused' && (
-            <Button
-              variant="outline"
-              className="gap-2"
-              onClick={handleResume}
-              disabled={isResuming}
-            >
-              {isResuming ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <Play className="w-4 h-4" />
-              )}
-              Resume
-            </Button>
-          )}
+            {campaign.status === 'paused' && (
+              <Button
+                variant="outline"
+                className="gap-2"
+                onClick={handleResume}
+                disabled={isResuming}
+              >
+                {isResuming ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Play className="w-4 h-4" />
+                )}
+                Resume
+              </Button>
+            )}
+          </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center">
-                <Mail className="w-5 h-5 text-blue-500" />
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={getStaggerDelay(0)} whileHover={{ y: -2 }}>
+          <Card variant="futuristic">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center">
+                  <Mail className="w-5 h-5 text-blue-500" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold font-heading">{campaign.sent.toLocaleString()}</p>
+                  <p className="text-xs text-muted-foreground">Emails Sent</p>
+                </div>
               </div>
-              <div>
-                <p className="text-2xl font-bold">{campaign.sent.toLocaleString()}</p>
-                <p className="text-xs text-muted-foreground">Emails Sent</p>
+            </CardContent>
+          </Card>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={getStaggerDelay(1)} whileHover={{ y: -2 }}>
+          <Card variant="futuristic">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+                  <Target className="w-5 h-5 text-amber-500" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold font-heading">{campaign.openRate}%</p>
+                  <p className="text-xs text-muted-foreground">Open Rate</p>
+                </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
-                <Target className="w-5 h-5 text-amber-500" />
+            </CardContent>
+          </Card>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={getStaggerDelay(2)} whileHover={{ y: -2 }}>
+          <Card variant="futuristic">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-indigo-500/10 flex items-center justify-center">
+                  <Users className="w-5 h-5 text-indigo-500" />
+                </div>
+                <div>
+                  <p className={cn(
+                    "text-2xl font-bold font-heading",
+                    campaign.replyRate >= 8 && "text-emerald-500"
+                  )}>
+                    {campaign.replyRate}%
+                  </p>
+                  <p className="text-xs text-muted-foreground">Reply Rate</p>
+                </div>
               </div>
-              <div>
-                <p className="text-2xl font-bold">{campaign.openRate}%</p>
-                <p className="text-xs text-muted-foreground">Open Rate</p>
+            </CardContent>
+          </Card>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={getStaggerDelay(3)} whileHover={{ y: -2 }}>
+          <Card variant="futuristic">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center">
+                  <Calendar className="w-5 h-5 text-emerald-500" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold font-heading text-primary">{campaign.meetings}</p>
+                  <p className="text-xs text-muted-foreground">Meetings</p>
+                </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-indigo-500/10 flex items-center justify-center">
-                <Users className="w-5 h-5 text-indigo-500" />
+            </CardContent>
+          </Card>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={getStaggerDelay(4)} whileHover={{ y: -2 }}>
+          <Card variant="futuristic">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center">
+                  <Check className="w-5 h-5 text-emerald-500" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold font-heading">{positivePercent}%</p>
+                  <p className="text-xs text-muted-foreground">Positive</p>
+                </div>
               </div>
-              <div>
-                <p className={cn(
-                  "text-2xl font-bold",
-                  campaign.replyRate >= 8 && "text-emerald-500"
-                )}>
-                  {campaign.replyRate}%
-                </p>
-                <p className="text-xs text-muted-foreground">Reply Rate</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-                <Calendar className="w-5 h-5 text-emerald-500" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-primary">{campaign.meetings}</p>
-                <p className="text-xs text-muted-foreground">Meetings</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-                <Check className="w-5 h-5 text-emerald-500" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold">{positivePercent}%</p>
-                <p className="text-xs text-muted-foreground">Positive</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
@@ -260,42 +274,44 @@ export default function CampaignDetailPage({
         <div className="lg:col-span-2 space-y-6">
           {/* Sequence Performance */}
           {campaign.sequencePerformance && (
-            <Card>
+            <Card variant="futuristic">
               <CardHeader>
                 <CardTitle className="text-lg">Sequence Performance</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {campaign.sequencePerformance.map((email) => (
-                    <div key={email.emailNumber} className="p-4 rounded-lg border bg-muted/30">
-                      <div className="flex items-start justify-between mb-3">
-                        <div>
-                          <p className="font-medium">Email {email.emailNumber}</p>
-                          <p className="text-sm text-muted-foreground truncate max-w-md">{email.subject}</p>
-                        </div>
-                        <Badge variant="outline">{email.sent.toLocaleString()} sent</Badge>
-                      </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <div className="flex items-center justify-between text-sm mb-1">
-                            <span className="text-muted-foreground">Open Rate</span>
-                            <span className="font-medium">{email.openRate}%</span>
+                  {campaign.sequencePerformance.map((email, index) => (
+                    <motion.div key={email.emailNumber} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={getStaggerDelay(index)}>
+                      <div className="p-4 rounded-lg glass-card">
+                        <div className="flex items-start justify-between mb-3">
+                          <div>
+                            <p className="font-medium">Email {email.emailNumber}</p>
+                            <p className="text-sm text-muted-foreground truncate max-w-md">{email.subject}</p>
                           </div>
-                          <Progress value={email.openRate} className="h-2" />
+                          <Badge variant="outline">{email.sent.toLocaleString()} sent</Badge>
                         </div>
-                        <div>
-                          <div className="flex items-center justify-between text-sm mb-1">
-                            <span className="text-muted-foreground">Reply Rate</span>
-                            <span className="font-medium">{email.replyRate}%</span>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <div className="flex items-center justify-between text-sm mb-1">
+                              <span className="text-muted-foreground">Open Rate</span>
+                              <span className="font-medium">{email.openRate}%</span>
+                            </div>
+                            <Progress value={email.openRate} className="h-2" />
                           </div>
-                          <Progress
-                            value={email.replyRate * 10}
-                            className="h-2"
-                            indicatorClassName="bg-indigo-500"
-                          />
+                          <div>
+                            <div className="flex items-center justify-between text-sm mb-1">
+                              <span className="text-muted-foreground">Reply Rate</span>
+                              <span className="font-medium">{email.replyRate}%</span>
+                            </div>
+                            <Progress
+                              value={email.replyRate * 10}
+                              className="h-2"
+                              indicatorClassName="bg-indigo-500"
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
               </CardContent>
@@ -304,7 +320,7 @@ export default function CampaignDetailPage({
 
           {/* A/B Tests */}
           {campaign.activeTests && campaign.activeTests.length > 0 && (
-            <Card>
+            <Card variant="futuristic">
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
                   <FlaskConical className="w-5 h-5 text-purple-500" />
@@ -313,7 +329,7 @@ export default function CampaignDetailPage({
               </CardHeader>
               <CardContent className="space-y-4">
                 {campaign.activeTests.map((test) => (
-                  <div key={test.id} className="p-4 rounded-lg border">
+                  <div key={test.id} className="p-4 rounded-lg glass-card">
                     <div className="flex items-start justify-between mb-4">
                       <div>
                         <div className="flex items-center gap-2">
@@ -342,8 +358,11 @@ export default function CampaignDetailPage({
                       {/* Variant A */}
                       <div className={cn(
                         "p-3 rounded-lg border-2",
-                        test.results?.winner === 'A' ? "border-emerald-500 bg-emerald-500/5" : "border-border"
+                        test.results?.winner === 'A' ? "relative overflow-hidden border-emerald-500 glass-premium glow-border" : "border-border"
                       )}>
+                        {test.results?.winner === 'A' && (
+                          <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-emerald-500 via-primary to-emerald-500" />
+                        )}
                         <div className="flex items-center justify-between mb-2">
                           <span className="font-medium">Variant A</span>
                           {test.results?.winner === 'A' && (
@@ -368,8 +387,11 @@ export default function CampaignDetailPage({
                       {/* Variant B */}
                       <div className={cn(
                         "p-3 rounded-lg border-2",
-                        test.results?.winner === 'B' ? "border-emerald-500 bg-emerald-500/5" : "border-border"
+                        test.results?.winner === 'B' ? "relative overflow-hidden border-emerald-500 glass-premium glow-border" : "border-border"
                       )}>
+                        {test.results?.winner === 'B' && (
+                          <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-emerald-500 via-primary to-emerald-500" />
+                        )}
                         <div className="flex items-center justify-between mb-2">
                           <span className="font-medium">Variant B</span>
                           {test.results?.winner === 'B' && (
@@ -431,13 +453,13 @@ export default function CampaignDetailPage({
         {/* Right Column */}
         <div className="space-y-6">
           {/* Reply Breakdown */}
-          <Card>
+          <Card variant="futuristic">
             <CardHeader>
               <CardTitle className="text-lg">Reply Breakdown</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <div className="flex h-4 rounded-full overflow-hidden">
+                <div className="flex h-5 rounded-full overflow-hidden shadow-sm">
                   <div
                     className="bg-emerald-500 transition-all"
                     style={{ width: `${positivePercent}%` }}
@@ -481,7 +503,7 @@ export default function CampaignDetailPage({
 
           {/* Optimization Recommendations */}
           {campaign.optimizationRecommendations && campaign.optimizationRecommendations.length > 0 && (
-            <Card>
+            <Card variant="futuristic">
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
                   <TrendingUp className="w-5 h-5 text-amber-500" />
@@ -493,10 +515,10 @@ export default function CampaignDetailPage({
                   <div
                     key={rec.id}
                     className={cn(
-                      "p-3 rounded-lg border",
-                      rec.priority === 'high' ? "border-amber-500/50 bg-amber-500/5" :
-                      rec.priority === 'medium' ? "border-blue-500/50 bg-blue-500/5" :
-                      "border-border"
+                      "p-3 rounded-lg",
+                      rec.priority === 'high' ? "glass-premium border-amber-500/50" :
+                      rec.priority === 'medium' ? "border-blue-500/50 bg-blue-500/5 border" :
+                      "border-border border"
                     )}
                   >
                     <div className="flex items-start gap-2">
@@ -526,21 +548,21 @@ export default function CampaignDetailPage({
           )}
 
           {/* Campaign Details */}
-          <Card>
+          <Card variant="futuristic">
             <CardHeader>
               <CardTitle className="text-lg">Campaign Details</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <div className="flex justify-between items-center py-2 border-b">
+                <div className="flex justify-between items-center py-2 border-b border-border/50">
                   <span className="text-muted-foreground">Daily Send</span>
                   <span className="font-medium">{campaign.dailySend} emails</span>
                 </div>
-                <div className="flex justify-between items-center py-2 border-b">
+                <div className="flex justify-between items-center py-2 border-b border-border/50">
                   <span className="text-muted-foreground">Active Domains</span>
                   <span className="font-medium">{campaign.domains} domains</span>
                 </div>
-                <div className="flex justify-between items-center py-2 border-b">
+                <div className="flex justify-between items-center py-2 border-b border-border/50">
                   <span className="text-muted-foreground">Email Sequences</span>
                   <span className="font-medium">{campaign.sequences} steps</span>
                 </div>
