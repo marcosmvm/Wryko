@@ -16,7 +16,7 @@ export default function AppleIcon() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: 'linear-gradient(135deg, #059669, #06b6d4)',
+          background: 'linear-gradient(135deg, #7C3AED, #2563EB)',
           borderRadius: '40px',
         }}
       >
@@ -28,12 +28,12 @@ export default function AppleIcon() {
           xmlns="http://www.w3.org/2000/svg"
         >
           <g stroke="white" strokeLinecap="round" strokeWidth="4.5">
-            <line x1="19.5" y1="19.5" x2="8" y2="8" />
-            <line x1="28.5" y1="19.5" x2="40" y2="5" />
-            <line x1="19.5" y1="28.5" x2="8" y2="40" />
-            <line x1="28.5" y1="28.5" x2="40" y2="40" />
+            <line x1="19.5" y1="19.5" x2="12" y2="12" />
+            <line x1="28.5" y1="19.5" x2="36" y2="12" />
+            <line x1="19.5" y1="28.5" x2="12" y2="36" />
+            <line x1="28.5" y1="28.5" x2="36" y2="36" />
           </g>
-          <circle cx="24" cy="24" r="4.5" fill="white" />
+          <circle cx="24" cy="24" r="4" fill="white" />
         </svg>
       </div>
     ),

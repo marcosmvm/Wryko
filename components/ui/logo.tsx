@@ -37,37 +37,26 @@ function LogoMark({ gradientId }: { gradientId: string }) {
         <linearGradient
           id={gradientId}
           x1="0"
-          y1="48"
+          y1="0"
           x2="48"
-          y2="0"
+          y2="48"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#059669" />
-          <stop offset="1" stopColor="#06b6d4" />
+          <stop stopColor="hsl(262, 72%, 54%)" />
+          <stop offset="1" stopColor="hsl(224, 76%, 48%)" />
         </linearGradient>
       </defs>
-      {/* Central neural node */}
-      <circle cx="24" cy="24" r="5" fill={`url(#${gradientId})`} />
-      {/* Upper-left dendrite */}
-      <path
-        d="M 18.5,22.5 C 14,19, 9,11, 6,6 C 11,9, 19,14, 22.5,18.5 Z"
-        fill={`url(#${gradientId})`}
-      />
-      {/* Lower-right dendrite */}
-      <path
-        d="M 29.5,25.5 C 34,29, 39,37, 42,42 C 37,39, 29,34, 25.5,29.5 Z"
-        fill={`url(#${gradientId})`}
-      />
-      {/* Upper-right dendrite — extended for growth directionality */}
-      <path
-        d="M 25.5,18.5 C 30,13, 39,7, 44,3.5 C 40,9, 33,17, 29.5,22.5 Z"
-        fill={`url(#${gradientId})`}
-      />
-      {/* Lower-left dendrite */}
-      <path
-        d="M 22.5,29.5 C 19,34, 9,39, 6,42 C 8,37, 14,30, 18.5,25.5 Z"
-        fill={`url(#${gradientId})`}
-      />
+      {/* Gradient rounded rectangle background */}
+      <rect width="48" height="48" rx="12" fill={`url(#${gradientId})`} />
+      {/* Four radiating arms forming an X — the engine network */}
+      <g stroke="white" strokeLinecap="round" strokeWidth="4.5">
+        <line x1="19.5" y1="19.5" x2="12" y2="12" />
+        <line x1="28.5" y1="19.5" x2="36" y2="12" />
+        <line x1="19.5" y1="28.5" x2="12" y2="36" />
+        <line x1="28.5" y1="28.5" x2="36" y2="36" />
+      </g>
+      {/* Central hub node — the AI operating system core */}
+      <circle cx="24" cy="24" r="4" fill="white" />
     </svg>
   )
 }

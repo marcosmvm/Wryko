@@ -16,11 +16,11 @@ export default function Icon() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: 'linear-gradient(135deg, #059669, #06b6d4)',
+          background: 'linear-gradient(135deg, #7C3AED, #2563EB)',
           borderRadius: '8px',
         }}
       >
-        {/* Simplified fluid X mark for favicon size */}
+        {/* Simplified X mark for favicon size */}
         <svg
           width="22"
           height="22"
@@ -28,10 +28,10 @@ export default function Icon() {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <line x1="3" y1="3" x2="8" y2="8" stroke="white" strokeWidth="2.8" strokeLinecap="round" />
-          <line x1="20" y1="1.5" x2="14" y2="8" stroke="white" strokeWidth="2.8" strokeLinecap="round" />
-          <line x1="3" y1="19" x2="8" y2="14" stroke="white" strokeWidth="2.8" strokeLinecap="round" />
-          <line x1="19" y1="19" x2="14" y2="14" stroke="white" strokeWidth="2.8" strokeLinecap="round" />
+          <line x1="3" y1="3" x2="7.5" y2="7.5" stroke="white" strokeWidth="3" strokeLinecap="round" />
+          <line x1="19" y1="3" x2="14.5" y2="7.5" stroke="white" strokeWidth="3" strokeLinecap="round" />
+          <line x1="3" y1="19" x2="7.5" y2="14.5" stroke="white" strokeWidth="3" strokeLinecap="round" />
+          <line x1="19" y1="19" x2="14.5" y2="14.5" stroke="white" strokeWidth="3" strokeLinecap="round" />
           <circle cx="11" cy="11" r="2.5" fill="white" />
         </svg>
       </div>
