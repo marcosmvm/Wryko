@@ -11,6 +11,15 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next()
     }
 
+    // If a Supabase auth code lands on a non-callback route, forward it
+    // to /auth/callback so the code can be exchanged for a session
+    const code = request.nextUrl.searchParams.get('code')
+    if (code && !request.nextUrl.pathname.startsWith('/auth/callback')) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/auth/callback'
+      return NextResponse.redirect(url)
+    }
+
     // Dynamically import Supabase only when configured
     const { createServerClient } = await import('@supabase/ssr')
 

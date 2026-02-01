@@ -56,6 +56,10 @@ export const metadata: Metadata = {
       'Autonomous B2B lead generation powered by 11 AI engines. Designed for companies with $25K+ deals.',
     images: ['/og-image.png'],
   },
+  icons: {
+    icon: '/icon',
+    apple: '/apple-icon',
+  },
   robots: {
     index: true,
     follow: true,

@@ -20,7 +20,7 @@ export default function Icon() {
           borderRadius: '8px',
         }}
       >
-        {/* Simplified orbit mark for favicon size */}
+        {/* Orbit mark for favicon */}
         <svg
           width="26"
           height="26"
@@ -30,6 +30,8 @@ export default function Icon() {
         >
           <circle cx="40" cy="40" r="18" stroke="white" strokeWidth="5" strokeLinecap="round" />
           <circle cx="40" cy="40" r="6" fill="white" />
+          <path d="M21 27A18 18 0 0 1 31 18" stroke="white" strokeWidth="7" strokeLinecap="round" />
+          <path d="M49 62A18 18 0 0 0 59 53" stroke="white" strokeWidth="7" strokeLinecap="round" />
           <circle cx="63" cy="24" r="4" fill="white" />
           <circle cx="18" cy="56" r="4.4" fill="white" />
         </svg>
