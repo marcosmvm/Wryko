@@ -17,11 +17,11 @@ const figtree = Figtree({
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.wryko.com'),
   title: {
-    default: 'Wryko - AI-Powered B2B Lead Generation Platform',
+    default: 'Wryko | Outbound That Runs Itself',
     template: '%s | Wryko',
   },
   description:
-    'Wryko is an autonomous B2B lead generation platform powered by 11 AI engines. Designed for companies with $25K+ deals who want scalable, compliant outbound.',
+    '11 AI engines replace your SDR team. From prospecting to booked meetings — fully autonomous, fully compliant. Built for B2B teams closing $25K+ deals.',
   keywords: [
     'B2B lead generation platform',
     'AI-powered outbound',
@@ -37,24 +37,15 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://www.wryko.com',
     siteName: 'Wryko',
-    title: 'Wryko - AI-Powered B2B Lead Generation Platform',
+    title: 'Outbound That Runs Itself',
     description:
-      'Autonomous B2B lead generation powered by 11 AI engines. Designed for companies with $25K+ deals who want scalable, compliant outbound.',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Wryko',
-      },
-    ],
+      '11 AI engines replace your SDR team. From prospecting to booked meetings — fully autonomous, fully compliant. Built for B2B teams closing $25K+ deals.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Wryko - AI-Powered B2B Lead Generation Platform',
+    title: 'Outbound That Runs Itself',
     description:
-      'Autonomous B2B lead generation powered by 11 AI engines. Designed for companies with $25K+ deals.',
-    images: ['/og-image.png'],
+      '11 AI engines replace your SDR team. Prospecting to booked meetings — autonomous, compliant, launched in 14 days.',
   },
   icons: {
     icon: '/icon',
