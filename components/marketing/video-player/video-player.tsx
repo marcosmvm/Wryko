@@ -141,7 +141,7 @@ export function VideoPlayer({
                         Demo Video Coming Soon
                       </h3>
                       <p className="text-muted-foreground max-w-sm">
-                        We&apos;re preparing an in-depth walkthrough of the XGrowthOS platform.
+                        We&apos;re preparing an in-depth walkthrough of the Wryko platform.
                         Check back soon!
                       </p>
                     </div>

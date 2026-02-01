@@ -53,16 +53,16 @@ const sections = [
   {
     id: 'acceptance',
     title: '1. Acceptance of Terms',
-    content: `By accessing or using the XGrowthOS platform, website, or any services provided by XGrowthOS, LLC ("XGrowthOS," "we," "our," or "us"), you ("Client," "you," or "your") agree to be bound by these Terms of Service ("Terms").
+    content: `By accessing or using the Wryko platform, website, or any services provided by Wryko, LLC ("Wryko," "we," "our," or "us"), you ("Client," "you," or "your") agree to be bound by these Terms of Service ("Terms").
 
 If you are entering into these Terms on behalf of a company or other legal entity, you represent that you have the authority to bind such entity to these Terms. If you do not have such authority, or if you do not agree with these Terms, you may not access or use our services.
 
-These Terms constitute a legally binding agreement between you and XGrowthOS. Please read them carefully before using our services.`,
+These Terms constitute a legally binding agreement between you and Wryko. Please read them carefully before using our services.`,
   },
   {
     id: 'services',
     title: '2. Description of Services',
-    content: `XGrowthOS provides an autonomous B2B lead generation platform powered by artificial intelligence. Our services include:
+    content: `Wryko provides an autonomous B2B lead generation platform powered by artificial intelligence. Our services include:
 
 **Core Platform Features**
 • AI-powered lead identification and qualification
@@ -102,13 +102,13 @@ To access certain features of our services, you must create an account. When cre
 You must be at least 18 years old and have the legal capacity to enter into binding contracts. Our services are intended for business use only and are not available to consumers for personal, family, or household purposes.
 
 **Account Security**
-You are responsible for maintaining the confidentiality of your account credentials. XGrowthOS will not be liable for any loss or damage arising from your failure to protect your account information.`,
+You are responsible for maintaining the confidentiality of your account credentials. Wryko will not be liable for any loss or damage arising from your failure to protect your account information.`,
   },
   {
     id: 'payment',
     title: '4. Subscription and Payment Terms',
     content: `**Pricing Structure**
-XGrowthOS operates on a subscription model with the following components:
+Wryko operates on a subscription model with the following components:
 • Monthly retainer fee (billed in advance)
 • Performance-based bonuses (billed in arrears)
 • One-time setup fees (where applicable)
@@ -157,7 +157,7 @@ You agree NOT to:
 • Interfere with or disrupt our services or infrastructure
 
 **Client Content**
-You retain ownership of any content you provide to us ("Client Content"). By providing Client Content, you grant XGrowthOS a non-exclusive, worldwide license to use, reproduce, and modify such content solely for the purpose of providing our services.
+You retain ownership of any content you provide to us ("Client Content"). By providing Client Content, you grant Wryko a non-exclusive, worldwide license to use, reproduce, and modify such content solely for the purpose of providing our services.
 
 You represent and warrant that:
 • You own or have the right to use all Client Content
@@ -167,8 +167,8 @@ You represent and warrant that:
   {
     id: 'intellectual-property',
     title: '6. Intellectual Property',
-    content: `**XGrowthOS Property**
-The XGrowthOS platform, including all software, algorithms, AI models, methodologies, documentation, and related intellectual property, is and shall remain the exclusive property of XGrowthOS.
+    content: `**Wryko Property**
+The Wryko platform, including all software, algorithms, AI models, methodologies, documentation, and related intellectual property, is and shall remain the exclusive property of Wryko.
 
 These Terms do not grant you any right, title, or interest in:
 • Our proprietary AI engines and algorithms
@@ -189,7 +189,7 @@ We may use aggregated, anonymized data derived from our services to improve our 
     id: 'data-processing',
     title: '7. Data Processing and Privacy',
     content: `**Data Controller**
-For the purposes of lead generation campaigns, you are the data controller and XGrowthOS acts as a data processor on your behalf.
+For the purposes of lead generation campaigns, you are the data controller and Wryko acts as a data processor on your behalf.
 
 **Data Processing Agreement**
 By using our services, you agree to our Data Processing Agreement, which is incorporated into these Terms by reference. The DPA governs how we process personal data on your behalf.
@@ -264,7 +264,7 @@ The limitations in this section do not apply to:
     id: 'indemnification',
     title: '10. Indemnification',
     content: `**Your Indemnification Obligations**
-You agree to indemnify, defend, and hold harmless XGrowthOS, its officers, directors, employees, agents, and affiliates from and against any and all claims, damages, losses, costs, and expenses (including reasonable attorneys' fees) arising from:
+You agree to indemnify, defend, and hold harmless Wryko, its officers, directors, employees, agents, and affiliates from and against any and all claims, damages, losses, costs, and expenses (including reasonable attorneys' fees) arising from:
 
 • Your use of our services
 • Your violation of these Terms
@@ -352,7 +352,7 @@ We encourage you to review these Terms periodically.`,
     title: '15. Contact Information',
     content: `If you have any questions about these Terms or our services, please contact us:
 
-**XGrowthOS, LLC**
+**Wryko, LLC**
 Email: legal@xgrowthos.com
 General Inquiries: support@xgrowthos.com
 Location: Los Angeles, California, United States
@@ -362,7 +362,7 @@ Legal notices should be sent to:
 legal@xgrowthos.com
 
 Or by mail to:
-XGrowthOS, LLC
+Wryko, LLC
 Attn: Legal Department
 Los Angeles, CA
 
@@ -443,7 +443,7 @@ export default function TermsClient() {
               </div>
 
               <p className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto">
-                The agreement governing your use of the XGrowthOS platform and services.
+                The agreement governing your use of the Wryko platform and services.
                 Please review these terms carefully before using our services.
               </p>
 
@@ -583,7 +583,7 @@ export default function TermsClient() {
         <CTASection
           title="Questions About Our Terms?"
           highlightText="Our Terms"
-          subtitle="Our team is here to help you understand our agreement and how XGrowthOS can work for your business."
+          subtitle="Our team is here to help you understand our agreement and how Wryko can work for your business."
           primaryCta={{ href: '/contact', label: 'Contact Our Team' }}
           secondaryCta={{ href: '/book-demo', label: 'Book a Discovery Call' }}
           showTrustLine

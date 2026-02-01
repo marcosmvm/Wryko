@@ -88,7 +88,7 @@ export default function WorkflowsPage() {
       >
         <h1 className="text-2xl font-heading font-bold">AI Engines</h1>
         <p className="text-muted-foreground">
-          Monitor and manage the 11 XGrowthOS automation engines
+          Monitor and manage the 11 Wryko automation engines
         </p>
         <div className="w-16 h-1 bg-gradient-to-r from-primary via-secondary/60 to-primary rounded-full mt-3" />
       </motion.div>

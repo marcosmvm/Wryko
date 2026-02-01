@@ -70,7 +70,7 @@ export default function HomePage() {
 
                 {/* Subtitle */}
                 <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-lg">
-                  XGrowthOS gives your team 11 autonomous AI engines designed to handle
+                  Wryko gives your team 11 autonomous AI engines designed to handle
                   every aspect of outbound lead generation — from prospecting to meeting
                   booking. Launched in as little as 14 days.
                 </p>
@@ -121,7 +121,7 @@ export default function HomePage() {
 
         {/* Demo Video Section */}
         <HeroVideoSection
-          title="See XGrowthOS in Action"
+          title="See Wryko in Action"
           // Add your video URL here when ready:
           // videoUrl="https://www.youtube.com/watch?v=YOUR_VIDEO_ID"
         />

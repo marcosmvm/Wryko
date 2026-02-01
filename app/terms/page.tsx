@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import TermsClient from './client'
 
 export const metadata: Metadata = {
-  title: 'Terms of Service | XGrowthOS',
-  description: 'XGrowthOS Terms of Service - The agreement governing your use of our platform.',
+  title: 'Terms of Service | Wryko',
+  description: 'Wryko Terms of Service - The agreement governing your use of our platform.',
 }
 
 export default function TermsPage() {

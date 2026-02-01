@@ -16,11 +16,11 @@ export default function Icon() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: 'linear-gradient(135deg, #7C3AED, #2563EB)',
+          background: 'linear-gradient(135deg, #A855F7, #6366F1)',
           borderRadius: '8px',
         }}
       >
-        {/* Simplified X mark for favicon size */}
+        {/* Simplified orbit mark for favicon size */}
         <svg
           width="22"
           height="22"
@@ -28,11 +28,10 @@ export default function Icon() {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <line x1="3" y1="3" x2="7.5" y2="7.5" stroke="white" strokeWidth="3" strokeLinecap="round" />
-          <line x1="19" y1="3" x2="14.5" y2="7.5" stroke="white" strokeWidth="3" strokeLinecap="round" />
-          <line x1="3" y1="19" x2="7.5" y2="14.5" stroke="white" strokeWidth="3" strokeLinecap="round" />
-          <line x1="19" y1="19" x2="14.5" y2="14.5" stroke="white" strokeWidth="3" strokeLinecap="round" />
-          <circle cx="11" cy="11" r="2.5" fill="white" />
+          <circle cx="10" cy="10" r="6" stroke="#E5E7FF" strokeWidth="1.2" strokeOpacity="0.9" />
+          <circle cx="11" cy="11" r="1.8" fill="white" />
+          <circle cx="16" cy="6" r="2" fill="white" fillOpacity="0.9" />
+          <circle cx="5" cy="15" r="2.2" fill="white" fillOpacity="0.9" />
         </svg>
       </div>
     ),

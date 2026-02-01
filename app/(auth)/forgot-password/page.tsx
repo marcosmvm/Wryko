@@ -3,8 +3,8 @@ import { AuthCard } from '@/components/auth/auth-card'
 import { ForgotPasswordForm } from '@/components/auth/forgot-password-form'
 
 export const metadata: Metadata = {
-  title: 'Reset Password | XGrowthOS',
-  description: 'Reset your XGrowthOS account password.',
+  title: 'Reset Password | Wryko',
+  description: 'Reset your Wryko account password.',
 }
 
 export default function ForgotPasswordPage() {

@@ -125,7 +125,7 @@ export default function BookDemoClient() {
               Book a Demo
             </span>
             <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-              See XGrowthOS{' '}
+              See Wryko{' '}
               <span className="gradient-text">In Action</span>
             </h1>
             <div className="flex justify-center mb-4">
@@ -156,7 +156,7 @@ export default function BookDemoClient() {
                   </div>
                   <h2 className="font-heading text-2xl font-bold mb-2">Request Received!</h2>
                   <p className="text-muted-foreground mb-4">
-                    Thank you for your interest in XGrowthOS. We&apos;ll reach out within
+                    Thank you for your interest in Wryko. We&apos;ll reach out within
                     24 hours to schedule your discovery call.
                   </p>
                   <p className="text-sm text-muted-foreground">
@@ -336,7 +336,7 @@ export default function BookDemoClient() {
                 <h2 className="font-heading text-2xl font-bold mb-4">What to Expect</h2>
                 <p className="text-muted-foreground">
                   During your discovery call, we&apos;ll explore your current lead generation
-                  challenges and show you exactly how XGrowthOS can help you achieve your
+                  challenges and show you exactly how Wryko can help you achieve your
                   growth goals.
                 </p>
               </div>

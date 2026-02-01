@@ -89,7 +89,7 @@ export const aboutProblem = {
 export const aboutSolution = {
   heading: 'One Platform. 11 Engines. Zero Guesswork.',
   subtitle:
-    'XGrowthOS replaces fragmented tools and expensive headcount with a unified autonomous system.',
+    'Wryko replaces fragmented tools and expensive headcount with a unified autonomous system.',
   pillars: [
     {
       iconName: 'Bot' as const,
@@ -123,7 +123,7 @@ export const aboutContent = {
     location: 'Los Angeles, CA',
     background: 'B.A. Management (Undergraduate), California State University, Northridge',
     story:
-      'After years of experiencing the inefficiencies of traditional SDR teams and the limitations of basic outreach tools, Marcos built XGrowthOS to solve the problem at its root: 11 specialized AI engines that scale personalized outreach without scaling headcount.',
+      'After years of experiencing the inefficiencies of traditional SDR teams and the limitations of basic outreach tools, Marcos built Wryko to solve the problem at its root: 11 specialized AI engines that scale personalized outreach without scaling headcount.',
   },
   values: [
     {

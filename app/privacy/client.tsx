@@ -36,7 +36,7 @@ const sections: PolicySection[] = [
     id: 'introduction',
     title: '1. Introduction',
     icon: FileText,
-    content: `XGrowthOS, LLC ("XGrowthOS," "we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website xgrowthos.com, use our platform, or engage with our services.
+    content: `Wryko, LLC ("Wryko," "we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website xgrowthos.com, use our platform, or engage with our services.
 
 Please read this Privacy Policy carefully. By accessing or using our services, you acknowledge that you have read, understood, and agree to be bound by this Privacy Policy. If you do not agree with the terms of this Privacy Policy, please do not access our services.`,
   },
@@ -220,7 +220,7 @@ If you are a parent or guardian and believe that your child has provided us with
     id: 'third-party',
     title: '10. Third-Party Services',
     icon: Link2,
-    content: `Our services may contain links to third-party websites and services that are not owned or controlled by XGrowthOS. We are not responsible for the privacy practices of these third parties.
+    content: `Our services may contain links to third-party websites and services that are not owned or controlled by Wryko. We are not responsible for the privacy practices of these third parties.
 
 We encourage you to review the privacy policies of any third-party websites or services that you visit. This Privacy Policy applies only to our services.
 
@@ -254,7 +254,7 @@ We encourage you to review this Privacy Policy periodically to stay informed abo
     icon: Mail,
     content: `If you have any questions, concerns, or requests regarding this Privacy Policy or our privacy practices, please contact us:
 
-**XGrowthOS, LLC**
+**Wryko, LLC**
 Email: privacy@xgrowthos.com
 General Inquiries: support@xgrowthos.com
 Location: Los Angeles, California, United States
@@ -473,7 +473,7 @@ export default function PrivacyClient() {
         {/* CTA Section */}
         <CTASection
           title="Ready to Get Started?"
-          subtitle="Book a discovery call to learn how XGrowthOS protects your data while transforming your pipeline."
+          subtitle="Book a discovery call to learn how Wryko protects your data while transforming your pipeline."
           primaryCta={{ href: '/book-demo', label: 'Book Your Discovery Call' }}
           className="py-20"
         />

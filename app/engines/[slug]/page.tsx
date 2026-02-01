@@ -18,11 +18,11 @@ export async function generateMetadata({
   const engine = engineDetails[slug]
 
   if (!engine) {
-    return { title: 'Engine Not Found | XGrowthOS' }
+    return { title: 'Engine Not Found | Wryko' }
   }
 
   return {
-    title: `${engine.name} - ${engine.tagline} | XGrowthOS`,
+    title: `${engine.name} - ${engine.tagline} | Wryko`,
     description: engine.heroDescription,
     openGraph: {
       title: `${engine.name} - ${engine.tagline}`,

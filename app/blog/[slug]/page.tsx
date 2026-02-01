@@ -49,9 +49,9 @@ The companies that embrace AI-powered lead generation today will have a signific
 - Scale their pipeline without scaling their headcount
 - Focus their human talent on high-value activities like closing deals
 
-## The XGrowthOS Approach
+## The Wryko Approach
 
-At XGrowthOS, we've built 11 specialized AI engines that work together to automate the entire lead generation process. From identifying ideal prospects to booking qualified meetings, our platform handles everything—while you focus on closing deals.
+At Wryko, we've built 11 specialized AI engines that work together to automate the entire lead generation process. From identifying ideal prospects to booking qualified meetings, our platform handles everything—while you focus on closing deals.
 
 The future of B2B lead generation is autonomous, intelligent, and incredibly effective. The only question is: will you be ahead of the curve, or catching up?
     `,
@@ -293,7 +293,7 @@ Personalized emails look more legitimate than templates. They also get better en
 
 Keep your emails primarily text-based. Too many links or images looks promotional.
 
-## The XGrowthOS Approach
+## The Wryko Approach
 
 Our platform handles all of this automatically:
 
@@ -335,12 +335,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   if (!post) {
     return {
-      title: 'Post Not Found | XGrowthOS Blog',
+      title: 'Post Not Found | Wryko Blog',
     }
   }
 
   return {
-    title: `${post.title} | XGrowthOS Blog`,
+    title: `${post.title} | Wryko Blog`,
     description: post.excerpt,
   }
 }

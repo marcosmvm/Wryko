@@ -315,7 +315,7 @@ export default function BlogClient() {
       {/* CTA Section */}
       <CTASection
         title="Ready to Transform Your Lead Generation?"
-        subtitle="See how XGrowthOS can help you generate qualified B2B meetings on autopilot."
+        subtitle="See how Wryko can help you generate qualified B2B meetings on autopilot."
         primaryCta={{ href: '/book-demo', label: 'Book Your Discovery Call' }}
       />
 

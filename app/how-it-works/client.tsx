@@ -55,7 +55,7 @@ export default function HowItWorksClient() {
                 <div className="w-16 h-1 bg-gradient-to-r from-primary via-secondary/60 to-primary rounded-full" />
               </div>
               <p className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto">
-                Unlike traditional agencies or basic email tools, XGrowthOS deploys specialized
+                Unlike traditional agencies or basic email tools, Wryko deploys specialized
                 AI engines with human strategic oversight—handling every aspect of B2B lead generation
                 from compliance to campaign optimization.
               </p>

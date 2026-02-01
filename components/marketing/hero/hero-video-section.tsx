@@ -16,7 +16,7 @@ export function HeroVideoSection({
   className,
   videoUrl,
   thumbnailUrl,
-  title = 'See XGrowthOS in Action',
+  title = 'See Wryko in Action',
 }: HeroVideoSectionProps) {
   const [isVideoOpen, setIsVideoOpen] = useState(false)
 
@@ -68,7 +68,7 @@ export function HeroVideoSection({
         >
           <VideoThumbnail
             thumbnailUrl={thumbnailUrl}
-            title="Watch the XGrowthOS Demo"
+            title="Watch the Wryko Demo"
             onClick={() => setIsVideoOpen(true)}
           />
         </motion.div>

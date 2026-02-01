@@ -36,7 +36,7 @@ export default function AdminDashboardPage() {
         transition={defaultTransition}
       >
         <h1 className="text-2xl font-heading font-bold">Admin Dashboard</h1>
-        <p className="text-muted-foreground">Overview of your XGrowthOS platform</p>
+        <p className="text-muted-foreground">Overview of your Wryko platform</p>
         <div className="w-16 h-1 bg-gradient-to-r from-primary via-secondary/60 to-primary rounded-full mt-3" />
       </motion.div>
 

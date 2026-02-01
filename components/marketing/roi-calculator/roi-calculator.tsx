@@ -73,7 +73,7 @@ export function ROICalculator({ className, variant = 'default' }: ROICalculatorP
             ROI Calculator
           </h2>
           <p className="text-sm text-muted-foreground">
-            See how XGrowthOS can transform your pipeline
+            See how Wryko can transform your pipeline
           </p>
         </div>
       </div>

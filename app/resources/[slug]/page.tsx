@@ -20,12 +20,12 @@ export async function generateMetadata({
 
   if (!resource) {
     return {
-      title: 'Resource Not Found | XGrowthOS Resources',
+      title: 'Resource Not Found | Wryko Resources',
     }
   }
 
   return {
-    title: `${resource.title} | XGrowthOS Resources`,
+    title: `${resource.title} | Wryko Resources`,
     description: resource.description,
     openGraph: {
       title: resource.title,

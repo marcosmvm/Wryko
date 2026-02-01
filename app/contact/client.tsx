@@ -113,7 +113,7 @@ export default function ContactClient() {
                 <div className="w-16 h-1 bg-gradient-to-r from-primary via-secondary/60 to-primary rounded-full" />
               </div>
               <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-                Have questions about XGrowthOS? Our team is here to help.
+                Have questions about Wryko? Our team is here to help.
                 Send us a message and we&apos;ll respond within 24 hours.
               </p>
             </motion.div>
@@ -273,7 +273,7 @@ export default function ContactClient() {
                   <h2 className="font-heading text-2xl font-bold mb-4">How We Can Help</h2>
                   <p className="text-muted-foreground">
                     Whether you have questions about our platform, pricing, or want to
-                    explore how XGrowthOS can drive your growth — our team is ready
+                    explore how Wryko can drive your growth — our team is ready
                     to help.
                   </p>
                 </div>

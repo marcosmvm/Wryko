@@ -209,7 +209,7 @@ export default function ResourcesClient() {
         {/* CTA Section */}
         <CTASection
           title="Ready to Put These Resources to Work?"
-          subtitle="Book a discovery call to see how XGrowthOS applies these strategies at scale."
+          subtitle="Book a discovery call to see how Wryko applies these strategies at scale."
           primaryCta={{ href: '/book-demo', label: 'Book Your Discovery Call' }}
           className="py-20"
         />

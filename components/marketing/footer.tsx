@@ -124,7 +124,7 @@ export function Footer() {
         <div className="relative mt-8 pt-8 text-center text-sm text-muted-foreground">
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
           <p>
-            &copy; {new Date().getFullYear()} XGrowthOS. All rights reserved.
+            &copy; {new Date().getFullYear()} Wryko. All rights reserved.
             <span className="mx-2">&middot;</span>
             Built with AI in Los Angeles
           </p>

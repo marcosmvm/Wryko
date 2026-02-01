@@ -247,7 +247,7 @@ export default function CaseStudiesClient() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeading
               eyebrow="USE CASES"
-              title="How XGrowthOS Works Across Industries"
+              title="How Wryko Works Across Industries"
               highlight="Across Industries"
               subtitle="Our platform adapts to your industry, ICP, and sales motion. Here is how we approach different verticals."
             />

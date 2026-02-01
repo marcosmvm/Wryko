@@ -31,7 +31,7 @@ export function CaseSnippetsSection({ className }: CaseSnippetsSectionProps) {
           <div className="glass-card p-8 border-t-2 border-t-secondary/40">
             <p className="text-muted-foreground mb-6">
               As a new platform, we are building our track record with our inaugural cohort of clients.
-              Apply for a pilot to experience XGrowthOS firsthand and receive founding partner pricing.
+              Apply for a pilot to experience Wryko firsthand and receive founding partner pricing.
             </p>
             <Link
               href="/book-demo"

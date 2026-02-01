@@ -3,8 +3,8 @@ import { AuthCard } from '@/components/auth/auth-card'
 import { ResetPasswordForm } from '@/components/auth/reset-password-form'
 
 export const metadata: Metadata = {
-  title: 'Set New Password | XGrowthOS',
-  description: 'Set a new password for your XGrowthOS account.',
+  title: 'Set New Password | Wryko',
+  description: 'Set a new password for your Wryko account.',
 }
 
 export default function ResetPasswordPage() {

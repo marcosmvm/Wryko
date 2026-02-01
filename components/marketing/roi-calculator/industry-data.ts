@@ -39,7 +39,7 @@ export interface CalculatorResults {
 export function calculateROI(inputs: CalculatorInputs): CalculatorResults {
   const multiplier = industryMultipliers[inputs.industry]
 
-  // XGrowthOS delivers 25-40 meetings/month (use 32 as baseline)
+  // Wryko delivers 25-40 meetings/month (use 32 as baseline)
   const baseMeetings = 32
   const projectedMeetings = Math.round(baseMeetings * multiplier.meetingRate)
 

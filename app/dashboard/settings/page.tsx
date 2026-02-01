@@ -657,7 +657,7 @@ export default function SettingsPage() {
             <Card variant="futuristic">
               <CardHeader>
                 <CardTitle>Connected Apps</CardTitle>
-                <CardDescription>Integrate XGrowthOS with your existing tools</CardDescription>
+                <CardDescription>Integrate Wryko with your existing tools</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid md:grid-cols-2 gap-4">

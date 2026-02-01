@@ -75,7 +75,7 @@ export default function AboutClient() {
             >
               <span className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 text-sm font-medium text-primary bg-primary/10 border border-primary/20 rounded-full">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                About XGrowthOS
+                About Wryko
               </span>
 
               <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
@@ -88,7 +88,7 @@ export default function AboutClient() {
               </div>
 
               <p className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto">
-                XGrowthOS deploys 11 specialized AI engines to handle every aspect of B2B
+                Wryko deploys 11 specialized AI engines to handle every aspect of B2B
                 outbound — from compliance to campaign optimization — so your team can focus
                 on closing deals, not chasing leads.
               </p>
@@ -159,7 +159,7 @@ export default function AboutClient() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeading
               eyebrow="THE SOLUTION"
-              badge="XGrowthOS Platform"
+              badge="Wryko Platform"
               title={aboutSolution.heading}
               highlight="11 Engines"
               subtitle={aboutSolution.subtitle}
@@ -205,11 +205,11 @@ export default function AboutClient() {
           </div>
         </section>
 
-        {/* ─── Section 5: Why XGrowthOS ─── */}
+        {/* ─── Section 5: Why Wryko ─── */}
         <section className="py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeading
-              title="Why XGrowthOS?"
+              title="Why Wryko?"
               subtitle="What sets us apart from traditional agencies and basic email tools."
             />
 
@@ -279,7 +279,7 @@ export default function AboutClient() {
               eyebrow="LEADERSHIP"
               title="Founded by an Operator, Not an Observer"
               highlight="Operator"
-              subtitle="XGrowthOS was built by someone who lived the problem every day."
+              subtitle="Wryko was built by someone who lived the problem every day."
             />
 
             <motion.div
@@ -294,7 +294,7 @@ export default function AboutClient() {
                 <div className="shrink-0">
                   <Image
                     src="/images/marcos-matthews-headshot.jpg"
-                    alt="Marcos Matthews, Founder & CEO of XGrowthOS"
+                    alt="Marcos Matthews, Founder & CEO of Wryko"
                     width={96}
                     height={96}
                     className="rounded-full border-2 border-primary/20 object-cover w-24 h-24"

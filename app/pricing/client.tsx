@@ -287,7 +287,7 @@ export default function PricingClient() {
         {/* CTA Section */}
         <CTASection
           title="Ready to Get Started?"
-          subtitle="Book a discovery call to discuss your goals and see if XGrowthOS is the right fit for your team."
+          subtitle="Book a discovery call to discuss your goals and see if Wryko is the right fit for your team."
           primaryCta={{ href: '/book-demo', label: 'Book Your Discovery Call' }}
           secondaryCta={{ href: '/contact', label: 'Contact Sales' }}
           showTrustLine

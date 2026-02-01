@@ -22,19 +22,19 @@ export const faqCategories: FAQCategory[] = [
     icon: HelpCircle,
     items: [
       {
-        question: 'How does XGrowthOS work?',
+        question: 'How does Wryko work?',
         answer:
-          'XGrowthOS is an autonomous B2B lead generation platform powered by 11 specialized AI engines. We handle everything from prospecting and email copywriting to domain management, compliance, and campaign optimization. Our engines work 24/7 to identify prospects, craft personalized outreach, and book qualified meetings on your calendar.',
+          'Wryko is an autonomous B2B lead generation platform powered by 11 specialized AI engines. We handle everything from prospecting and email copywriting to domain management, compliance, and campaign optimization. Our engines work 24/7 to identify prospects, craft personalized outreach, and book qualified meetings on your calendar.',
       },
       {
-        question: 'What makes XGrowthOS different from other lead gen agencies?',
+        question: 'What makes Wryko different from other lead gen agencies?',
         answer:
-          'Traditional agencies rely on manual processes and human SDRs. XGrowthOS uses 11 AI engines that work autonomously around the clock—optimizing campaigns, detecting issues before they impact performance, and expanding your pipeline from every positive reply. We provide enterprise-grade outbound capabilities at a fraction of the cost of hiring in-house SDRs.',
+          'Traditional agencies rely on manual processes and human SDRs. Wryko uses 11 AI engines that work autonomously around the clock—optimizing campaigns, detecting issues before they impact performance, and expanding your pipeline from every positive reply. We provide enterprise-grade outbound capabilities at a fraction of the cost of hiring in-house SDRs.',
       },
       {
-        question: 'What types of companies is XGrowthOS best suited for?',
+        question: 'What types of companies is Wryko best suited for?',
         answer:
-          'XGrowthOS is ideal for B2B companies with deal sizes of $25K or more. We work with SaaS companies, professional services firms, technology providers, healthcare tech, financial services, and manufacturing. If you sell to mid-market or enterprise buyers and need predictable pipeline, we can help.',
+          'Wryko is ideal for B2B companies with deal sizes of $25K or more. We work with SaaS companies, professional services firms, technology providers, healthcare tech, financial services, and manufacturing. If you sell to mid-market or enterprise buyers and need predictable pipeline, we can help.',
       },
       {
         question: 'How many meetings can I expect per month?',
@@ -77,7 +77,7 @@ export const faqCategories: FAQCategory[] = [
           'Once connected, we automatically push new leads and meeting data to your CRM. You\'ll see contact information, company details, email engagement history, and meeting notes. Two-way sync ensures your team always has the latest information.',
       },
       {
-        question: 'Do I need technical expertise to use XGrowthOS?',
+        question: 'Do I need technical expertise to use Wryko?',
         answer:
           'No technical expertise required. Our team handles all setup, integration, and ongoing maintenance. You\'ll have access to a client portal for real-time reporting, but our engines run autonomously without any input from you.',
       },
@@ -160,7 +160,7 @@ export const faqCategories: FAQCategory[] = [
       {
         question: 'How do I book a discovery call?',
         answer:
-          'Click the "Book Demo" button anywhere on our site. You\'ll complete a brief form with your company info and goals, then select a time that works for you. Our discovery calls are 30 minutes and focused on understanding whether XGrowthOS is the right fit for your business.',
+          'Click the "Book Demo" button anywhere on our site. You\'ll complete a brief form with your company info and goals, then select a time that works for you. Our discovery calls are 30 minutes and focused on understanding whether Wryko is the right fit for your business.',
       },
       {
         question: 'What should I prepare before our discovery call?',

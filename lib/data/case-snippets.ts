@@ -255,7 +255,7 @@ export const caseStudyFAQs = [
   {
     question: 'How are meetings and results verified?',
     answer:
-      'Every meeting booked through XGrowthOS is verified against your ICP criteria. We track open rates, reply rates, positive reply percentages, and meetings booked per campaign. All data flows through our real-time dashboards, giving you full visibility into performance.',
+      'Every meeting booked through Wryko is verified against your ICP criteria. We track open rates, reply rates, positive reply percentages, and meetings booked per campaign. All data flows through our real-time dashboards, giving you full visibility into performance.',
   },
   {
     question: 'What metrics will case studies include?',
@@ -270,7 +270,7 @@ export const caseStudyFAQs = [
   {
     question: 'What industries are your first clients in?',
     answer:
-      'Our founding cohort spans B2B SaaS, IT services, professional services, and financial services. XGrowthOS is designed to work across any B2B industry with a defined ideal customer profile and average contract values above $10K.',
+      'Our founding cohort spans B2B SaaS, IT services, professional services, and financial services. Wryko is designed to work across any B2B industry with a defined ideal customer profile and average contract values above $10K.',
   },
   {
     question: 'What happens if the pilot does not meet targets?',

@@ -165,7 +165,7 @@ export default function BlogPostClient({ post }: { post: BlogPost }) {
               <div>
                 <h3 className="font-semibold mb-1">{post.author}</h3>
                 <p className="text-sm text-muted-foreground mb-3">
-                  Founder & CEO at XGrowthOS. Building the future of autonomous B2B lead generation.
+                  Founder & CEO at Wryko. Building the future of autonomous B2B lead generation.
                 </p>
                 <Link
                   href="/about"
@@ -182,7 +182,7 @@ export default function BlogPostClient({ post }: { post: BlogPost }) {
       {/* CTA Section */}
       <CTASection
         title="Ready to Transform Your Lead Generation?"
-        subtitle="See how XGrowthOS can help you generate qualified B2B meetings on autopilot."
+        subtitle="See how Wryko can help you generate qualified B2B meetings on autopilot."
         primaryCta={{ href: '/book-demo', label: 'Book Your Discovery Call' }}
       />
 

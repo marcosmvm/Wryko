@@ -91,7 +91,7 @@ export default function FAQClient() {
                 <div className="w-16 h-1 bg-gradient-to-r from-primary via-secondary/60 to-primary rounded-full" />
               </div>
               <p className="text-xl text-muted-foreground mb-4 max-w-2xl mx-auto">
-                Everything you need to know about XGrowthOS, from how our
+                Everything you need to know about Wryko, from how our
                 platform works to pricing, integrations, and getting started.
               </p>
               <p className="text-sm text-muted-foreground flex items-center justify-center gap-2">
@@ -248,7 +248,7 @@ export default function FAQClient() {
         <CTASection
           title="Ready to Get Started?"
           highlightText="Get Started"
-          subtitle="Book a discovery call to see how XGrowthOS can transform your pipeline."
+          subtitle="Book a discovery call to see how Wryko can transform your pipeline."
           primaryCta={{ href: '/book-demo', label: 'Book Your Discovery Call' }}
           secondaryCta={{ href: '/how-it-works', label: 'See How It Works' }}
           showTrustLine

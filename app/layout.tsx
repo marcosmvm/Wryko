@@ -16,11 +16,11 @@ const figtree = Figtree({
 
 export const metadata: Metadata = {
   title: {
-    default: 'XGrowthOS - AI-Powered B2B Lead Generation Platform',
-    template: '%s | XGrowthOS',
+    default: 'Wryko - AI-Powered B2B Lead Generation Platform',
+    template: '%s | Wryko',
   },
   description:
-    'XGrowthOS is an autonomous B2B lead generation platform powered by 11 AI engines. Designed for companies with $25K+ deals who want scalable, compliant outbound.',
+    'Wryko is an autonomous B2B lead generation platform powered by 11 AI engines. Designed for companies with $25K+ deals who want scalable, compliant outbound.',
   keywords: [
     'B2B lead generation platform',
     'AI-powered outbound',
@@ -30,13 +30,13 @@ export const metadata: Metadata = {
     'enterprise lead generation',
   ],
   authors: [{ name: 'Marcos Matthews' }],
-  creator: 'XGrowthOS',
+  creator: 'Wryko',
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: 'https://xgrowthos.com',
-    siteName: 'XGrowthOS',
-    title: 'XGrowthOS - AI-Powered B2B Lead Generation Platform',
+    siteName: 'Wryko',
+    title: 'Wryko - AI-Powered B2B Lead Generation Platform',
     description:
       'Autonomous B2B lead generation powered by 11 AI engines. Designed for companies with $25K+ deals who want scalable, compliant outbound.',
     images: [
@@ -44,13 +44,13 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'XGrowthOS',
+        alt: 'Wryko',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'XGrowthOS - AI-Powered B2B Lead Generation Platform',
+    title: 'Wryko - AI-Powered B2B Lead Generation Platform',
     description:
       'Autonomous B2B lead generation powered by 11 AI engines. Designed for companies with $25K+ deals.',
     images: ['/og-image.png'],
