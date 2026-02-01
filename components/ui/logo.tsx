@@ -96,7 +96,7 @@ export function Logo({
           </span>
         </div>
       ) : (
-        <span className={cn('font-heading bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent', textStyles[size])}>
+        <span className={cn('font-heading', textStyles[size])}>
           Wryko
         </span>
       )}
