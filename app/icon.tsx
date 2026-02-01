@@ -22,16 +22,16 @@ export default function Icon() {
       >
         {/* Simplified orbit mark for favicon size */}
         <svg
-          width="22"
-          height="22"
-          viewBox="0 0 22 22"
+          width="26"
+          height="26"
+          viewBox="0 0 80 80"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <circle cx="10" cy="10" r="6" stroke="#E5E7FF" strokeWidth="1.2" strokeOpacity="0.9" />
-          <circle cx="11" cy="11" r="1.8" fill="white" />
-          <circle cx="16" cy="6" r="2" fill="white" fillOpacity="0.9" />
-          <circle cx="5" cy="15" r="2.2" fill="white" fillOpacity="0.9" />
+          <circle cx="40" cy="40" r="18" stroke="white" strokeWidth="5" strokeLinecap="round" />
+          <circle cx="40" cy="40" r="6" fill="white" />
+          <circle cx="63" cy="24" r="4" fill="white" />
+          <circle cx="18" cy="56" r="4.4" fill="white" />
         </svg>
       </div>
     ),

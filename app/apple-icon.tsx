@@ -21,23 +21,20 @@ export default function AppleIcon() {
         }}
       >
         <svg
-          width="120"
-          height="120"
-          viewBox="0 0 48 48"
+          width="130"
+          height="130"
+          viewBox="0 0 80 80"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <circle cx="24" cy="24" r="15" fill="white" fillOpacity="0.06" />
-          <circle cx="22.5" cy="22.5" r="10.5" stroke="#E5E7FF" strokeWidth="1.3" strokeOpacity="0.9" />
-          <ellipse cx="25.5" cy="25.5" rx="11.25" ry="7.5" transform="rotate(-18 25.5 25.5)" stroke="#C4D0FF" strokeWidth="1.1" strokeOpacity="0.9" />
-          <path d="M15 24C15.75 20.25 17.6 17.6 20.25 15.75" stroke="#EEF2FF" strokeWidth="1.2" strokeLinecap="round" strokeOpacity="0.9" />
-          <circle cx="33" cy="16.5" r="2.4" fill="white" />
-          <circle cx="33" cy="16.5" r="2.4" fill="#A855F7" fillOpacity="0.18" />
-          <circle cx="15" cy="30" r="2.7" fill="white" />
-          <circle cx="15" cy="30" r="2.7" fill="#4F46E5" fillOpacity="0.22" />
-          <circle cx="24" cy="24" r="2.1" fill="white" />
-          <circle cx="24" cy="24" r="2.1" fill="#6366F1" fillOpacity="0.35" />
-          <circle cx="28.5" cy="33" r="1.65" fill="white" fillOpacity="0.9" />
+          <circle cx="40" cy="40" r="18" stroke="white" strokeWidth="5" strokeLinecap="round" />
+          <circle cx="40" cy="40" r="6" fill="white" />
+          <path d="M21 27A18 18 0 0 1 31 18" stroke="white" strokeWidth="7" strokeLinecap="round" />
+          <path d="M49 62A18 18 0 0 0 59 53" stroke="white" strokeWidth="7" strokeLinecap="round" />
+          <circle cx="63" cy="24" r="4" fill="white" />
+          <circle cx="60" cy="32" r="2.6" fill="white" />
+          <circle cx="18" cy="56" r="4.4" fill="white" />
+          <circle cx="24" cy="63" r="2.8" fill="white" />
         </svg>
       </div>
     ),
