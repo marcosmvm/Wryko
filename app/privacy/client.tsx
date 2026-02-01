@@ -36,7 +36,7 @@ const sections: PolicySection[] = [
     id: 'introduction',
     title: '1. Introduction',
     icon: FileText,
-    content: `Wryko, LLC ("Wryko," "we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website xgrowthos.com, use our platform, or engage with our services.
+    content: `Wryko, LLC ("Wryko," "we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website wryko.com, use our platform, or engage with our services.
 
 Please read this Privacy Policy carefully. By accessing or using our services, you acknowledge that you have read, understood, and agree to be bound by this Privacy Policy. If you do not agree with the terms of this Privacy Policy, please do not access our services.`,
   },
@@ -193,7 +193,7 @@ If you are a California resident, you have additional rights under the Californi
 **GDPR Rights (EU/EEA Residents)**
 If you are located in the European Union or European Economic Area, you have rights under the General Data Protection Regulation (GDPR), including all rights listed above.
 
-To exercise any of these rights, please contact us at privacy@xgrowthos.com.`,
+To exercise any of these rights, please contact us at privacy@wryko.com.`,
   },
   {
     id: 'international-transfers',
@@ -214,7 +214,7 @@ By using our services, you consent to the transfer of your information to the Un
     icon: Baby,
     content: `Our services are not directed to individuals under the age of 18. We do not knowingly collect personal information from children under 18. If we become aware that we have collected personal information from a child under 18, we will take steps to delete that information.
 
-If you are a parent or guardian and believe that your child has provided us with personal information, please contact us at privacy@xgrowthos.com.`,
+If you are a parent or guardian and believe that your child has provided us with personal information, please contact us at privacy@wryko.com.`,
   },
   {
     id: 'third-party',
@@ -255,12 +255,12 @@ We encourage you to review this Privacy Policy periodically to stay informed abo
     content: `If you have any questions, concerns, or requests regarding this Privacy Policy or our privacy practices, please contact us:
 
 **Wryko, LLC**
-Email: privacy@xgrowthos.com
-General Inquiries: support@xgrowthos.com
+Email: privacy@wryko.com
+General Inquiries: support@wryko.com
 Location: Los Angeles, California, United States
 
 **Data Protection Officer**
-For GDPR-related inquiries: dpo@xgrowthos.com
+For GDPR-related inquiries: dpo@wryko.com
 
 We will respond to all legitimate requests within 30 days. If we need more time, we will notify you of the reason and extension period.`,
   },
@@ -454,7 +454,7 @@ export default function PrivacyClient() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
-                  href="mailto:privacy@xgrowthos.com"
+                  href="mailto:privacy@wryko.com"
                   className="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors"
                 >
                   Email Privacy Team

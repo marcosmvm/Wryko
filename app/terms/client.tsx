@@ -245,14 +245,14 @@ We do not warrant that:
 • Any errors will be corrected
 
 **Limitation of Liability**
-TO THE MAXIMUM EXTENT PERMITTED BY LAW, XGROWTHOS SHALL NOT BE LIABLE FOR:
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, WRYKO SHALL NOT BE LIABLE FOR:
 • Any indirect, incidental, special, consequential, or punitive damages
 • Loss of profits, revenue, data, or business opportunities
 • Damages arising from your use or inability to use our services
 • Damages arising from any unauthorized access to your data
 
 **Cap on Liability**
-OUR TOTAL LIABILITY FOR ANY CLAIMS ARISING FROM OR RELATED TO THESE TERMS OR OUR SERVICES SHALL NOT EXCEED THE TOTAL FEES PAID BY YOU TO XGROWTHOS IN THE TWELVE (12) MONTHS PRECEDING THE CLAIM.
+OUR TOTAL LIABILITY FOR ANY CLAIMS ARISING FROM OR RELATED TO THESE TERMS OR OUR SERVICES SHALL NOT EXCEED THE TOTAL FEES PAID BY YOU TO WRYKO IN THE TWELVE (12) MONTHS PRECEDING THE CLAIM.
 
 **Exceptions**
 The limitations in this section do not apply to:
@@ -317,7 +317,7 @@ If we cannot resolve a dispute informally, any controversy or claim arising out 
 • Judgment on the award may be entered in any court of competent jurisdiction
 
 **Class Action Waiver**
-YOU AND XGROWTHOS AGREE THAT EACH MAY BRING CLAIMS AGAINST THE OTHER ONLY IN YOUR OR ITS INDIVIDUAL CAPACITY AND NOT AS A PLAINTIFF OR CLASS MEMBER IN ANY PURPORTED CLASS OR REPRESENTATIVE PROCEEDING.
+YOU AND WRYKO AGREE THAT EACH MAY BRING CLAIMS AGAINST THE OTHER ONLY IN YOUR OR ITS INDIVIDUAL CAPACITY AND NOT AS A PLAINTIFF OR CLASS MEMBER IN ANY PURPORTED CLASS OR REPRESENTATIVE PROCEEDING.
 
 **Exceptions**
 Notwithstanding the above:
@@ -353,13 +353,13 @@ We encourage you to review these Terms periodically.`,
     content: `If you have any questions about these Terms or our services, please contact us:
 
 **Wryko, LLC**
-Email: legal@xgrowthos.com
-General Inquiries: support@xgrowthos.com
+Email: legal@wryko.com
+General Inquiries: support@wryko.com
 Location: Los Angeles, California, United States
 
 **For Legal Notices**
 Legal notices should be sent to:
-legal@xgrowthos.com
+legal@wryko.com
 
 Or by mail to:
 Wryko, LLC

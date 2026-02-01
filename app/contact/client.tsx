@@ -302,7 +302,7 @@ export default function ContactClient() {
                 <div className="bg-card/50 border border-border/50 rounded-xl p-5 space-y-3">
                   <div className="flex items-center gap-3 text-sm">
                     <Mail className="w-4 h-4 text-primary shrink-0" />
-                    <span className="text-muted-foreground">support@xgrowthos.com</span>
+                    <span className="text-muted-foreground">support@wryko.com</span>
                   </div>
                   <div className="flex items-center gap-3 text-sm">
                     <Send className="w-4 h-4 text-primary shrink-0" />

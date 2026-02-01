@@ -15,6 +15,7 @@ const figtree = Figtree({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.wryko.com'),
   title: {
     default: 'Wryko - AI-Powered B2B Lead Generation Platform',
     template: '%s | Wryko',
@@ -34,7 +35,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://xgrowthos.com',
+    url: 'https://www.wryko.com',
     siteName: 'Wryko',
     title: 'Wryko - AI-Powered B2B Lead Generation Platform',
     description:
