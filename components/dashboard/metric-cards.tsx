@@ -27,17 +27,8 @@ const gradientMap: Record<string, string> = {
 
 function MetricCard({ label, value, trend, icon, variant = 'primary', index = 0 }: MetricCardProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={getStaggerDelay(index)}
-      whileHover={{ y: -2 }}
-    >
-      <Card variant="futuristic" className="relative overflow-hidden">
-        <div className={cn(
-          "absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r",
-          gradientMap[variant] || gradientMap.primary
-        )} />
+    <div>
+      <Card className="relative overflow-hidden">
         <CardContent className="p-4">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
@@ -56,7 +47,7 @@ function MetricCard({ label, value, trend, icon, variant = 'primary', index = 0 
           </div>
         </CardContent>
       </Card>
-    </motion.div>
+    </div>
   )
 }
 

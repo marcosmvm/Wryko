@@ -31,7 +31,7 @@ export function RecentMeetings() {
         <CardTitle className="text-base font-medium">Meetings</CardTitle>
         <Link
           href="/dashboard/meetings"
-          className="text-sm text-primary hover:underline flex items-center gap-1"
+          className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1"
         >
           View all <ArrowRight className="w-4 h-4" />
         </Link>
@@ -47,10 +47,10 @@ export function RecentMeetings() {
               {upcomingMeetings.map((meeting) => (
                 <div
                   key={meeting.id}
-                  className="flex items-start gap-3 p-3 rounded-lg glass-card glow-border-hover transition-all"
+                  className="flex items-start gap-3 p-3 rounded-lg border border-border transition-colors"
                 >
-                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                    <Calendar className="w-5 h-5 text-primary" />
+                  <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center shrink-0">
+                    <Calendar className="w-5 h-5 text-muted-foreground" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="font-medium text-sm truncate">{meeting.contactName}</p>
@@ -58,7 +58,7 @@ export function RecentMeetings() {
                       <Building2 className="w-3 h-3" />
                       <span className="truncate">{meeting.companyName}</span>
                     </div>
-                    <p className="text-xs text-primary font-medium mt-1">
+                    <p className="text-xs text-foreground font-medium mt-1">
                       {formatMeetingDate(meeting.scheduledAt)}
                     </p>
                   </div>
@@ -81,7 +81,7 @@ export function RecentMeetings() {
               {recentCompleted.map((meeting) => (
                 <div
                   key={meeting.id}
-                  className="flex items-center justify-between p-2 rounded-lg hover:bg-primary/5 transition-colors"
+                  className="flex items-center justify-between p-2 rounded-lg hover:bg-muted/50 transition-colors"
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-success/10 flex items-center justify-center">

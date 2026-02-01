@@ -24,13 +24,8 @@ export default function DashboardLayout({
               onMenuClick={() => setSidebarOpen(true)}
             />
 
-            <main className="flex-1 p-4 lg:p-8 relative overflow-hidden">
-              {/* Ambient glow */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] glow-primary pointer-events-none opacity-20" />
-
-              <div className="relative">
-                {children}
-              </div>
+            <main className="flex-1 p-4 lg:p-8">
+              {children}
             </main>
           </div>
         </div>

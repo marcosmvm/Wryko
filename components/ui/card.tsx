@@ -15,9 +15,9 @@ const cardVariants = cva(
           "bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20",
         outline: "bg-transparent shadow-none",
         futuristic:
-          "glass-premium glow-border-hover",
+          "",
         "futuristic-featured":
-          "glass-premium glow-border glow-pulse",
+          "shadow-md",
       },
     },
     defaultVariants: {

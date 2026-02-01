@@ -20,7 +20,7 @@ export function MeetingsHero() {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <Card className="glow-border shadow-lg shadow-primary/20 bg-gradient-to-br from-primary to-secondary text-white border-0">
+        <Card className="bg-primary text-white border-0">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -28,12 +28,12 @@ export function MeetingsHero() {
                 <p className="text-5xl font-bold font-heading tracking-tight">{mockMetrics.meetingsThisMonth}</p>
                 <p className="text-white/80 text-sm mt-2">This month</p>
               </div>
-              <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+              <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center">
                 <Calendar className="w-8 h-8" />
               </div>
             </div>
             <div className="mt-4 flex items-center gap-2">
-              <div className="flex items-center gap-1 px-2 py-1 rounded bg-white/20 backdrop-blur-sm text-sm">
+              <div className="flex items-center gap-1 px-2 py-1 rounded bg-white/20 text-sm">
                 <TrendingUp className="w-4 h-4" />
                 <span>+{mockMetrics.meetingsTrend}%</span>
               </div>
@@ -54,8 +54,8 @@ export function MeetingsHero() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-4">
               <p className="text-muted-foreground text-sm font-medium">This Week</p>
-              <div className="w-10 h-10 rounded-full bg-success/10 flex items-center justify-center">
-                <Calendar className="w-5 h-5 text-success" />
+              <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
+                <Calendar className="w-5 h-5 text-muted-foreground" />
               </div>
             </div>
             <p className="text-4xl font-bold font-heading tracking-tight">{mockMetrics.meetingsThisWeek}</p>
@@ -83,8 +83,8 @@ export function MeetingsHero() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-4">
               <p className="text-muted-foreground text-sm font-medium">Monthly Target</p>
-              <div className="w-10 h-10 rounded-full bg-metric-indigo/10 flex items-center justify-center">
-                <Target className="w-5 h-5 text-metric-indigo" />
+              <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
+                <Target className="w-5 h-5 text-muted-foreground" />
               </div>
             </div>
             <div className="flex items-baseline gap-1">

@@ -33,7 +33,7 @@ export function QuickActions() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.3, duration: 0.5 }}
-      className="glass-premium glow-border-hover rounded-xl p-6"
+      className="border border-border rounded-xl p-6"
     >
       <h3 className="font-semibold font-heading mb-4">Quick Actions</h3>
 
@@ -43,12 +43,11 @@ export function QuickActions() {
             key={action.label}
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
-            whileHover={{ x: 4 }}
             transition={{ delay: 0.4 + index * 0.1, duration: 0.3 }}
           >
             <Link
               href={action.href}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-primary/5 transition-colors"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
             >
               <action.icon className="w-4 h-4" />
               {action.label}

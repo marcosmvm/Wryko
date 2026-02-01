@@ -38,14 +38,8 @@ export function AdminStatsCard({
   className,
 }: AdminStatsCardProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={getStaggerDelay(index)}
-      whileHover={{ y: -2, transition: { duration: 0.2 } }}
-    >
+    <div>
       <Card variant="interactive" className={cn('overflow-hidden', className)}>
-        <div className={cn('h-1 w-full bg-gradient-to-r', gradientAccents[variant])} />
         <div className="p-6">
           <div className="flex items-start justify-between">
             <div>
@@ -66,6 +60,6 @@ export function AdminStatsCard({
           </div>
         </div>
       </Card>
-    </motion.div>
+    </div>
   )
 }

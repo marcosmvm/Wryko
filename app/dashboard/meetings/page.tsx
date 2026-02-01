@@ -85,7 +85,7 @@ export default function MeetingsPage() {
       {/* Header */}
       <motion.div {...fadeInUp} transition={{ duration: 0.5 }} className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight"><span className="gradient-text">Meetings</span></h1>
+          <h1 className="text-2xl font-bold tracking-tight">Meetings</h1>
           <p className="text-muted-foreground">Track all your booked meetings and their outcomes</p>
         </div>
         <Button
@@ -114,8 +114,8 @@ export default function MeetingsPage() {
                   <p className="text-xs text-muted-foreground uppercase tracking-wider">Upcoming</p>
                   <p className="text-3xl font-bold font-heading text-primary-muted">{upcomingMeetings.length}</p>
                 </div>
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <Calendar className="w-5 h-5 text-primary" />
+                <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
+                  <Calendar className="w-5 h-5 text-muted-foreground" />
                 </div>
               </div>
             </CardContent>
@@ -175,7 +175,7 @@ export default function MeetingsPage() {
         <Card variant="futuristic">
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-primary" />
+              <Calendar className="w-5 h-5 text-muted-foreground" />
               Upcoming Meetings ({upcomingMeetings.length})
             </CardTitle>
           </CardHeader>
@@ -190,7 +190,7 @@ export default function MeetingsPage() {
                   whileHover={{ y: -3 }}
                 >
                   <div
-                    className="p-4 rounded-xl glass-premium glow-border-hover transition-all"
+                    className="p-4 rounded-xl border border-border transition-all"
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div>

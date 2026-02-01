@@ -42,7 +42,7 @@ export function Header({ userName = 'User', onMenuClick }: HeaderProps) {
   })
 
   return (
-    <header className="h-16 border-b border-border/50 glass-premium sticky top-0 z-30">
+    <header className="h-16 border-b border-border bg-card sticky top-0 z-30">
       <div className="flex items-center justify-between h-full px-4 lg:px-6">
         {/* Mobile menu button */}
         <button
@@ -84,12 +84,10 @@ export function Header({ userName = 'User', onMenuClick }: HeaderProps) {
         <div className="relative">
           <button
             onClick={() => setDropdownOpen(!dropdownOpen)}
-            className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-primary/5 transition-all duration-200"
+            className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted transition-colors duration-200"
           >
-            <div className="bg-gradient-to-br from-primary to-secondary p-[2px] rounded-full">
-              <div className="w-8 h-8 rounded-full bg-card flex items-center justify-center">
-                <User className="w-4 h-4 text-primary" />
-              </div>
+            <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
+              <User className="w-4 h-4 text-muted-foreground" />
             </div>
             <span className="hidden sm:block text-sm font-medium">{userName}</span>
             <ChevronDown className="w-4 h-4 text-muted-foreground" />
@@ -106,21 +104,20 @@ export function Header({ userName = 'User', onMenuClick }: HeaderProps) {
                 initial={{ opacity: 0, y: -4, scale: 0.98 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 0.15 }}
-                className="absolute right-0 mt-2 w-48 glass-premium glow-border rounded-xl shadow-lg z-50 overflow-hidden"
+                className="absolute right-0 mt-2 w-48 bg-card border border-border rounded-xl shadow-lg z-50 overflow-hidden"
               >
-                <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary via-secondary/60 to-primary" />
-                <div className="p-2 pt-3">
+                <div className="p-1.5">
                   <Link
                     href="/dashboard/settings"
                     onClick={() => setDropdownOpen(false)}
-                    className="flex items-center gap-2 px-3 py-2 text-sm rounded-lg hover:bg-primary/5 transition-colors"
+                    className="flex items-center gap-2 px-3 py-2 text-sm rounded-lg hover:bg-muted transition-colors"
                   >
                     <Settings className="w-4 h-4" />
                     Settings
                   </Link>
                   <button
                     onClick={handleSignOut}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-sm rounded-lg hover:bg-destructive/5 transition-colors text-destructive"
+                    className="w-full flex items-center gap-2 px-3 py-2 text-sm rounded-lg hover:bg-muted transition-colors text-destructive"
                   >
                     <LogOut className="w-4 h-4" />
                     Sign out

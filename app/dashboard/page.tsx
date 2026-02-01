@@ -62,11 +62,11 @@ export default function DashboardPage() {
       >
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Welcome back, <span className="gradient-text">User</span></h1>
+            <h1 className="text-2xl font-bold tracking-tight">Welcome back, User</h1>
             <p className="text-muted-foreground">Here&apos;s how your campaigns are performing</p>
             <div className="flex items-center gap-2 mt-2">
-              <span className="inline-flex items-center gap-2 px-3 py-1 text-sm font-medium text-primary bg-primary/10 border border-primary/20 rounded-full">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+              <span className="inline-flex items-center gap-2 px-3 py-1 text-sm font-medium text-muted-foreground bg-muted border border-border rounded-full">
+                <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground" />
                 All Systems Operational
               </span>
             </div>

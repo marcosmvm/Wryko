@@ -214,12 +214,12 @@ export default function SettingsPage() {
     <div className="space-y-6">
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-        <h1 className="text-2xl font-bold tracking-tight"><span className="gradient-text">Settings</span></h1>
+        <h1 className="text-2xl font-bold tracking-tight">Settings</h1>
         <p className="text-muted-foreground">Manage your account, team, and integrations</p>
       </motion.div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="glass-premium p-1.5 glow-border">
+        <TabsList className="border border-border p-1.5">
           <TabsTrigger value="profile" className="gap-2">
             <User className="w-4 h-4" />
             Profile
@@ -260,10 +260,8 @@ export default function SettingsPage() {
               <CardContent>
                 <form onSubmit={handleProfileSave} className="space-y-6">
                   <div className="flex items-center gap-6">
-                    <div className="bg-gradient-to-br from-primary to-secondary p-[2px] rounded-full">
-                      <div className="w-20 h-20 rounded-full bg-card flex items-center justify-center text-2xl font-semibold text-primary">
-                        JS
-                      </div>
+                    <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center text-2xl font-semibold text-foreground">
+                      JS
                     </div>
                     <div>
                       <button type="button" className="px-4 py-2 text-sm font-medium border border-border rounded-lg hover:bg-muted transition-colors">
@@ -341,7 +339,7 @@ export default function SettingsPage() {
                     <button
                       type="submit"
                       disabled={profileLoading}
-                      className="px-6 py-2.5 bg-gradient-to-r from-primary to-secondary text-white rounded-lg font-medium hover:opacity-90 transition-all shadow-lg shadow-primary/15 disabled:opacity-50 flex items-center gap-2"
+                      className="px-6 py-2.5 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 flex items-center gap-2"
                     >
                       {profileLoading && <Loader2 className="w-4 h-4 animate-spin" />}
                       Save Changes
@@ -367,7 +365,7 @@ export default function SettingsPage() {
                 <CardDescription>Manage your password and security settings</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex items-center justify-between p-4 glass-card rounded-lg">
+                <div className="flex items-center justify-between p-4 border border-border rounded-lg">
                   <div>
                     <p className="font-medium">Password</p>
                     <p className="text-sm text-muted-foreground">Last changed 30 days ago</p>
@@ -376,7 +374,7 @@ export default function SettingsPage() {
                     Change Password
                   </button>
                 </div>
-                <div className="flex items-center justify-between p-4 glass-card rounded-lg">
+                <div className="flex items-center justify-between p-4 border border-border rounded-lg">
                   <div>
                     <p className="font-medium">Two-Factor Authentication</p>
                     <p className="text-sm text-muted-foreground">Add an extra layer of security</p>
@@ -403,7 +401,7 @@ export default function SettingsPage() {
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between p-4 glass-card rounded-lg">
+                  <div className="flex items-center justify-between p-4 border border-border rounded-lg">
                     <div>
                       <p className="font-medium">Weekly Performance Reports</p>
                       <p className="text-sm text-muted-foreground">AI-generated insights delivered every Monday</p>
@@ -413,7 +411,7 @@ export default function SettingsPage() {
                       onCheckedChange={(checked) => handleNotificationChange('weeklyReports', checked)}
                     />
                   </div>
-                  <div className="flex items-center justify-between p-4 glass-card rounded-lg">
+                  <div className="flex items-center justify-between p-4 border border-border rounded-lg">
                     <div>
                       <p className="font-medium">Meeting Booked Alerts</p>
                       <p className="text-sm text-muted-foreground">Instant notification when a prospect books a meeting</p>
@@ -423,7 +421,7 @@ export default function SettingsPage() {
                       onCheckedChange={(checked) => handleNotificationChange('meetingBooked', checked)}
                     />
                   </div>
-                  <div className="flex items-center justify-between p-4 glass-card rounded-lg">
+                  <div className="flex items-center justify-between p-4 border border-border rounded-lg">
                     <div>
                       <p className="font-medium">Campaign Alerts</p>
                       <p className="text-sm text-muted-foreground">Important updates about campaign performance</p>
@@ -433,7 +431,7 @@ export default function SettingsPage() {
                       onCheckedChange={(checked) => handleNotificationChange('campaignAlerts', checked)}
                     />
                   </div>
-                  <div className="flex items-center justify-between p-4 glass-card rounded-lg">
+                  <div className="flex items-center justify-between p-4 border border-border rounded-lg">
                     <div>
                       <p className="font-medium">Domain Health Alerts</p>
                       <p className="text-sm text-muted-foreground">Warnings about deliverability issues</p>
@@ -443,7 +441,7 @@ export default function SettingsPage() {
                       onCheckedChange={(checked) => handleNotificationChange('domainAlerts', checked)}
                     />
                   </div>
-                  <div className="flex items-center justify-between p-4 glass-card rounded-lg">
+                  <div className="flex items-center justify-between p-4 border border-border rounded-lg">
                     <div>
                       <p className="font-medium">Optimization Recommendations</p>
                       <p className="text-sm text-muted-foreground">AI suggestions to improve campaign performance</p>
@@ -453,7 +451,7 @@ export default function SettingsPage() {
                       onCheckedChange={(checked) => handleNotificationChange('optimizationTips', checked)}
                     />
                   </div>
-                  <div className="flex items-center justify-between p-4 glass-card rounded-lg">
+                  <div className="flex items-center justify-between p-4 border border-border rounded-lg">
                     <div>
                       <p className="font-medium">Daily Digest</p>
                       <p className="text-sm text-muted-foreground">Summary of all activity from the previous day</p>
@@ -482,7 +480,7 @@ export default function SettingsPage() {
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-4">
-                  <div className="p-4 glass-card glow-border-hover rounded-lg transition-all">
+                  <div className="p-4 border border-border rounded-lg transition-all">
                     <div className="flex items-center gap-3 mb-3">
                       <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center text-xl">
                         📅
@@ -499,7 +497,7 @@ export default function SettingsPage() {
                       Connect
                     </button>
                   </div>
-                  <div className="p-4 glass-card glow-border-hover rounded-lg transition-all">
+                  <div className="p-4 border border-border rounded-lg transition-all">
                     <div className="flex items-center gap-3 mb-3">
                       <div className="w-10 h-10 bg-blue-600/10 rounded-lg flex items-center justify-center text-xl">
                         📆
@@ -520,7 +518,7 @@ export default function SettingsPage() {
 
                 <div className="border-t border-border pt-6">
                   <h3 className="font-medium mb-4">Calendly Settings</h3>
-                  <div className="p-4 glass-card border-l-[3px] border-l-emerald-500 rounded-lg">
+                  <div className="p-4 border border-border border-l-[3px] border-l-emerald-500 rounded-lg">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <CheckCircle2 className="w-5 h-5 text-emerald-500" />
@@ -609,12 +607,10 @@ export default function SettingsPage() {
                 {/* Team Members List */}
                 <div className="divide-y divide-border rounded-lg border border-border overflow-hidden">
                   {teamMembers.map((member) => (
-                    <div key={member.id} className="flex items-center justify-between p-4 hover:bg-primary/5 glow-border-hover transition-colors">
+                    <div key={member.id} className="flex items-center justify-between p-4 hover:bg-muted/50 transition-colors">
                       <div className="flex items-center gap-3">
-                        <div className="bg-gradient-to-br from-primary to-secondary p-[1.5px] rounded-full">
-                          <div className="w-10 h-10 rounded-full bg-card flex items-center justify-center text-sm font-medium text-primary">
-                            {member.avatar}
-                          </div>
+                        <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-sm font-medium text-foreground">
+                          {member.avatar}
                         </div>
                         <div>
                           <div className="flex items-center gap-2">
@@ -669,15 +665,15 @@ export default function SettingsPage() {
                     <div
                       key={integration.id}
                       className={cn(
-                        "p-4 border rounded-lg transition-colors",
+                        "p-4 border border-border rounded-lg transition-colors",
                         integration.connected
-                          ? "glass-premium glow-border border-emerald-500/30"
-                          : "glass-card glow-border-hover"
+                          ? ""
+                          : "hover:bg-muted/50"
                       )}
                     >
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center text-xl">
+                          <div className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center text-xl">
                             {integration.icon}
                           </div>
                           <div>
@@ -729,7 +725,7 @@ export default function SettingsPage() {
                 <CardDescription>Use our API to build custom integrations</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="p-4 glass-premium rounded-lg">
+                <div className="p-4 border border-borderrounded-lg">
                   <div className="flex items-center justify-between mb-3">
                     <p className="font-medium">API Key</p>
                     <button
@@ -742,7 +738,7 @@ export default function SettingsPage() {
                     </button>
                   </div>
                   <div className="flex items-center gap-2">
-                    <code className="flex-1 px-4 py-2 glass-card rounded-lg border border-border text-sm font-mono">
+                    <code className="flex-1 px-4 py-2 border border-border rounded-lg text-sm font-mono">
                       {apiKey}
                     </code>
                     <button
@@ -778,11 +774,11 @@ export default function SettingsPage() {
                 <CardDescription>Your subscription details</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="p-6 bg-gradient-to-br from-primary/10 to-primary/5 rounded-xl border border-primary/20 glow-border glow-pulse">
+                <div className="p-6 rounded-xl border border-border">
                   <div className="flex items-start justify-between mb-4">
                     <div>
                       <Badge className="mb-2">Active</Badge>
-                      <h3 className="text-2xl font-bold"><span className="gradient-text">Founding Partner</span></h3>
+                      <h3 className="text-2xl font-bold">Founding Partner</h3>
                       <p className="text-muted-foreground">Full access to all features</p>
                     </div>
                     <div className="text-right">
@@ -790,7 +786,7 @@ export default function SettingsPage() {
                       <p className="text-sm text-muted-foreground">per month</p>
                     </div>
                   </div>
-                  <div className="flex items-center justify-between pt-4 border-t border-primary/20">
+                  <div className="flex items-center justify-between pt-4 border-t border-border">
                     <div>
                       <p className="text-sm text-muted-foreground">Next billing date</p>
                       <p className="font-medium">February 1, 2026</p>
@@ -819,7 +815,7 @@ export default function SettingsPage() {
                 <CardDescription>Your default payment method</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="flex items-center justify-between p-4 glass-card rounded-lg">
+                <div className="flex items-center justify-between p-4 border border-border rounded-lg">
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-8 bg-gradient-to-r from-blue-600 to-blue-400 rounded flex items-center justify-center text-white text-xs font-bold shadow-md">
                       VISA
@@ -854,10 +850,10 @@ export default function SettingsPage() {
               <CardContent>
                 <div className="divide-y divide-border rounded-lg border border-border overflow-hidden">
                   {billingHistory.map((item) => (
-                    <div key={item.id} className="flex items-center justify-between p-4 hover:bg-primary/5 glow-border-hover transition-colors">
+                    <div key={item.id} className="flex items-center justify-between p-4 hover:bg-muted/50 transition-colors">
                       <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                          <CreditCard className="w-5 h-5 text-primary" />
+                        <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
+                          <CreditCard className="w-5 h-5 text-muted-foreground" />
                         </div>
                         <div>
                           <p className="font-medium">{item.invoice}</p>

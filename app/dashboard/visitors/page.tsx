@@ -75,7 +75,7 @@ export default function VisitorsPage() {
         <div className="flex items-center justify-between">
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-bold tracking-tight"><span className="gradient-text">Visitor Intelligence</span></h1>
+              <h1 className="text-2xl font-bold tracking-tight">Visitor Intelligence</h1>
               <Badge variant="info" className="gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-info animate-pulse" />
                 <Zap className="w-3 h-3" />
@@ -98,15 +98,15 @@ export default function VisitorsPage() {
                   <p className="text-3xl font-bold font-heading">{totalCompanies}</p>
                   <p className="text-xs text-muted-foreground">This week</p>
                 </div>
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <Building2 className="w-5 h-5 text-primary" />
+                <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
+                  <Building2 className="w-5 h-5 text-muted-foreground" />
                 </div>
               </div>
             </CardContent>
           </Card>
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={getStaggerDelay(1)} whileHover={{ y: -2 }}>
-          <Card variant="futuristic" className="glow-border">
+          <Card variant="futuristic" className="">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
@@ -158,7 +158,7 @@ export default function VisitorsPage() {
       </div>
 
       {/* Filters */}
-      <div className="glass-card p-4 rounded-xl">
+      <div className="border border-border p-4 rounded-xl">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
             <Filter className="w-4 h-4 text-muted-foreground" />
@@ -201,7 +201,7 @@ export default function VisitorsPage() {
 
           return (
             <motion.div key={visitor.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={getStaggerDelay(index)} whileHover={{ y: -2 }}>
-              <Card variant="futuristic" className={cn("group", visitor.intentScore === 'high' && "glow-border")}>
+              <Card variant="futuristic" className={cn("group", visitor.intentScore === 'high' && "")}>
                 <CardContent className="p-6">
                   <div className="flex items-start gap-4">
                     {/* Intent Indicator */}
@@ -262,19 +262,19 @@ export default function VisitorsPage() {
 
                       {/* Visit Data */}
                       <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <div className="p-3 rounded-lg glass-card">
+                        <div className="p-3 rounded-lg border border-border">
                           <p className="text-xs text-muted-foreground uppercase">Visits</p>
                           <p className="text-xl font-bold font-heading">{visitor.totalVisits}</p>
                         </div>
-                        <div className="p-3 rounded-lg glass-card">
+                        <div className="p-3 rounded-lg border border-border">
                           <p className="text-xs text-muted-foreground uppercase">Time on Site</p>
                           <p className="text-xl font-bold font-heading">{visitor.timeOnSite}m</p>
                         </div>
-                        <div className="p-3 rounded-lg glass-card">
+                        <div className="p-3 rounded-lg border border-border">
                           <p className="text-xs text-muted-foreground uppercase">Pages Viewed</p>
                           <p className="text-xl font-bold font-heading">{visitor.pagesViewed.length}</p>
                         </div>
-                        <div className="p-3 rounded-lg glass-card">
+                        <div className="p-3 rounded-lg border border-border">
                           <p className="text-xs text-muted-foreground uppercase">Last Visit</p>
                           <p className="text-sm font-medium">
                             {formatDistanceToNow(parseISO(visitor.lastVisitAt), { addSuffix: true })}
@@ -308,13 +308,13 @@ export default function VisitorsPage() {
 
                       {/* Contacts */}
                       {visitor.contacts && visitor.contacts.length > 0 && (
-                        <div className="mt-4 pt-4 border-t border-border/50">
+                        <div className="mt-4 pt-4 border-t border-border">
                           <p className="text-xs text-muted-foreground uppercase mb-3">Decision Makers Found</p>
                           <div className="grid gap-3 md:grid-cols-2">
                             {visitor.contacts.map((contact, idx) => (
-                              <div key={idx} className="flex items-center gap-3 p-3 rounded-lg glass-card">
-                                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                                  <Users className="w-5 h-5 text-primary" />
+                              <div key={idx} className="flex items-center gap-3 p-3 rounded-lg border border-border">
+                                <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
+                                  <Users className="w-5 h-5 text-muted-foreground" />
                                 </div>
                                 <div className="flex-1 min-w-0">
                                   <p className="font-medium">{contact.name}</p>

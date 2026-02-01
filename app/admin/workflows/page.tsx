@@ -159,7 +159,7 @@ export default function WorkflowsPage() {
               whileHover={{ y: -4, transition: { duration: 0.2 } }}
             >
               <Link href={`/admin/workflows/${engine.slug}`}>
-                <Card variant="interactive" className="p-6 glow-border-hover h-full">
+                <Card variant="interactive" className="p-6 h-full">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
                       <IconWrapper icon={Icon} size="md" variant="primary" />

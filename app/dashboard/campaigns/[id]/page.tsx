@@ -122,7 +122,7 @@ export default function CampaignDetailPage({
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-2xl font-bold"><span className="gradient-text">{campaign.name}</span></h1>
+              <h1 className="text-2xl font-bold">{campaign.name}</h1>
               <Badge variant={
                 campaign.status === 'active' ? 'success' :
                 campaign.status === 'paused' ? 'warning' :
@@ -282,7 +282,7 @@ export default function CampaignDetailPage({
                 <div className="space-y-4">
                   {campaign.sequencePerformance.map((email, index) => (
                     <motion.div key={email.emailNumber} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={getStaggerDelay(index)}>
-                      <div className="p-4 rounded-lg glass-card">
+                      <div className="p-4 rounded-lg border border-border">
                         <div className="flex items-start justify-between mb-3">
                           <div>
                             <p className="font-medium">Email {email.emailNumber}</p>
@@ -329,7 +329,7 @@ export default function CampaignDetailPage({
               </CardHeader>
               <CardContent className="space-y-4">
                 {campaign.activeTests.map((test) => (
-                  <div key={test.id} className="p-4 rounded-lg glass-card">
+                  <div key={test.id} className="p-4 rounded-lg border border-border">
                     <div className="flex items-start justify-between mb-4">
                       <div>
                         <div className="flex items-center gap-2">
@@ -358,7 +358,7 @@ export default function CampaignDetailPage({
                       {/* Variant A */}
                       <div className={cn(
                         "p-3 rounded-lg border-2",
-                        test.results?.winner === 'A' ? "relative overflow-hidden border-emerald-500 glass-premium glow-border" : "border-border"
+                        test.results?.winner === 'A' ? "relative overflow-hidden border-emerald-500 border border-border" : "border-border"
                       )}>
                         {test.results?.winner === 'A' && (
                           <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-emerald-500 via-primary to-emerald-500" />
@@ -387,7 +387,7 @@ export default function CampaignDetailPage({
                       {/* Variant B */}
                       <div className={cn(
                         "p-3 rounded-lg border-2",
-                        test.results?.winner === 'B' ? "relative overflow-hidden border-emerald-500 glass-premium glow-border" : "border-border"
+                        test.results?.winner === 'B' ? "relative overflow-hidden border-emerald-500 border border-border" : "border-border"
                       )}>
                         {test.results?.winner === 'B' && (
                           <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-emerald-500 via-primary to-emerald-500" />
@@ -516,7 +516,7 @@ export default function CampaignDetailPage({
                     key={rec.id}
                     className={cn(
                       "p-3 rounded-lg",
-                      rec.priority === 'high' ? "glass-premium border-amber-500/50" :
+                      rec.priority === 'high' ? "border border-border border-amber-500/50" :
                       rec.priority === 'medium' ? "border-blue-500/50 bg-blue-500/5 border" :
                       "border-border border"
                     )}
@@ -554,15 +554,15 @@ export default function CampaignDetailPage({
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <div className="flex justify-between items-center py-2 border-b border-border/50">
+                <div className="flex justify-between items-center py-2 border-b border-border">
                   <span className="text-muted-foreground">Daily Send</span>
                   <span className="font-medium">{campaign.dailySend} emails</span>
                 </div>
-                <div className="flex justify-between items-center py-2 border-b border-border/50">
+                <div className="flex justify-between items-center py-2 border-b border-border">
                   <span className="text-muted-foreground">Active Domains</span>
                   <span className="font-medium">{campaign.domains} domains</span>
                 </div>
-                <div className="flex justify-between items-center py-2 border-b border-border/50">
+                <div className="flex justify-between items-center py-2 border-b border-border">
                   <span className="text-muted-foreground">Email Sequences</span>
                   <span className="font-medium">{campaign.sequences} steps</span>
                 </div>

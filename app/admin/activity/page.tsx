@@ -166,7 +166,7 @@ export default function ActivityPage() {
                   className="flex items-start gap-4 p-4 hover:bg-muted/30 transition-colors"
                 >
                   {/* Avatar */}
-                  <div className="w-10 h-10 rounded-full bg-primary/10 ring-2 ring-primary/5 flex items-center justify-center flex-shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-muted ring-2 ring-primary/5 flex items-center justify-center flex-shrink-0">
                     <span className="text-sm font-medium text-primary">
                       {activity.adminName.charAt(0)}
                     </span>

@@ -59,7 +59,7 @@ export function HealthScoreCard() {
               />
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-4xl font-heading font-bold gradient-text">{overall}</span>
+              <span className="text-4xl font-heading font-bold text-foreground">{overall}</span>
               <span className={cn("text-xs font-medium uppercase", statusColors[status].split(' ')[0])}>
                 {status}
               </span>
@@ -83,7 +83,7 @@ export function HealthScoreCard() {
 
         {/* Risk Signals */}
         {riskSignals.length > 0 && (
-          <div className="mt-4 pt-4 border-t border-border/50">
+          <div className="mt-4 pt-4 border-t border-border">
             <p className="label-text mb-2">
               Attention Items
             </p>
@@ -92,7 +92,7 @@ export function HealthScoreCard() {
                 <div
                   key={idx}
                   className={cn(
-                    "flex items-start gap-2 p-2.5 rounded-lg glass-card text-sm",
+                    "flex items-start gap-2 p-2.5 rounded-lg border border-border text-sm",
                     signal.severity === 'high' ? 'border-l-[3px] border-l-destructive' :
                     signal.severity === 'medium' ? 'border-l-[3px] border-l-warning' : 'border-l-[3px] border-l-info'
                   )}
@@ -113,10 +113,10 @@ export function HealthScoreCard() {
         )}
 
         {riskSignals.length === 0 && (
-          <div className="mt-4 pt-4 border-t border-border/50">
-            <div className="flex items-center gap-2 p-2 rounded-lg glass-card glow-border text-sm">
-              <CheckCircle className="w-4 h-4 text-success" />
-              <span className="text-success font-medium">
+          <div className="mt-4 pt-4 border-t border-border">
+            <div className="flex items-center gap-2 p-2 rounded-lg border border-border text-sm">
+              <CheckCircle className="w-4 h-4 text-muted-foreground" />
+              <span className="text-muted-foreground font-medium">
                 All systems operating normally
               </span>
             </div>

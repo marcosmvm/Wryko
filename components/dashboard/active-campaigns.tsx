@@ -18,7 +18,7 @@ export function ActiveCampaigns() {
         <CardTitle className="text-base font-medium">Active Campaigns</CardTitle>
         <Link
           href="/dashboard/campaigns"
-          className="text-sm text-primary hover:underline flex items-center gap-1"
+          className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1"
         >
           View all <ArrowRight className="w-4 h-4" />
         </Link>
@@ -30,10 +30,10 @@ export function ActiveCampaigns() {
           const positivePercent = totalReplies > 0 ? (campaign.positiveReplies / totalReplies) * 100 : 0
 
           return (
-            <motion.div key={campaign.id} whileHover={{ y: -1 }}>
+            <div key={campaign.id}>
               <Link
                 href={`/dashboard/campaigns/${campaign.id}`}
-                className="block p-4 rounded-lg glass-card glow-border-hover group transition-all"
+                className="block p-4 rounded-lg border border-border hover:bg-muted/50 group transition-colors"
               >
                 <div className="flex items-start justify-between mb-3">
                   <div>
@@ -98,7 +98,7 @@ export function ActiveCampaigns() {
                   </div>
                 </div>
               </Link>
-            </motion.div>
+            </div>
           )
         })}
 
@@ -128,7 +128,7 @@ function MetricItem({
     <div className="text-center">
       <div className={cn(
         "text-lg font-heading font-bold",
-        highlight && "text-primary"
+        highlight && "text-foreground"
       )}>
         {value}
       </div>

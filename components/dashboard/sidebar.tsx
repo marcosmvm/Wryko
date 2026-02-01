@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { motion } from 'framer-motion'
 import {
   LayoutDashboard,
   Calendar,
@@ -19,7 +18,6 @@ import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { IconWrapper } from '@/components/ui/icon-wrapper'
 import { Logo } from '@/components/ui/logo'
-import { springTransition } from '@/lib/animations'
 
 interface NavItem {
   href: string
@@ -61,13 +59,13 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       {/* Sidebar */}
       <aside
         className={cn(
-          'fixed top-0 left-0 z-50 h-full w-64 glass-premium border-r border-border/50 transform transition-transform duration-300 lg:translate-x-0 lg:static lg:z-0',
+          'fixed top-0 left-0 z-50 h-full w-64 bg-card border-r border-border transform transition-transform duration-300 lg:translate-x-0 lg:static lg:z-0',
           isOpen ? 'translate-x-0' : '-translate-x-full'
         )}
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className="flex items-center justify-between h-16 px-4 border-b border-border/50">
+          <div className="flex items-center justify-between h-16 px-4 border-b border-border">
             <Link href="/dashboard" className="flex items-center gap-2">
               <Logo variant="lockup" size="sm" />
             </Link>
@@ -86,19 +84,15 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                 (item.href !== '/dashboard' && pathname.startsWith(item.href))
 
               return (
-                <motion.div
-                  key={item.href}
-                  whileHover={{ x: 2 }}
-                  transition={springTransition}
-                >
+                <div key={item.href}>
                   <Link
                     href={item.href}
                     onClick={onClose}
                     className={cn(
-                      'flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200',
+                      'flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors duration-200 border-l-2',
                       isActive
-                        ? 'bg-primary/10 text-primary border-l-[3px] border-primary shadow-sm'
-                        : 'text-muted-foreground hover:text-foreground hover:bg-primary/5 border-l-[3px] border-transparent'
+                        ? 'text-foreground border-l-primary font-semibold'
+                        : 'text-muted-foreground hover:text-foreground border-l-transparent'
                     )}
                   >
                     <div className="flex items-center gap-3">
@@ -114,25 +108,24 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                       </Badge>
                     )}
                   </Link>
-                </motion.div>
+                </div>
               )
             })}
           </nav>
 
           {/* Health Score Summary */}
-          <div className="p-4 border-t border-border/50">
-            <div className="relative overflow-hidden flex items-center gap-3 p-3 rounded-lg glass-card">
-              <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary via-secondary/60 to-primary" />
-              <IconWrapper icon={TrendingUp} size="md" variant="success" />
+          <div className="p-4 border-t border-border">
+            <div className="flex items-center gap-3 p-3 rounded-lg border border-border">
+              <IconWrapper icon={TrendingUp} size="md" variant="muted" />
               <div>
-                <p className="text-sm font-medium text-success">Health Score</p>
-                <p className="text-xl font-bold gradient-text">87</p>
+                <p className="text-sm font-medium text-muted-foreground">Health Score</p>
+                <p className="text-xl font-bold text-foreground">87</p>
               </div>
             </div>
           </div>
 
           {/* Footer */}
-          <div className="p-4 border-t border-border/50">
+          <div className="p-4 border-t border-border">
             <Link
               href="/"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"

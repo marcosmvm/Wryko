@@ -45,80 +45,71 @@ export default function CampaignsPage() {
     <div className="space-y-6">
       {/* Header */}
       <motion.div {...fadeInUp} transition={{ duration: 0.5 }}>
-        <h1 className="text-2xl font-bold tracking-tight"><span className="gradient-text">Campaigns</span></h1>
+        <h1 className="text-2xl font-bold tracking-tight">Campaigns</h1>
         <p className="text-muted-foreground">Manage and monitor your lead generation campaigns</p>
       </motion.div>
 
       {/* Stats Overview */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={getStaggerDelay(0)} whileHover={{ y: -2 }}>
-          <Card variant="futuristic" className="relative overflow-hidden">
-            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-emerald-500 via-primary to-emerald-500" />
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Active Campaigns</p>
-                  <p className="text-3xl font-heading font-bold">{activeCampaigns}</p>
-                </div>
-                <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-                  <Mail className="w-5 h-5 text-emerald-500" />
-                </div>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs text-muted-foreground uppercase tracking-wider">Active Campaigns</p>
+                <p className="text-3xl font-heading font-bold">{activeCampaigns}</p>
               </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={getStaggerDelay(1)} whileHover={{ y: -2 }}>
-          <Card variant="futuristic">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Total Meetings</p>
-                  <p className="text-3xl font-heading font-bold text-primary-muted">{totalMeetings}</p>
-                </div>
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <Calendar className="w-5 h-5 text-primary" />
-                </div>
+              <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
+                <Mail className="w-5 h-5 text-muted-foreground" />
               </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={getStaggerDelay(2)} whileHover={{ y: -2 }}>
-          <Card variant="futuristic">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Avg Reply Rate</p>
-                  <p className="text-3xl font-heading font-bold">{avgReplyRate}%</p>
-                  <p className="text-xs text-muted-foreground">Industry: 5.1%</p>
-                </div>
-                <div className="w-10 h-10 rounded-lg bg-indigo-500/10 flex items-center justify-center">
-                  <MessageSquare className="w-5 h-5 text-indigo-500" />
-                </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs text-muted-foreground uppercase tracking-wider">Total Meetings</p>
+                <p className="text-3xl font-heading font-bold">{totalMeetings}</p>
               </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={getStaggerDelay(3)} whileHover={{ y: -2 }}>
-          <Card variant="futuristic">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">A/B Tests Running</p>
-                  <p className="text-3xl font-heading font-bold">
-                    {mockCampaigns.reduce((sum, c) => sum + (c.activeTests?.filter(t => t.status === 'running').length || 0), 0)}
-                  </p>
-                </div>
-                <div className="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center">
-                  <FlaskConical className="w-5 h-5 text-purple-500" />
-                </div>
+              <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
+                <Calendar className="w-5 h-5 text-muted-foreground" />
               </div>
-            </CardContent>
-          </Card>
-        </motion.div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs text-muted-foreground uppercase tracking-wider">Avg Reply Rate</p>
+                <p className="text-3xl font-heading font-bold">{avgReplyRate}%</p>
+                <p className="text-xs text-muted-foreground">Industry: 5.1%</p>
+              </div>
+              <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
+                <MessageSquare className="w-5 h-5 text-muted-foreground" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs text-muted-foreground uppercase tracking-wider">A/B Tests Running</p>
+                <p className="text-3xl font-heading font-bold">
+                  {mockCampaigns.reduce((sum, c) => sum + (c.activeTests?.filter(t => t.status === 'running').length || 0), 0)}
+                </p>
+              </div>
+              <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
+                <FlaskConical className="w-5 h-5 text-muted-foreground" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Filters */}
-      <div className="glass-card p-4 rounded-xl">
+      <div className="border border-border p-4 rounded-xl">
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -157,15 +148,12 @@ export default function CampaignsPage() {
           const positivePercent = totalReplies > 0 ? (campaign.positiveReplies / totalReplies) * 100 : 0
 
           return (
-            <motion.div key={campaign.id} whileHover={{ y: -2 }} transition={{ type: 'spring', stiffness: 400, damping: 30 }}>
+            <div key={campaign.id}>
               <Link
                 href={`/dashboard/campaigns/${campaign.id}`}
                 className="block"
               >
-                <Card variant="futuristic" className={cn("group", campaign.status === 'active' && "relative overflow-hidden")}>
-                  {campaign.status === 'active' && (
-                    <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-emerald-500 via-primary to-emerald-500" />
-                  )}
+                <Card className="group hover:bg-muted/30 transition-colors">
                   <CardContent className="p-6">
                     <div className="flex items-start justify-between gap-4">
                       {/* Left: Campaign Info */}
@@ -207,14 +195,14 @@ export default function CampaignsPage() {
                           <div>
                             <p className={cn(
                               "text-2xl font-heading font-bold",
-                              campaign.replyRate >= 8 && "text-emerald-500"
+                              campaign.replyRate >= 8 && "text-foreground"
                             )}>
                               {campaign.replyRate}%
                             </p>
                             <p className="text-xs text-muted-foreground uppercase">Replies</p>
                           </div>
                           <div>
-                            <p className="text-2xl font-heading font-bold text-primary-muted">{campaign.meetings}</p>
+                            <p className="text-2xl font-heading font-bold">{campaign.meetings}</p>
                             <p className="text-xs text-muted-foreground uppercase">Meetings</p>
                           </div>
                           <div>
@@ -248,14 +236,14 @@ export default function CampaignsPage() {
                       </div>
 
                       {/* Right: Arrow */}
-                      <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors shrink-0">
-                        <ChevronRight className="w-5 h-5 text-primary group-hover:translate-x-0.5 transition-transform" />
+                      <div className="flex items-center justify-center w-10 h-10 rounded-full bg-muted group-hover:bg-muted/80 transition-colors shrink-0">
+                        <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:translate-x-0.5 transition-transform" />
                       </div>
                     </div>
                   </CardContent>
                 </Card>
               </Link>
-            </motion.div>
+            </div>
           )
         })}
       </div>

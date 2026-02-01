@@ -71,7 +71,7 @@ export default function DomainHealthPage() {
       <motion.div {...fadeInUp} transition={{ duration: 0.5 }}>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight"><span className="gradient-text">Domain Health</span></h1>
+            <h1 className="text-2xl font-bold tracking-tight">Domain Health</h1>
             <p className="text-muted-foreground">Monitor your sending infrastructure and deliverability</p>
           </div>
           <Button
@@ -290,7 +290,7 @@ export default function DomainHealthPage() {
                 >
                   <div
                     className={cn(
-                      "p-4 rounded-lg glass-card border-l-[3px]",
+                      "p-4 rounded-lg border border-border border-l-[3px]",
                       issue.severity === 'critical' ? "border-l-red-500" :
                       issue.severity === 'warning' ? "border-l-amber-500" : "border-l-blue-500",
                       issue.resolvedAt ? "opacity-60" : ""

@@ -36,7 +36,7 @@ export function EngineActivity() {
     <Card variant="futuristic">
       <CardHeader className="pb-2">
         <div className="flex items-center gap-2">
-          <Zap className="w-5 h-5 text-primary" />
+          <Zap className="w-5 h-5 text-muted-foreground" />
           <CardTitle className="text-base font-medium">Engine Activity</CardTitle>
         </div>
       </CardHeader>
@@ -47,25 +47,21 @@ export function EngineActivity() {
             const StatusIcon = config.icon
 
             return (
-              <motion.div key={activity.id} whileHover={{ x: 2 }}>
+              <motion.div key={activity.id}>
                 <div
-                  className="flex items-start gap-3 p-3 rounded-lg glass-card hover:glow-border-hover transition-all"
+                  className="flex items-start gap-3 p-3 rounded-lg border border-border hover:bg-muted/50 transition-all"
                 >
                   <div className={cn("w-8 h-8 rounded-full flex items-center justify-center shrink-0", config.bg)}>
                     <StatusIcon className={cn("w-4 h-4", config.color)} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      {activity.status === 'running' ? (
-                        <span className="font-medium text-sm gradient-text">{activity.engineName}</span>
-                      ) : (
-                        <span className="font-medium text-sm">{activity.engineName}</span>
-                      )}
+                      <span className="font-medium text-sm">{activity.engineName}</span>
                       <span className="text-xs text-muted-foreground">({activity.engineCode})</span>
                     </div>
                     <p className="text-sm text-muted-foreground truncate">{activity.summary}</p>
                     {activity.impact && (
-                      <p className="text-xs font-medium text-primary mt-1">{activity.impact}</p>
+                      <p className="text-xs font-medium text-foreground mt-1">{activity.impact}</p>
                     )}
                   </div>
                   {activity.status === 'running' && (

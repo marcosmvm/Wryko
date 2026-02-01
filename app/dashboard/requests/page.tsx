@@ -137,7 +137,7 @@ export default function RequestsPage() {
       <motion.div {...fadeInUp} transition={{ duration: 0.5 }}>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight"><span className="gradient-text">Self-Serve Requests</span></h1>
+            <h1 className="text-2xl font-bold tracking-tight">Self-Serve Requests</h1>
             <p className="text-muted-foreground">Submit requests and track their status</p>
           </div>
           <Button
@@ -159,7 +159,7 @@ export default function RequestsPage() {
       <Card variant="futuristic">
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
-            <Zap className="w-5 h-5 text-primary" />
+            <Zap className="w-5 h-5 text-muted-foreground" />
             Quick Actions
             <Badge variant="outline" className="font-normal ml-2">Instant</Badge>
           </CardTitle>
@@ -172,7 +172,7 @@ export default function RequestsPage() {
                   onClick={() => handleQuickAction(action.id, action.label)}
                   disabled={activeAction === action.id}
                   className={cn(
-                    "flex flex-col items-center gap-2 p-4 rounded-xl glass-card glow-border-hover transition-all disabled:opacity-50 relative overflow-hidden w-full",
+                    "flex flex-col items-center gap-2 p-4 rounded-xl border border-border transition-all disabled:opacity-50 relative overflow-hidden w-full",
                     action.color
                   )}
                 >
@@ -252,7 +252,7 @@ export default function RequestsPage() {
                 return (
                   <motion.div key={request.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={getStaggerDelay(index)}>
                     <div
-                      className="flex items-center gap-4 p-4 rounded-lg glass-card border-l-[3px] border-l-amber-500"
+                      className="flex items-center gap-4 p-4 rounded-lg border border-border border-l-[3px] border-l-amber-500"
                     >
                       <div className={cn("w-10 h-10 rounded-full flex items-center justify-center", config.bg)}>
                         <StatusIcon className={cn("w-5 h-5", config.color)} />

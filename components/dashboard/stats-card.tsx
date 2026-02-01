@@ -19,12 +19,11 @@ export function StatsCard({ label, value, change, index = 0 }: StatsCardProps) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -2 }}
       transition={{ delay: index * 0.1, duration: 0.5 }}
-      className="glass-premium glow-border-hover rounded-xl p-6"
+      className="border border-border rounded-xl p-6"
     >
       <p className="text-sm text-muted-foreground mb-1">{label}</p>
-      <p className="text-3xl font-bold font-heading text-primary-muted">{value}</p>
+      <p className="text-3xl font-bold font-heading text-foreground">{value}</p>
       {change && (
         <div className="mt-2">
           <span className={cn(

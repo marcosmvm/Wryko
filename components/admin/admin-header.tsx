@@ -46,9 +46,7 @@ export function AdminHeader({ userName = 'Admin', onMenuClick }: AdminHeaderProp
   }, [dropdownOpen])
 
   return (
-    <header className="h-16 glass-premium sticky top-0 z-30">
-      {/* Gradient bottom border */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/15 to-transparent" />
+    <header className="h-16 bg-card border-b border-border sticky top-0 z-30">
 
       <div className="flex items-center justify-between h-full px-4 lg:px-6">
         {/* Mobile menu button */}
@@ -63,12 +61,9 @@ export function AdminHeader({ userName = 'Admin', onMenuClick }: AdminHeaderProp
 
         {/* Admin Portal badge */}
         <div className="hidden lg:flex items-center gap-3">
-          <div className="flex items-center gap-2 px-4 py-1.5 bg-primary/10 border border-primary/20 rounded-full">
-            <div className="relative">
-              <Shield className="w-4 h-4 text-primary" aria-hidden="true" />
-              <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-success rounded-full animate-pulse-subtle" />
-            </div>
-            <span className="text-sm font-medium text-primary">Admin Portal</span>
+          <div className="flex items-center gap-2 px-4 py-1.5 bg-muted border border-border rounded-full">
+            <Shield className="w-4 h-4 text-muted-foreground" aria-hidden="true" />
+            <span className="text-sm font-medium text-foreground">Admin Portal</span>
           </div>
         </div>
 
@@ -85,8 +80,8 @@ export function AdminHeader({ userName = 'Admin', onMenuClick }: AdminHeaderProp
             aria-label={`User menu for ${userName}`}
             className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted/50 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
-            <div className="w-8 h-8 rounded-full bg-primary/10 ring-2 ring-primary/10 flex items-center justify-center">
-              <User className="w-4 h-4 text-primary" aria-hidden="true" />
+            <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
+              <User className="w-4 h-4 text-muted-foreground" aria-hidden="true" />
             </div>
             <span className="hidden sm:block text-sm font-medium">{userName}</span>
             <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`} aria-hidden="true" />
