@@ -145,24 +145,18 @@ export function EnginePipelineVisual({ className }: EnginePipelineVisualProps) {
         viewport={{ once: true }}
         transition={{ delay: 0.2, duration: 0.6 }}
       >
-        <div className="relative flex flex-col items-center">
+        <div
+          className="relative flex flex-col items-center group cursor-pointer"
+          onMouseEnter={(e) => handleMouseEnter('Wryko', 'Autonomous B2B lead generation powered by 11 AI engines', e)}
+          onMouseLeave={handleMouseLeave}
+        >
           <motion.div
             className="w-20 h-20 rounded-2xl shadow-xl shadow-primary/15"
             animate={reducedMotion ? {} : { scale: [1, 1.02, 1] }}
             transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+            whileHover={{ scale: 1.08 }}
           >
             <Logo variant="icon" size="xl" />
-          </motion.div>
-          {/* Tooltip label */}
-          <motion.div
-            className="mt-2 bg-card border border-primary/20 rounded-lg px-3 py-1.5 shadow-lg"
-            initial={{ opacity: 0, y: 6 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.5, duration: 0.4 }}
-          >
-            <div className="text-[11px] font-semibold text-foreground text-center">Wryko</div>
-            <div className="text-[9px] text-muted-foreground text-center">11 AI Engines</div>
           </motion.div>
         </div>
       </motion.div>
