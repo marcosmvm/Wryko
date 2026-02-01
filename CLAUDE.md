@@ -1,8 +1,8 @@
-# XGrowthOS - Claude Code Project Guide
+# Wryko - Claude Code Project Guide
 
 ## Project Overview
 
-XGrowthOS is an autonomous B2B lead generation platform powered by 11 AI engines. This repository contains:
+Wryko is an autonomous B2B lead generation platform powered by 11 AI engines. This repository contains:
 1. **Landing Website** - Marketing site for client acquisition
 2. **Client Portal** - Dashboard for clients to monitor campaigns
 3. **Admin Portal** - Internal management interface
@@ -64,7 +64,7 @@ Before building the frontend, ensure the n8n workflow:
 ## Project Structure
 
 ```
-XGrowthOS/
+Wryko/
 ├── CLAUDE.md                # This file
 ├── .env.local              # Local environment variables (not committed)
 ├── .env.example            # Template for environment variables
@@ -205,14 +205,16 @@ INSTANTLY_API_KEY=your_instantly_key
 ### Colors (from brand guidelines)
 ```css
 /* Light Mode */
---primary: #059669;
+--primary: #A855F7;
+--secondary: #6366F1;
 --background: #FFFFFF;
 --surface: #F9FAFB;
 --text-primary: #111827;
 --text-secondary: #4B5563;
 
 /* Dark Mode */
---primary: #22C55E;
+--primary: #6366F1;
+--secondary: #A855F7;
 --background: #0A0A0A;
 --surface: #171717;
 --text-primary: #F9FAFB;
@@ -288,4 +290,4 @@ For questions about this project:
 
 ---
 
-*XGrowthOS - Autonomous B2B Lead Generation Platform*
+*Wryko - Autonomous B2B Lead Generation Platform*

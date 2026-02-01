@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Users, DollarSign, Cog, Calendar, AlertTriangle, Loader2, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
@@ -11,19 +12,34 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import {
   mockAdminMetrics,
-  mockClients,
   mockEngineRuns,
   mockAdminActivity,
   formatMrr,
 } from '@/lib/data/admin-mock'
 import { HEALTH_THRESHOLDS } from '@/lib/constants/admin'
 import { fadeInUp, defaultTransition, getStaggerDelay } from '@/lib/animations'
+import { getClients, type ClientRecord } from '@/lib/supabase/client-actions'
 
 export default function AdminDashboardPage() {
-  const activeClients = mockClients.filter((c) => c.status === 'active')
-  const atRiskClients = mockClients.filter(
-    (c) => c.healthScore < HEALTH_THRESHOLDS.HEALTHY && c.status === 'active'
+  const [clients, setClients] = useState<ClientRecord[]>([])
+  const [statsLoaded, setStatsLoaded] = useState(false)
+
+  useEffect(() => {
+    async function loadClients() {
+      const result = await getClients()
+      if (result.data) {
+        setClients(result.data)
+      }
+      setStatsLoaded(true)
+    }
+    loadClients()
+  }, [])
+
+  const activeClients = clients.filter((c) => c.status === 'active')
+  const atRiskClients = clients.filter(
+    (c) => c.health_score < HEALTH_THRESHOLDS.HEALTHY && c.status === 'active'
   )
+  const totalMrr = clients.reduce((sum, c) => sum + (Number(c.mrr) || 0), 0)
   const recentRuns = mockEngineRuns.slice(0, 5)
   const recentActivity = mockAdminActivity.slice(0, 5)
 
@@ -44,19 +60,17 @@ export default function AdminDashboardPage() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <AdminStatsCard
           label="Active Clients"
-          value={mockAdminMetrics.activeClients}
+          value={statsLoaded ? activeClients.length : '...'}
           icon={Users}
           variant="primary"
           index={0}
-          trend={{ value: 12, isPositive: true }}
         />
         <AdminStatsCard
           label="Monthly MRR"
-          value={formatMrr(mockAdminMetrics.totalMrr)}
+          value={statsLoaded ? formatMrr(totalMrr) : '...'}
           icon={DollarSign}
           variant="blue"
           index={1}
-          trend={{ value: 8, isPositive: true }}
         />
         <AdminStatsCard
           label="Engines Running"
@@ -205,7 +219,14 @@ export default function AdminDashboardPage() {
                 <CardTitle id="health-heading">Client Health</CardTitle>
               </CardHeader>
               <CardContent>
-                <HealthBreakdown clients={mockClients} />
+                <HealthBreakdown clients={clients.map(c => ({
+                    ...c,
+                    companyName: c.company_name,
+                    contactName: c.contact_name,
+                    contactEmail: c.contact_email,
+                    healthScore: c.health_score,
+                    createdAt: c.created_at,
+                  }))} />
               </CardContent>
             </Card>
           </motion.div>
@@ -238,12 +259,12 @@ export default function AdminDashboardPage() {
                         >
                           <div className="flex items-center justify-between">
                             <div>
-                              <p className="font-medium text-sm">{client.companyName}</p>
+                              <p className="font-medium text-sm">{client.company_name}</p>
                               <p className="text-xs text-muted-foreground">
-                                {client.contactName}
+                                {client.contact_name}
                               </p>
                             </div>
-                            <HealthScore score={client.healthScore} size="sm" />
+                            <HealthScore score={client.health_score} size="sm" />
                           </div>
                         </Link>
                       </motion.div>

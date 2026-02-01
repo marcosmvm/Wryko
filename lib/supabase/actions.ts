@@ -97,3 +97,68 @@ export async function updatePassword(formData: FormData) {
 
   redirect('/login?message=Password updated successfully')
 }
+
+export async function changePassword(newPassword: string, confirmPassword: string) {
+  const supabase = await createClient()
+
+  if (newPassword !== confirmPassword) {
+    return { error: 'Passwords do not match' }
+  }
+
+  if (newPassword.length < 8) {
+    return { error: 'Password must be at least 8 characters' }
+  }
+
+  const { error } = await supabase.auth.updateUser({
+    password: newPassword,
+  })
+
+  if (error) {
+    return { error: error.message }
+  }
+
+  return { success: true }
+}
+
+export async function updateUserProfile(data: {
+  full_name?: string
+  company?: string
+  phone?: string
+  website?: string
+  notification_prefs?: Record<string, boolean>
+}) {
+  const supabase = await createClient()
+
+  const { error } = await supabase.auth.updateUser({
+    data,
+  })
+
+  if (error) {
+    return { error: error.message }
+  }
+
+  return { success: true }
+}
+
+export async function getCurrentUser() {
+  const supabase = await createClient()
+  const { data: { user }, error } = await supabase.auth.getUser()
+
+  if (error || !user) {
+    return { error: error?.message || 'Not authenticated' }
+  }
+
+  return {
+    success: true,
+    user: {
+      id: user.id,
+      email: user.email || '',
+      full_name: user.user_metadata?.full_name || '',
+      company: user.user_metadata?.company || '',
+      phone: user.user_metadata?.phone || '',
+      website: user.user_metadata?.website || '',
+      role: user.user_metadata?.role || 'client',
+      notification_prefs: user.user_metadata?.notification_prefs || {},
+    },
+  }
+}

@@ -399,7 +399,10 @@ export default function ReportsPage() {
                 Reports are automatically generated every Monday at 9:00 AM and sent to your email.
               </p>
             </div>
-            <button className="px-4 py-2 text-sm font-medium hover:bg-muted rounded-lg transition-colors">
+            <button
+              onClick={() => window.location.href = '/dashboard/settings?tab=notifications'}
+              className="px-4 py-2 text-sm font-medium hover:bg-muted rounded-lg transition-colors"
+            >
               Manage Preferences
             </button>
           </div>

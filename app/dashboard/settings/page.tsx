@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import {
   Loader2,
@@ -19,7 +20,11 @@ import {
   Globe,
   Trash2,
   CheckCircle2,
-  Copy
+  Copy,
+  AlertTriangle,
+  Info,
+  Lock,
+  Upload
 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -28,6 +33,8 @@ import { Switch } from '@/components/ui/switch'
 import { cn } from '@/lib/utils'
 import { useToastActions } from '@/components/ui/toast'
 import { settingsWorkflows } from '@/lib/n8n/client'
+import { Dialog, DialogHeader, DialogTitle, DialogDescription, DialogContent, DialogFooter } from '@/components/ui/dialog'
+import { changePassword, getCurrentUser } from '@/lib/supabase/actions'
 
 // Mock data for team members
 const teamMembers = [
@@ -36,59 +43,95 @@ const teamMembers = [
   { id: '3', name: 'Mike Chen', email: 'mike@company.com', role: 'Member', avatar: 'MC', status: 'pending' },
 ]
 
-// Mock data for integrations
+// Integrations - all marked as not configured (requires OAuth setup)
 const integrations = [
   {
     id: 'salesforce',
     name: 'Salesforce',
     description: 'Sync leads and opportunities',
     icon: '☁️',
-    connected: true,
-    lastSync: '2 hours ago'
   },
   {
     id: 'hubspot',
     name: 'HubSpot',
     description: 'CRM and marketing automation',
     icon: '🔶',
-    connected: false,
-    lastSync: null
   },
   {
     id: 'slack',
     name: 'Slack',
     description: 'Get notifications in your workspace',
     icon: '💬',
-    connected: true,
-    lastSync: 'Real-time'
   },
   {
     id: 'zapier',
     name: 'Zapier',
     description: 'Connect with 5000+ apps',
     icon: '⚡',
-    connected: false,
-    lastSync: null
   },
 ]
 
-// Mock data for billing
-const billingHistory = [
-  { id: '1', date: 'Jan 1, 2026', amount: '$2,000.00', status: 'paid', invoice: 'INV-2026-001' },
-  { id: '2', date: 'Dec 1, 2025', amount: '$2,000.00', status: 'paid', invoice: 'INV-2025-012' },
-  { id: '3', date: 'Nov 1, 2025', amount: '$2,000.00', status: 'paid', invoice: 'INV-2025-011' },
-]
-
 export default function SettingsPage() {
+  const router = useRouter()
   const [activeTab, setActiveTab] = useState('profile')
   const [profileLoading, setProfileLoading] = useState(false)
   const [inviteEmail, setInviteEmail] = useState('')
   const [inviteLoading, setInviteLoading] = useState(false)
   const [removingMember, setRemovingMember] = useState<string | null>(null)
+  const [updatingRole, setUpdatingRole] = useState<string | null>(null)
   const [regeneratingKey, setRegeneratingKey] = useState(false)
   const [apiKey, setApiKey] = useState('xg_live_••••••••••••••••')
+  const [showPasswordDialog, setShowPasswordDialog] = useState(false)
+  const [passwordLoading, setPasswordLoading] = useState(false)
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPasswordValue, setConfirmPasswordValue] = useState('')
+  const [passwordError, setPasswordError] = useState('')
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
+  const [userInitials, setUserInitials] = useState('--')
+  const [meetingDuration, setMeetingDuration] = useState('30')
+  const [meetingBuffer, setMeetingBuffer] = useState('15')
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const toast = useToastActions()
   const formRef = useRef<HTMLFormElement>(null)
+
+  // Load user profile on mount
+  useEffect(() => {
+    async function loadUser() {
+      try {
+        const result = await getCurrentUser()
+        if (result.success && result.user) {
+          const name = result.user.full_name || ''
+          const initials = name
+            .split(' ')
+            .map((n: string) => n[0])
+            .join('')
+            .toUpperCase()
+            .slice(0, 2) || '--'
+          setUserInitials(initials)
+
+          // Pre-fill form if we have a ref
+          if (formRef.current) {
+            const nameInput = formRef.current.querySelector<HTMLInputElement>('[name="name"]')
+            const companyInput = formRef.current.querySelector<HTMLInputElement>('[name="company"]')
+            const phoneInput = formRef.current.querySelector<HTMLInputElement>('[name="phone"]')
+            const websiteInput = formRef.current.querySelector<HTMLInputElement>('[name="website"]')
+            if (nameInput) nameInput.value = result.user.full_name || ''
+            if (companyInput) companyInput.value = result.user.company || ''
+            if (phoneInput) phoneInput.value = result.user.phone || ''
+            if (websiteInput) websiteInput.value = result.user.website || ''
+          }
+
+          // Load notification prefs
+          if (result.user.notification_prefs && typeof result.user.notification_prefs === 'object') {
+            setNotifications(prev => ({ ...prev, ...result.user!.notification_prefs as Record<string, boolean> }))
+          }
+        }
+      } catch {
+        // Profile load failed silently - form will use defaults
+      }
+    }
+    loadUser()
+  }, [])
 
   // Notification preferences state
   const [notifications, setNotifications] = useState({
@@ -175,6 +218,22 @@ export default function SettingsPage() {
     }
   }, [toast])
 
+  const handleRoleChange = useCallback(async (memberId: string, newRole: string) => {
+    setUpdatingRole(memberId)
+    try {
+      const result = await settingsWorkflows.updateMemberRole(memberId, newRole)
+      if (result.success) {
+        toast.success('Role updated', `Member role changed to ${newRole}`)
+      } else {
+        toast.error('Update failed', result.error || 'Could not update role')
+      }
+    } catch {
+      toast.error('Update failed', 'An unexpected error occurred')
+    } finally {
+      setUpdatingRole(null)
+    }
+  }, [toast])
+
   const handleRegenerateApiKey = useCallback(async () => {
     setRegeneratingKey(true)
     try {
@@ -201,14 +260,74 @@ export default function SettingsPage() {
     }
   }, [apiKey, toast])
 
-  const handleConnectIntegration = useCallback((integrationName: string) => {
-    toast.info('Coming soon', `${integrationName} integration will be available soon`)
+  const handlePasswordChange = useCallback(async () => {
+    setPasswordError('')
+    if (newPassword.length < 8) {
+      setPasswordError('Password must be at least 8 characters')
+      return
+    }
+    if (newPassword !== confirmPasswordValue) {
+      setPasswordError('Passwords do not match')
+      return
+    }
+    setPasswordLoading(true)
+    try {
+      const result = await changePassword(newPassword, confirmPasswordValue)
+      if (result.success) {
+        toast.success('Password updated', 'Your password has been changed')
+        setShowPasswordDialog(false)
+        setNewPassword('')
+        setConfirmPasswordValue('')
+      } else {
+        setPasswordError(result.error || 'Could not update password')
+      }
+    } catch {
+      setPasswordError('An unexpected error occurred')
+    } finally {
+      setPasswordLoading(false)
+    }
+  }, [newPassword, confirmPasswordValue, toast])
+
+  const handleAvatarClick = () => {
+    fileInputRef.current?.click()
+  }
+
+  const handleAvatarChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    if (!file.type.startsWith('image/')) {
+      toast.error('Invalid file', 'Please select a JPG or PNG image')
+      return
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error('File too large', 'Maximum file size is 2MB')
+      return
+    }
+
+    const reader = new FileReader()
+    reader.onload = async () => {
+      const base64 = reader.result as string
+      setAvatarPreview(base64)
+      try {
+        const result = await settingsWorkflows.updateProfile({ avatar: base64 })
+        if (result.success) {
+          toast.success('Avatar updated', 'Your profile picture has been saved')
+        } else {
+          toast.error('Upload failed', result.error || 'Could not save avatar')
+          setAvatarPreview(null)
+        }
+      } catch {
+        toast.error('Upload failed', 'An unexpected error occurred')
+        setAvatarPreview(null)
+      }
+    }
+    reader.readAsDataURL(file)
   }, [toast])
 
-  const handleManageSubscription = useCallback(() => {
-    window.open('https://billing.stripe.com/p/login/test', '_blank')
-    toast.info('Opening Stripe', 'Redirecting to billing portal')
-  }, [toast])
+  const stripePortalUrl = typeof window !== 'undefined'
+    ? process.env.NEXT_PUBLIC_STRIPE_PORTAL_URL
+    : undefined
 
   return (
     <div className="space-y-6">
@@ -258,13 +377,33 @@ export default function SettingsPage() {
                 <CardDescription>Update your personal and company details</CardDescription>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleProfileSave} className="space-y-6">
+                <form ref={formRef} onSubmit={handleProfileSave} className="space-y-6">
                   <div className="flex items-center gap-6">
-                    <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center text-2xl font-semibold text-foreground">
-                      JS
-                    </div>
+                    {avatarPreview ? (
+                      <img
+                        src={avatarPreview}
+                        alt="Avatar"
+                        className="w-20 h-20 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center text-2xl font-semibold text-foreground">
+                        {userInitials}
+                      </div>
+                    )}
                     <div>
-                      <button type="button" className="px-4 py-2 text-sm font-medium border border-border rounded-lg hover:bg-muted transition-colors">
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/jpeg,image/png"
+                        className="hidden"
+                        onChange={handleAvatarChange}
+                      />
+                      <button
+                        type="button"
+                        onClick={handleAvatarClick}
+                        className="px-4 py-2 text-sm font-medium border border-border rounded-lg hover:bg-muted transition-colors inline-flex items-center gap-2"
+                      >
+                        <Upload className="w-4 h-4" />
                         Change Avatar
                       </button>
                       <p className="text-xs text-muted-foreground mt-2">JPG, PNG. Max 2MB</p>
@@ -279,8 +418,9 @@ export default function SettingsPage() {
                       </label>
                       <input
                         id="name"
+                        name="name"
                         type="text"
-                        defaultValue="John Smith"
+                        defaultValue=""
                         className="w-full px-4 py-2.5 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
                       />
                     </div>
@@ -292,7 +432,7 @@ export default function SettingsPage() {
                       <input
                         id="email"
                         type="email"
-                        defaultValue="john@company.com"
+                        defaultValue=""
                         disabled
                         className="w-full px-4 py-2.5 rounded-lg border border-border bg-muted text-muted-foreground cursor-not-allowed"
                       />
@@ -304,8 +444,9 @@ export default function SettingsPage() {
                       </label>
                       <input
                         id="company"
+                        name="company"
                         type="text"
-                        defaultValue="Acme Corporation"
+                        defaultValue=""
                         className="w-full px-4 py-2.5 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
                       />
                     </div>
@@ -316,8 +457,9 @@ export default function SettingsPage() {
                       </label>
                       <input
                         id="phone"
+                        name="phone"
                         type="tel"
-                        defaultValue="+1 (555) 123-4567"
+                        defaultValue=""
                         className="w-full px-4 py-2.5 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
                       />
                     </div>
@@ -328,8 +470,9 @@ export default function SettingsPage() {
                       </label>
                       <input
                         id="website"
+                        name="website"
                         type="url"
-                        defaultValue="https://acme.com"
+                        defaultValue=""
                         className="w-full px-4 py-2.5 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
                       />
                     </div>
@@ -368,20 +511,24 @@ export default function SettingsPage() {
                 <div className="flex items-center justify-between p-4 border border-border rounded-lg">
                   <div>
                     <p className="font-medium">Password</p>
-                    <p className="text-sm text-muted-foreground">Last changed 30 days ago</p>
+                    <p className="text-sm text-muted-foreground">Change your account password</p>
                   </div>
-                  <button className="px-4 py-2 border border-border rounded-lg font-medium hover:bg-muted transition-colors">
+                  <button
+                    onClick={() => setShowPasswordDialog(true)}
+                    className="px-4 py-2 border border-border rounded-lg font-medium hover:bg-muted transition-colors"
+                  >
                     Change Password
                   </button>
                 </div>
-                <div className="flex items-center justify-between p-4 border border-border rounded-lg">
+                <div className="flex items-center justify-between p-4 border border-border rounded-lg bg-muted/30">
                   <div>
                     <p className="font-medium">Two-Factor Authentication</p>
-                    <p className="text-sm text-muted-foreground">Add an extra layer of security</p>
+                    <p className="text-sm text-muted-foreground">Requires admin configuration</p>
                   </div>
-                  <button className="px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors">
-                    Enable 2FA
-                  </button>
+                  <Badge variant="secondary" className="gap-1">
+                    <Lock className="w-3 h-3" />
+                    Contact Admin
+                  </Badge>
                 </div>
               </CardContent>
             </Card>
@@ -480,7 +627,7 @@ export default function SettingsPage() {
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-4">
-                  <div className="p-4 border border-border rounded-lg transition-all">
+                  <div className="p-4 border border-border rounded-lg bg-muted/30">
                     <div className="flex items-center gap-3 mb-3">
                       <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center text-xl">
                         📅
@@ -491,13 +638,13 @@ export default function SettingsPage() {
                       </div>
                     </div>
                     <button
-                      onClick={() => handleConnectIntegration('Google Calendar')}
-                      className="w-full px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors"
+                      disabled
+                      className="w-full px-4 py-2 bg-muted text-muted-foreground rounded-lg font-medium cursor-not-allowed text-sm"
                     >
-                      Connect
+                      Setup Required — Contact Admin
                     </button>
                   </div>
-                  <div className="p-4 border border-border rounded-lg transition-all">
+                  <div className="p-4 border border-border rounded-lg bg-muted/30">
                     <div className="flex items-center gap-3 mb-3">
                       <div className="w-10 h-10 bg-blue-600/10 rounded-lg flex items-center justify-center text-xl">
                         📆
@@ -508,10 +655,10 @@ export default function SettingsPage() {
                       </div>
                     </div>
                     <button
-                      onClick={() => handleConnectIntegration('Microsoft Outlook')}
-                      className="w-full px-4 py-2 border border-border rounded-lg font-medium hover:bg-muted transition-colors"
+                      disabled
+                      className="w-full px-4 py-2 bg-muted text-muted-foreground rounded-lg font-medium cursor-not-allowed text-sm"
                     >
-                      Connect
+                      Setup Required — Contact Admin
                     </button>
                   </div>
                 </div>
@@ -542,19 +689,33 @@ export default function SettingsPage() {
                   <div className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium mb-2">Default Meeting Duration</label>
-                      <select className="w-full px-4 py-2.5 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/50">
-                        <option>15 minutes</option>
-                        <option selected>30 minutes</option>
-                        <option>45 minutes</option>
-                        <option>60 minutes</option>
+                      <select
+                        value={meetingDuration}
+                        onChange={(e) => {
+                          setMeetingDuration(e.target.value)
+                          toast.success('Preference saved', `Meeting duration set to ${e.target.value} minutes`)
+                        }}
+                        className="w-full px-4 py-2.5 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      >
+                        <option value="15">15 minutes</option>
+                        <option value="30">30 minutes</option>
+                        <option value="45">45 minutes</option>
+                        <option value="60">60 minutes</option>
                       </select>
                     </div>
                     <div>
                       <label className="block text-sm font-medium mb-2">Buffer Between Meetings</label>
-                      <select className="w-full px-4 py-2.5 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/50">
-                        <option>No buffer</option>
-                        <option selected>15 minutes</option>
-                        <option>30 minutes</option>
+                      <select
+                        value={meetingBuffer}
+                        onChange={(e) => {
+                          setMeetingBuffer(e.target.value)
+                          toast.success('Preference saved', `Buffer set to ${e.target.value === '0' ? 'none' : e.target.value + ' minutes'}`)
+                        }}
+                        className="w-full px-4 py-2.5 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      >
+                        <option value="0">No buffer</option>
+                        <option value="15">15 minutes</option>
+                        <option value="30">30 minutes</option>
                       </select>
                     </div>
                   </div>
@@ -623,10 +784,15 @@ export default function SettingsPage() {
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <select className="px-3 py-1.5 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/50">
-                          <option selected={member.role === 'Admin'}>Admin</option>
-                          <option selected={member.role === 'Member'}>Member</option>
-                          <option>Viewer</option>
+                        <select
+                          defaultValue={member.role}
+                          disabled={updatingRole === member.id}
+                          onChange={(e) => handleRoleChange(member.id, e.target.value)}
+                          className="px-3 py-1.5 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:opacity-50"
+                        >
+                          <option value="Admin">Admin</option>
+                          <option value="Member">Member</option>
+                          <option value="Viewer">Viewer</option>
                         </select>
                         <button
                           onClick={() => handleRemoveMember(member.id, member.name)}
@@ -664,12 +830,7 @@ export default function SettingsPage() {
                   {integrations.map((integration) => (
                     <div
                       key={integration.id}
-                      className={cn(
-                        "p-4 border border-border rounded-lg transition-colors",
-                        integration.connected
-                          ? ""
-                          : "hover:bg-muted/50"
-                      )}
+                      className="p-4 border border-border rounded-lg bg-muted/30"
                     >
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex items-center gap-3">
@@ -682,30 +843,18 @@ export default function SettingsPage() {
                           </div>
                         </div>
                       </div>
-                      {integration.connected ? (
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2 text-sm text-emerald-600">
-                            <CheckCircle2 className="w-4 h-4" />
-                            <span>Connected</span>
-                            {integration.lastSync && (
-                              <span className="text-muted-foreground">· {integration.lastSync}</span>
-                            )}
-                          </div>
-                          <button
-                            onClick={() => handleConnectIntegration(integration.name)}
-                            className="px-3 py-1.5 text-sm font-medium hover:bg-muted rounded-lg transition-colors"
-                          >
-                            Manage
-                          </button>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <AlertTriangle className="w-4 h-4" />
+                          <span>Not configured</span>
                         </div>
-                      ) : (
                         <button
-                          onClick={() => handleConnectIntegration(integration.name)}
-                          className="w-full px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors"
+                          disabled
+                          className="px-3 py-1.5 text-sm font-medium bg-muted text-muted-foreground rounded-lg cursor-not-allowed"
                         >
-                          Connect
+                          Setup Required
                         </button>
-                      )}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -725,7 +874,7 @@ export default function SettingsPage() {
                 <CardDescription>Use our API to build custom integrations</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="p-4 border border-borderrounded-lg">
+                <div className="p-4 border border-border rounded-lg">
                   <div className="flex items-center justify-between mb-3">
                     <p className="font-medium">API Key</p>
                     <button
@@ -750,13 +899,10 @@ export default function SettingsPage() {
                     </button>
                   </div>
                 </div>
-                <a
-                  href="#"
-                  className="inline-flex items-center gap-2 mt-4 text-sm text-primary hover:underline"
-                >
-                  View API Documentation
-                  <ExternalLink className="w-4 h-4" />
-                </a>
+                <p className="mt-4 text-sm text-muted-foreground flex items-center gap-2">
+                  <Info className="w-4 h-4" />
+                  API documentation is being prepared and will be available soon.
+                </p>
               </CardContent>
             </Card>
           </motion.div>
@@ -770,113 +916,99 @@ export default function SettingsPage() {
           >
             <Card variant="futuristic">
               <CardHeader>
-                <CardTitle>Current Plan</CardTitle>
-                <CardDescription>Your subscription details</CardDescription>
+                <CardTitle>Billing</CardTitle>
+                <CardDescription>Manage your subscription and payments</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="p-6 rounded-xl border border-border">
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <Badge className="mb-2">Active</Badge>
-                      <h3 className="text-2xl font-bold">Founding Partner</h3>
-                      <p className="text-muted-foreground">Full access to all features</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-3xl font-bold font-heading">$2,000</p>
-                      <p className="text-sm text-muted-foreground">per month</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between pt-4 border-t border-border">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Next billing date</p>
-                      <p className="font-medium">February 1, 2026</p>
-                    </div>
+                <div className="p-8 text-center border border-dashed border-border rounded-xl">
+                  <CreditCard className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
+                  <h3 className="font-semibold mb-2">Billing Not Configured</h3>
+                  <p className="text-sm text-muted-foreground mb-4 max-w-md mx-auto">
+                    Payment processing has not been set up yet. Contact your account manager to configure billing for your subscription.
+                  </p>
+                  {stripePortalUrl ? (
                     <button
-                      onClick={handleManageSubscription}
-                      className="px-4 py-2 border border-border rounded-lg font-medium hover:bg-muted transition-colors"
+                      onClick={() => window.open(stripePortalUrl, '_blank')}
+                      className="px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors inline-flex items-center gap-2"
                     >
-                      Manage Subscription
+                      <ExternalLink className="w-4 h-4" />
+                      Open Billing Portal
                     </button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          {/* Payment Method */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
-            <Card variant="futuristic">
-              <CardHeader>
-                <CardTitle>Payment Method</CardTitle>
-                <CardDescription>Your default payment method</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between p-4 border border-border rounded-lg">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-8 bg-gradient-to-r from-blue-600 to-blue-400 rounded flex items-center justify-center text-white text-xs font-bold shadow-md">
-                      VISA
-                    </div>
-                    <div>
-                      <p className="font-medium">•••• •••• •••• 4242</p>
-                      <p className="text-sm text-muted-foreground">Expires 12/27</p>
-                    </div>
-                  </div>
-                  <button
-                    onClick={handleManageSubscription}
-                    className="px-4 py-2 border border-border rounded-lg font-medium hover:bg-muted transition-colors"
-                  >
-                    Update
-                  </button>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          {/* Billing History */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <Card variant="futuristic">
-              <CardHeader>
-                <CardTitle>Billing History</CardTitle>
-                <CardDescription>Download past invoices</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="divide-y divide-border rounded-lg border border-border overflow-hidden">
-                  {billingHistory.map((item) => (
-                    <div key={item.id} className="flex items-center justify-between p-4 hover:bg-muted/50 transition-colors">
-                      <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
-                          <CreditCard className="w-5 h-5 text-muted-foreground" />
-                        </div>
-                        <div>
-                          <p className="font-medium">{item.invoice}</p>
-                          <p className="text-sm text-muted-foreground">{item.date}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-4">
-                        <div className="text-right">
-                          <p className="font-medium">{item.amount}</p>
-                          <Badge variant="success" className="text-xs">Paid</Badge>
-                        </div>
-                        <button className="p-2 hover:bg-muted rounded-lg transition-colors">
-                          <ExternalLink className="w-4 h-4 text-muted-foreground" />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
+                  ) : (
+                    <Badge variant="secondary" className="gap-1">
+                      <AlertTriangle className="w-3 h-3" />
+                      Stripe portal URL not configured
+                    </Badge>
+                  )}
                 </div>
               </CardContent>
             </Card>
           </motion.div>
         </TabsContent>
       </Tabs>
+
+      {/* Password Change Dialog */}
+      <Dialog open={showPasswordDialog} onOpenChange={setShowPasswordDialog}>
+        <DialogHeader>
+          <DialogTitle>Change Password</DialogTitle>
+          <DialogDescription>
+            Enter your new password below. Must be at least 8 characters.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogContent>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <label htmlFor="new-password" className="text-sm font-medium">
+                New Password
+              </label>
+              <input
+                id="new-password"
+                type="password"
+                value={newPassword}
+                onChange={(e) => { setNewPassword(e.target.value); setPasswordError('') }}
+                className="w-full px-4 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                placeholder="Enter new password"
+              />
+            </div>
+            <div className="space-y-2">
+              <label htmlFor="confirm-password" className="text-sm font-medium">
+                Confirm Password
+              </label>
+              <input
+                id="confirm-password"
+                type="password"
+                value={confirmPasswordValue}
+                onChange={(e) => { setConfirmPasswordValue(e.target.value); setPasswordError('') }}
+                className="w-full px-4 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                placeholder="Confirm new password"
+              />
+            </div>
+            {passwordError && (
+              <p className="text-sm text-destructive flex items-center gap-1">
+                <AlertTriangle className="w-4 h-4" />
+                {passwordError}
+              </p>
+            )}
+          </div>
+        </DialogContent>
+        <DialogFooter>
+          <button
+            onClick={() => { setShowPasswordDialog(false); setNewPassword(''); setConfirmPasswordValue(''); setPasswordError('') }}
+            disabled={passwordLoading}
+            className="px-4 py-2 text-sm font-medium bg-muted rounded-lg hover:bg-muted/80 transition-colors disabled:opacity-50"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handlePasswordChange}
+            disabled={passwordLoading}
+            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
+          >
+            {passwordLoading && <Loader2 className="w-4 h-4 animate-spin" />}
+            Update Password
+          </button>
+        </DialogFooter>
+      </Dialog>
     </div>
   )
 }

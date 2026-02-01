@@ -1,18 +1,24 @@
 'use client'
 
-import { use, useState } from 'react'
+import { use, useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { ArrowLeft, Mail, Phone, Calendar, Building2, CreditCard, Activity, Pencil, Pause, Play, Loader2 } from 'lucide-react'
 import {
-  getClientById,
   mockEngineRuns,
   mockAdminActivity,
   formatMrr,
   getEngineRunStatusColor,
 } from '@/lib/data/admin-mock'
 import { mockCampaigns } from '@/lib/data/dashboard'
+import {
+  getClientById as getClientByIdFromDb,
+  updateClientRecord,
+  pauseClient as pauseClientAction,
+  reactivateClient as reactivateClientAction,
+  type ClientRecord,
+} from '@/lib/supabase/client-actions'
 import { notFound } from 'next/navigation'
 import { StatusBadge, ClientStatusBadge, EngineRunStatusBadge } from '@/components/admin/status-badge'
 import { HealthScore } from '@/components/admin/health-score'
@@ -33,38 +39,83 @@ export default function ClientDetailPage({
   const resolvedParams = use(params)
   const router = useRouter()
   const toast = useToastActions()
-  const client = getClientById(resolvedParams.id)
 
+  const [client, setClient] = useState<ClientRecord | null>(null)
+  const [pageLoading, setPageLoading] = useState(true)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
   const [isPauseDialogOpen, setIsPauseDialogOpen] = useState(false)
   const [isReactivateDialogOpen, setIsReactivateDialogOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
   const [editForm, setEditForm] = useState({
-    companyName: client?.companyName || '',
-    contactName: client?.contactName || '',
-    contactEmail: client?.contactEmail || '',
-    phone: client?.phone || '',
-    plan: client?.plan || 'founding_partner',
+    companyName: '',
+    contactName: '',
+    contactEmail: '',
+    phone: '',
+    plan: 'founding_partner',
   })
+
+  // Fetch client from Supabase
+  useEffect(() => {
+    async function loadClient() {
+      const result = await getClientByIdFromDb(resolvedParams.id)
+      if (result.data) {
+        setClient(result.data)
+        setEditForm({
+          companyName: result.data.company_name,
+          contactName: result.data.contact_name,
+          contactEmail: result.data.contact_email,
+          phone: result.data.phone || '',
+          plan: result.data.plan,
+        })
+      }
+      setPageLoading(false)
+    }
+    loadClient()
+  }, [resolvedParams.id])
+
+  if (pageLoading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+      </div>
+    )
+  }
 
   if (!client) {
     notFound()
   }
 
-  // Get client-specific data
+  // Get client-specific data (still from mock for engine runs/activity)
   const clientRuns = mockEngineRuns.filter((r) => r.clientId === client.id)
   const clientActivity = mockAdminActivity.filter(
-    (a) => a.resourceId === client.id || a.resourceName === client.companyName
+    (a) => a.resourceId === client.id || a.resourceName === client.company_name
   )
 
   const handleEditSave = async () => {
     setIsLoading(true)
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      toast.success('Client updated', `${editForm.companyName} has been updated.`)
-      setIsEditDialogOpen(false)
+      const result = await updateClientRecord(client.id, {
+        company_name: editForm.companyName,
+        contact_name: editForm.contactName,
+        contact_email: editForm.contactEmail,
+        phone: editForm.phone || undefined,
+        plan: editForm.plan,
+      })
+      if (result.success) {
+        setClient(prev => prev ? {
+          ...prev,
+          company_name: editForm.companyName,
+          contact_name: editForm.contactName,
+          contact_email: editForm.contactEmail,
+          phone: editForm.phone || null,
+          plan: editForm.plan,
+        } : prev)
+        toast.success('Client updated', `${editForm.companyName} has been updated.`)
+        setIsEditDialogOpen(false)
+      } else {
+        toast.error('Failed to update', result.error || 'Please try again.')
+      }
     } catch {
       toast.error('Failed to update', 'Please try again.')
     } finally {
@@ -75,10 +126,14 @@ export default function ClientDetailPage({
   const handlePause = async () => {
     setIsLoading(true)
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      toast.success('Client paused', `${client.companyName} has been paused.`)
-      setIsPauseDialogOpen(false)
+      const result = await pauseClientAction(client.id)
+      if (result.success) {
+        setClient(prev => prev ? { ...prev, status: 'paused' } : prev)
+        toast.success('Client paused', `${client.company_name} has been paused.`)
+        setIsPauseDialogOpen(false)
+      } else {
+        toast.error('Failed to pause', result.error || 'Please try again.')
+      }
     } catch {
       toast.error('Failed to pause', 'Please try again.')
     } finally {
@@ -89,10 +144,14 @@ export default function ClientDetailPage({
   const handleReactivate = async () => {
     setIsLoading(true)
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      toast.success('Client reactivated', `${client.companyName} has been reactivated.`)
-      setIsReactivateDialogOpen(false)
+      const result = await reactivateClientAction(client.id)
+      if (result.success) {
+        setClient(prev => prev ? { ...prev, status: 'active' } : prev)
+        toast.success('Client reactivated', `${client.company_name} has been reactivated.`)
+        setIsReactivateDialogOpen(false)
+      } else {
+        toast.error('Failed to reactivate', result.error || 'Please try again.')
+      }
     } catch {
       toast.error('Failed to reactivate', 'Please try again.')
     } finally {
@@ -126,10 +185,10 @@ export default function ClientDetailPage({
         >
           <div>
             <div className="flex items-center gap-3">
-              <h1 className="text-2xl font-bold font-heading">{client.companyName}</h1>
-              <ClientStatusBadge status={client.status} />
+              <h1 className="text-2xl font-bold font-heading">{client.company_name}</h1>
+              <ClientStatusBadge status={client.status as 'active' | 'onboarding' | 'paused' | 'churned'} />
             </div>
-            <p className="text-muted-foreground mt-1">{client.clientId}</p>
+            <p className="text-muted-foreground mt-1">{client.id}</p>
             <div className="mt-2 h-1 w-16 rounded-full bg-gradient-to-r from-primary to-primary/40" />
           </div>
           <div className="flex gap-2">
@@ -176,7 +235,7 @@ export default function ClientDetailPage({
               <div className="h-1 bg-gradient-to-r from-success to-success/50" />
               <div className="p-4">
                 <p className="text-sm text-muted-foreground">Health Score</p>
-                <HealthScore score={client.healthScore} size="lg" className="mt-1" />
+                <HealthScore score={client.health_score} size="lg" className="mt-1" />
               </div>
             </Card>
           </motion.div>
@@ -218,7 +277,7 @@ export default function ClientDetailPage({
               <div className="p-4">
                 <p className="text-sm text-muted-foreground">Client Since</p>
                 <p className="text-2xl font-bold font-heading">
-                  {new Date(client.createdAt).toLocaleDateString('en-US', {
+                  {new Date(client.created_at).toLocaleDateString('en-US', {
                     month: 'short',
                     year: 'numeric',
                   })}
@@ -344,7 +403,7 @@ export default function ClientDetailPage({
                       <IconWrapper icon={Building2} size="sm" variant="primary" />
                       <div>
                         <p className="text-xs text-muted-foreground">Company</p>
-                        <p className="text-sm font-medium">{client.companyName}</p>
+                        <p className="text-sm font-medium">{client.company_name}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
@@ -352,10 +411,10 @@ export default function ClientDetailPage({
                       <div>
                         <p className="text-xs text-muted-foreground">Email</p>
                         <a
-                          href={`mailto:${client.contactEmail}`}
+                          href={`mailto:${client.contact_email}`}
                           className="text-sm font-medium text-primary hover:underline"
                         >
-                          {client.contactEmail}
+                          {client.contact_email}
                         </a>
                       </div>
                     </div>
@@ -382,7 +441,7 @@ export default function ClientDetailPage({
                       <div>
                         <p className="text-xs text-muted-foreground">Member Since</p>
                         <p className="text-sm font-medium">
-                          {new Date(client.createdAt).toLocaleDateString()}
+                          {new Date(client.created_at).toLocaleDateString()}
                         </p>
                       </div>
                     </div>
@@ -446,7 +505,7 @@ export default function ClientDetailPage({
         <DialogHeader>
           <DialogTitle>Edit Client</DialogTitle>
           <DialogDescription>
-            Update client information for {client.companyName}
+            Update client information for {client.company_name}
           </DialogDescription>
         </DialogHeader>
         <DialogContent>
@@ -546,7 +605,7 @@ export default function ClientDetailPage({
         open={isPauseDialogOpen}
         onOpenChange={setIsPauseDialogOpen}
         title="Pause Client"
-        description={`Are you sure you want to pause ${client.companyName}? All active campaigns will be paused and no new leads will be generated.`}
+        description={`Are you sure you want to pause ${client.company_name}? All active campaigns will be paused and no new leads will be generated.`}
         confirmLabel="Pause Client"
         variant="warning"
         onConfirm={handlePause}
@@ -558,7 +617,7 @@ export default function ClientDetailPage({
         open={isReactivateDialogOpen}
         onOpenChange={setIsReactivateDialogOpen}
         title="Reactivate Client"
-        description={`Are you sure you want to reactivate ${client.companyName}? All paused campaigns will resume.`}
+        description={`Are you sure you want to reactivate ${client.company_name}? All paused campaigns will resume.`}
         confirmLabel="Reactivate"
         variant="default"
         onConfirm={handleReactivate}

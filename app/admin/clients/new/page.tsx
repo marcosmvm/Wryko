@@ -7,6 +7,7 @@ import { motion } from 'framer-motion'
 import { ArrowLeft, Loader2, AlertCircle } from 'lucide-react'
 import { useToastActions } from '@/components/ui/toast'
 import { PLAN_OPTIONS } from '@/lib/constants/admin'
+import { createClientRecord } from '@/lib/supabase/client-actions'
 import { fadeInUp, defaultTransition, getStaggerDelay } from '@/lib/animations'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -135,11 +136,19 @@ export default function AddClientPage() {
     setIsLoading(true)
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500))
+      const result = await createClientRecord({
+        companyName: formData.companyName,
+        contactName: formData.contactName,
+        contactEmail: formData.contactEmail,
+        phone: formData.phone || undefined,
+        plan: formData.plan,
+        notes: formData.notes || undefined,
+      })
 
-      // In a real app, this would save to Supabase
-      console.log('Creating client:', formData)
+      if (!result.success) {
+        toast.error('Failed to create client', result.error || 'Please try again.')
+        return
+      }
 
       toast.success('Client created', `${formData.companyName} has been added successfully.`)
       setIsDirty(false)

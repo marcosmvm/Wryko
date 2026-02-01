@@ -1,6 +1,6 @@
 'use client'
 
-import { use } from 'react'
+import { use, useState, useCallback } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowLeft, Clock, CheckCircle2, XCircle, Loader2, Play, ExternalLink } from 'lucide-react'
@@ -11,6 +11,9 @@ import { fadeInUp, defaultTransition, getStaggerDelay } from '@/lib/animations'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { IconWrapper } from '@/components/ui/icon-wrapper'
+import { ConfirmDialog } from '@/components/ui/dialog'
+import { useToastActions } from '@/components/ui/toast'
+import { callWorkflow } from '@/lib/n8n/client'
 
 export default function EngineDetailPage({
   params,
@@ -19,6 +22,30 @@ export default function EngineDetailPage({
 }) {
   const resolvedParams = use(params)
   const engine = getEngineBySlug(resolvedParams.slug)
+
+  const toast = useToastActions()
+  const [isManualRunDialogOpen, setIsManualRunDialogOpen] = useState(false)
+  const [isRunning, setIsRunning] = useState(false)
+
+  const handleManualRun = useCallback(async () => {
+    setIsRunning(true)
+    try {
+      const result = await callWorkflow('engine-manual-run', {
+        engineSlug: engine?.slug,
+        engineName: engine?.name,
+      })
+      if (result.success) {
+        toast.success('Engine triggered', `${engine?.name} has been started manually`)
+      } else {
+        toast.error('Trigger failed', result.error || 'Could not start engine')
+      }
+    } catch {
+      toast.error('Trigger failed', 'An unexpected error occurred')
+    } finally {
+      setIsRunning(false)
+      setIsManualRunDialogOpen(false)
+    }
+  }, [engine?.slug, engine?.name, toast])
 
   if (!engine) {
     notFound()
@@ -134,8 +161,16 @@ export default function EngineDetailPage({
           </div>
         </div>
         <div className="flex gap-2">
-          <Button variant="elevated">
-            <Play className="w-4 h-4 mr-2" />
+          <Button
+            variant="elevated"
+            onClick={() => setIsManualRunDialogOpen(true)}
+            disabled={isRunning}
+          >
+            {isRunning ? (
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            ) : (
+              <Play className="w-4 h-4 mr-2" />
+            )}
             Manual Run
           </Button>
           <Button variant="outline-primary" asChild>
@@ -369,6 +404,18 @@ export default function EngineDetailPage({
           </motion.div>
         </div>
       </div>
+
+      {/* Manual Run Confirmation */}
+      <ConfirmDialog
+        open={isManualRunDialogOpen}
+        onOpenChange={setIsManualRunDialogOpen}
+        title={`Run ${engine.name}?`}
+        description={`This will manually trigger Engine ${engine.letter}: ${engine.name}. The engine will process based on its current configuration.`}
+        confirmLabel="Run Engine"
+        variant="default"
+        onConfirm={handleManualRun}
+        isLoading={isRunning}
+      />
     </div>
   )
 }

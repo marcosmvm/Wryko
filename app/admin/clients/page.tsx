@@ -1,69 +1,82 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Search, Plus, ChevronDown, ArrowRight } from 'lucide-react'
+import { Search, Plus, ChevronDown, ArrowRight, Loader2 } from 'lucide-react'
 import {
-  mockClients,
   formatMrr,
   getStatusColor,
   getHealthColor,
   getHealthBgColor,
-  AdminClient,
 } from '@/lib/data/admin-mock'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { fadeInUp, defaultTransition, getStaggerDelay } from '@/lib/animations'
+import { getClients, type ClientRecord } from '@/lib/supabase/client-actions'
 
-type SortField = 'companyName' | 'healthScore' | 'mrr' | 'createdAt'
+type SortField = 'company_name' | 'health_score' | 'mrr' | 'created_at'
 type SortDirection = 'asc' | 'desc'
+type ClientStatus = 'active' | 'onboarding' | 'paused' | 'churned'
 
 export default function ClientsPage() {
+  const [clients, setClients] = useState<ClientRecord[]>([])
+  const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
-  const [statusFilter, setStatusFilter] = useState<AdminClient['status'] | 'all'>('all')
-  const [sortField, setSortField] = useState<SortField>('companyName')
+  const [statusFilter, setStatusFilter] = useState<ClientStatus | 'all'>('all')
+  const [sortField, setSortField] = useState<SortField>('company_name')
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc')
 
+  useEffect(() => {
+    async function loadClients() {
+      const result = await getClients()
+      if (result.data) {
+        setClients(result.data)
+      }
+      setLoading(false)
+    }
+    loadClients()
+  }, [])
+
   const filteredClients = useMemo(() => {
-    let clients = [...mockClients]
+    let filtered = [...clients]
 
     if (searchQuery) {
       const query = searchQuery.toLowerCase()
-      clients = clients.filter(
+      filtered = filtered.filter(
         (c) =>
-          c.companyName.toLowerCase().includes(query) ||
-          c.contactName.toLowerCase().includes(query) ||
-          c.contactEmail.toLowerCase().includes(query) ||
-          c.clientId.toLowerCase().includes(query)
+          c.company_name.toLowerCase().includes(query) ||
+          c.contact_name.toLowerCase().includes(query) ||
+          c.contact_email.toLowerCase().includes(query) ||
+          c.id.toLowerCase().includes(query)
       )
     }
 
     if (statusFilter !== 'all') {
-      clients = clients.filter((c) => c.status === statusFilter)
+      filtered = filtered.filter((c) => c.status === statusFilter)
     }
 
-    clients.sort((a, b) => {
+    filtered.sort((a, b) => {
       let comparison = 0
       switch (sortField) {
-        case 'companyName':
-          comparison = a.companyName.localeCompare(b.companyName)
+        case 'company_name':
+          comparison = a.company_name.localeCompare(b.company_name)
           break
-        case 'healthScore':
-          comparison = a.healthScore - b.healthScore
+        case 'health_score':
+          comparison = a.health_score - b.health_score
           break
         case 'mrr':
-          comparison = a.mrr - b.mrr
+          comparison = Number(a.mrr) - Number(b.mrr)
           break
-        case 'createdAt':
-          comparison = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        case 'created_at':
+          comparison = new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
           break
       }
       return sortDirection === 'asc' ? comparison : -comparison
     })
 
-    return clients
-  }, [searchQuery, statusFilter, sortField, sortDirection])
+    return filtered
+  }, [clients, searchQuery, statusFilter, sortField, sortDirection])
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -91,7 +104,7 @@ export default function ClientsPage() {
         <div>
           <h1 className="text-2xl font-heading font-bold">Clients</h1>
           <p className="text-muted-foreground">
-            Manage your {mockClients.length} clients
+            Manage your {clients.length} client{clients.length !== 1 ? 's' : ''}
           </p>
           <div className="w-16 h-1 bg-gradient-to-r from-primary via-secondary/60 to-primary rounded-full mt-3" />
         </div>
@@ -123,7 +136,7 @@ export default function ClientsPage() {
         <div className="relative">
           <select
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value as AdminClient['status'] | 'all')}
+            onChange={(e) => setStatusFilter(e.target.value as ClientStatus | 'all')}
             className="appearance-none pl-4 pr-10 py-2 bg-card border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all"
           >
             <option value="all">All Status</option>
@@ -143,104 +156,112 @@ export default function ClientsPage() {
         transition={getStaggerDelay(1, 0.2)}
       >
         <Card variant="elevated" className="overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-border bg-gradient-to-r from-muted/50 to-muted/30">
-                  <th
-                    className="text-left px-4 py-3 text-sm font-medium text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
-                    onClick={() => handleSort('companyName')}
-                  >
-                    Company <SortIndicator field="companyName" />
-                  </th>
-                  <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">
-                    Contact
-                  </th>
-                  <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">
-                    Plan
-                  </th>
-                  <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">
-                    Status
-                  </th>
-                  <th
-                    className="text-left px-4 py-3 text-sm font-medium text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
-                    onClick={() => handleSort('healthScore')}
-                  >
-                    Health <SortIndicator field="healthScore" />
-                  </th>
-                  <th
-                    className="text-left px-4 py-3 text-sm font-medium text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
-                    onClick={() => handleSort('mrr')}
-                  >
-                    MRR <SortIndicator field="mrr" />
-                  </th>
-                  <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredClients.map((client, index) => (
-                  <motion.tr
-                    key={client.id}
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={getStaggerDelay(index, 0.3)}
-                    className="border-b border-border last:border-0 hover:bg-primary/[0.02] transition-colors"
-                  >
-                    <td className="px-4 py-4">
-                      <div>
-                        <p className="font-medium">{client.companyName}</p>
-                        <p className="text-xs text-muted-foreground">{client.clientId}</p>
-                      </div>
-                    </td>
-                    <td className="px-4 py-4">
-                      <div>
-                        <p className="text-sm">{client.contactName}</p>
-                        <p className="text-xs text-muted-foreground">{client.contactEmail}</p>
-                      </div>
-                    </td>
-                    <td className="px-4 py-4">
-                      <span className="text-sm capitalize">
-                        {client.plan.replace('_', ' ')}
-                      </span>
-                    </td>
-                    <td className="px-4 py-4">
-                      <span
-                        className={`text-xs px-2 py-1 rounded-full capitalize ${getStatusColor(client.status)}`}
-                      >
-                        {client.status}
-                      </span>
-                    </td>
-                    <td className="px-4 py-4">
-                      <span
-                        className={`text-sm font-bold px-2 py-1 rounded ${getHealthBgColor(client.healthScore)} ${getHealthColor(client.healthScore)}`}
-                      >
-                        {client.healthScore}
-                      </span>
-                    </td>
-                    <td className="px-4 py-4">
-                      <span className="text-sm font-medium">
-                        {formatMrr(client.mrr)}
-                      </span>
-                    </td>
-                    <td className="px-4 py-4">
-                      <Button variant="ghost" size="sm" asChild>
-                        <Link href={`/admin/clients/${client.id}`} className="group">
-                          View
-                          <ArrowRight className="w-3.5 h-3.5 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
-                        </Link>
-                      </Button>
-                    </td>
-                  </motion.tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          {loading ? (
+            <div className="p-8 flex items-center justify-center">
+              <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-border bg-gradient-to-r from-muted/50 to-muted/30">
+                    <th
+                      className="text-left px-4 py-3 text-sm font-medium text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
+                      onClick={() => handleSort('company_name')}
+                    >
+                      Company <SortIndicator field="company_name" />
+                    </th>
+                    <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">
+                      Contact
+                    </th>
+                    <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">
+                      Plan
+                    </th>
+                    <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">
+                      Status
+                    </th>
+                    <th
+                      className="text-left px-4 py-3 text-sm font-medium text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
+                      onClick={() => handleSort('health_score')}
+                    >
+                      Health <SortIndicator field="health_score" />
+                    </th>
+                    <th
+                      className="text-left px-4 py-3 text-sm font-medium text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
+                      onClick={() => handleSort('mrr')}
+                    >
+                      MRR <SortIndicator field="mrr" />
+                    </th>
+                    <th className="text-left px-4 py-3 text-sm font-medium text-muted-foreground">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredClients.map((client, index) => (
+                    <motion.tr
+                      key={client.id}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={getStaggerDelay(index, 0.3)}
+                      className="border-b border-border last:border-0 hover:bg-primary/[0.02] transition-colors"
+                    >
+                      <td className="px-4 py-4">
+                        <div>
+                          <p className="font-medium">{client.company_name}</p>
+                          <p className="text-xs text-muted-foreground">{client.id.slice(0, 8)}</p>
+                        </div>
+                      </td>
+                      <td className="px-4 py-4">
+                        <div>
+                          <p className="text-sm">{client.contact_name}</p>
+                          <p className="text-xs text-muted-foreground">{client.contact_email}</p>
+                        </div>
+                      </td>
+                      <td className="px-4 py-4">
+                        <span className="text-sm capitalize">
+                          {client.plan.replace('_', ' ')}
+                        </span>
+                      </td>
+                      <td className="px-4 py-4">
+                        <span
+                          className={`text-xs px-2 py-1 rounded-full capitalize ${getStatusColor(client.status as any)}`}
+                        >
+                          {client.status}
+                        </span>
+                      </td>
+                      <td className="px-4 py-4">
+                        <span
+                          className={`text-sm font-bold px-2 py-1 rounded ${getHealthBgColor(client.health_score)} ${getHealthColor(client.health_score)}`}
+                        >
+                          {client.health_score}
+                        </span>
+                      </td>
+                      <td className="px-4 py-4">
+                        <span className="text-sm font-medium">
+                          {formatMrr(Number(client.mrr))}
+                        </span>
+                      </td>
+                      <td className="px-4 py-4">
+                        <Button variant="ghost" size="sm" asChild>
+                          <Link href={`/admin/clients/${client.id}`} className="group">
+                            View
+                            <ArrowRight className="w-3.5 h-3.5 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </Link>
+                        </Button>
+                      </td>
+                    </motion.tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
 
-          {filteredClients.length === 0 && (
+          {!loading && filteredClients.length === 0 && (
             <div className="p-8 text-center text-muted-foreground">
-              No clients found matching your criteria.
+              {clients.length === 0
+                ? 'No clients yet. Add your first client to get started.'
+                : 'No clients found matching your criteria.'}
             </div>
           )}
         </Card>
