@@ -43,7 +43,8 @@ function LogoMark({ gradientId }: { gradientId: string }) {
           y2="70"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#A855F7" />
+          <stop stopColor="#9333EA" />
+          <stop offset="0.5" stopColor="#7C3AED" />
           <stop offset="1" stopColor="#6366F1" />
         </linearGradient>
       </defs>
@@ -96,7 +97,7 @@ export function Logo({
           </span>
         </div>
       ) : (
-        <span className={cn('font-heading', textStyles[size])}>
+        <span className={cn('font-heading bg-gradient-to-r from-[#9333EA] via-[#7C3AED] to-[#6366F1] bg-clip-text text-transparent', textStyles[size])}>
           Wryko
         </span>
       )}

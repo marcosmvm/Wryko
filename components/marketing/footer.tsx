@@ -31,7 +31,7 @@ export function Footer() {
           {/* Brand */}
           <div>
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <Logo variant="icon" size="sm" />
+              <Logo variant="lockup" size="sm" />
             </Link>
             <p className="text-muted-foreground text-sm mb-4">
               11 AI Engines. Qualified Meetings. On Autopilot.
