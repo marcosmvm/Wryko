@@ -17,11 +17,11 @@ const iconSizes: Record<string, string> = {
   xl: 'w-20 h-20',
 }
 
-const wordmarkHeights: Record<string, string> = {
-  sm: 'h-5',
-  md: 'h-6',
-  lg: 'h-8',
-  xl: 'h-10',
+const textStyles: Record<string, string> = {
+  sm: 'text-lg font-semibold',
+  md: 'text-xl font-bold',
+  lg: 'text-2xl font-bold',
+  xl: 'text-3xl font-bold',
 }
 
 function LogoMark({ gradientId }: { gradientId: string }) {
@@ -64,31 +64,6 @@ function LogoMark({ gradientId }: { gradientId: string }) {
   )
 }
 
-function WordMark({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 81 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={cn('w-auto', className)}
-      aria-label="Wryko"
-    >
-      <g fill="currentColor">
-        {/* W */}
-        <path d="M0 4C0 2.895.895 2 2 2h2l3 14L10 2h2c1.105 0 2 .895 2 2v18h-2.2V9.4L9 22H5L2.2 9.4V22H0V4Z" />
-        {/* r */}
-        <path d="M19 8c0-1.105.895-2 2-2h2v3.2C23.6 7.6 25 6 27.8 6c3.1 0 5.2 2.1 5.2 5.6V22h-2.9v-9.9c0-2.2-1.2-3.4-2.9-3.4-2 0-3.5 1.4-3.5 4V22h-2.7c-1.105 0-2-.895-2-2V8Z" />
-        {/* y */}
-        <path d="M39 6h2.9l3.3 8.4L48.5 6h2.9l-5.5 13.2c-1 2.4-2.5 3.5-4.5 3.5-1 0-1.7-.2-2.4-.5V20c.5.2 1.1.3 1.7.3 1 0 1.7-.5 2.1-1.5L39 9.4V6Z" />
-        {/* k */}
-        <path d="M56 2h2.9v9.3L64 6h3.5l-5.3 5.1L67.7 22h-3.4l-3.8-7.9-1.6 1.6V22H56V2Z" />
-        {/* o */}
-        <path d="M73.5 6C78 6 81 9.2 81 14s-3 8-7.5 8S66 18.8 66 14s3-8 7.5-8Zm0 2.7c-2.3 0-3.9 1.7-3.9 5.3s1.6 5.3 3.9 5.3 3.9-1.7 3.9-5.3-1.6-5.3-3.9-5.3Z" />
-      </g>
-    </svg>
-  )
-}
-
 export function Logo({
   variant = 'lockup',
   size = 'sm',
@@ -113,13 +88,17 @@ export function Logo({
       </div>
       {showAdminBadge ? (
         <div className="flex flex-col">
-          <WordMark className={wordmarkHeights[size]} />
+          <span className={cn('font-heading leading-tight', textStyles[size])}>
+            Wryko
+          </span>
           <span className="text-[10px] font-medium text-primary bg-primary/10 px-1.5 py-0.5 rounded w-fit">
             ADMIN
           </span>
         </div>
       ) : (
-        <WordMark className={wordmarkHeights[size]} />
+        <span className={cn('font-heading', textStyles[size])}>
+          Wryko
+        </span>
       )}
     </div>
   )
