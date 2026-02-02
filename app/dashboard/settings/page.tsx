@@ -32,16 +32,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Switch } from '@/components/ui/switch'
 import { cn } from '@/lib/utils'
 import { useToastActions } from '@/components/ui/toast'
-import { settingsWorkflows } from '@/lib/n8n/client'
 import { Dialog, DialogHeader, DialogTitle, DialogDescription, DialogContent, DialogFooter } from '@/components/ui/dialog'
-import { changePassword, getCurrentUser } from '@/lib/supabase/actions'
-
-// Mock data for team members
-const teamMembers = [
-  { id: '1', name: 'John Smith', email: 'john@company.com', role: 'Admin', avatar: 'JS', status: 'active' },
-  { id: '2', name: 'Sarah Johnson', email: 'sarah@company.com', role: 'Member', avatar: 'SJ', status: 'active' },
-  { id: '3', name: 'Mike Chen', email: 'mike@company.com', role: 'Member', avatar: 'MC', status: 'pending' },
-]
+import { changePassword, getCurrentUser, updateUserProfile } from '@/lib/supabase/actions'
+import { getTeamMembers, inviteTeamMember, removeTeamMember, updateTeamMemberRole } from '@/lib/supabase/dashboard-actions'
+import type { TeamMember } from '@/lib/types/dashboard'
 
 // Integrations - all marked as not configured (requires OAuth setup)
 const integrations = [
@@ -79,8 +73,7 @@ export default function SettingsPage() {
   const [inviteLoading, setInviteLoading] = useState(false)
   const [removingMember, setRemovingMember] = useState<string | null>(null)
   const [updatingRole, setUpdatingRole] = useState<string | null>(null)
-  const [regeneratingKey, setRegeneratingKey] = useState(false)
-  const [apiKey, setApiKey] = useState('xg_live_••••••••••••••••')
+  const [apiKey] = useState('xg_live_••••••••••••••••')
   const [showPasswordDialog, setShowPasswordDialog] = useState(false)
   const [passwordLoading, setPasswordLoading] = useState(false)
   const [newPassword, setNewPassword] = useState('')
@@ -90,6 +83,8 @@ export default function SettingsPage() {
   const [userInitials, setUserInitials] = useState('--')
   const [meetingDuration, setMeetingDuration] = useState('30')
   const [meetingBuffer, setMeetingBuffer] = useState('15')
+  const [teamMembersList, setTeamMembersList] = useState<TeamMember[]>([])
+  const [teamLoading, setTeamLoading] = useState(true)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const toast = useToastActions()
   const formRef = useRef<HTMLFormElement>(null)
@@ -109,13 +104,20 @@ export default function SettingsPage() {
             .slice(0, 2) || '--'
           setUserInitials(initials)
 
+          // Load saved avatar
+          if (result.user.avatar_url) {
+            setAvatarPreview(result.user.avatar_url)
+          }
+
           // Pre-fill form if we have a ref
           if (formRef.current) {
             const nameInput = formRef.current.querySelector<HTMLInputElement>('[name="name"]')
+            const emailInput = formRef.current.querySelector<HTMLInputElement>('[id="email"]')
             const companyInput = formRef.current.querySelector<HTMLInputElement>('[name="company"]')
             const phoneInput = formRef.current.querySelector<HTMLInputElement>('[name="phone"]')
             const websiteInput = formRef.current.querySelector<HTMLInputElement>('[name="website"]')
             if (nameInput) nameInput.value = result.user.full_name || ''
+            if (emailInput) emailInput.value = result.user.email || ''
             if (companyInput) companyInput.value = result.user.company || ''
             if (phoneInput) phoneInput.value = result.user.phone || ''
             if (websiteInput) websiteInput.value = result.user.website || ''
@@ -125,12 +127,36 @@ export default function SettingsPage() {
           if (result.user.notification_prefs && typeof result.user.notification_prefs === 'object') {
             setNotifications(prev => ({ ...prev, ...result.user!.notification_prefs as Record<string, boolean> }))
           }
+
+          // Load calendar prefs
+          if (result.user.calendar_prefs && typeof result.user.calendar_prefs === 'object') {
+            const calPrefs = result.user.calendar_prefs as Record<string, string>
+            if (calPrefs.meetingDuration) setMeetingDuration(calPrefs.meetingDuration)
+            if (calPrefs.meetingBuffer) setMeetingBuffer(calPrefs.meetingBuffer)
+          }
         }
       } catch {
         // Profile load failed silently - form will use defaults
       }
     }
     loadUser()
+  }, [])
+
+  // Load team members on mount
+  useEffect(() => {
+    async function loadTeam() {
+      try {
+        const result = await getTeamMembers()
+        if (result.data) {
+          setTeamMembersList(result.data)
+        }
+      } catch {
+        // Team load failed silently
+      } finally {
+        setTeamLoading(false)
+      }
+    }
+    loadTeam()
   }, [])
 
   // Notification preferences state
@@ -148,13 +174,23 @@ export default function SettingsPage() {
     setProfileLoading(true)
     try {
       const formData = new FormData(e.target as HTMLFormElement)
-      const result = await settingsWorkflows.updateProfile({
-        name: formData.get('name') as string,
+      const name = formData.get('name') as string
+      const result = await updateUserProfile({
+        full_name: name,
         company: formData.get('company') as string,
         phone: formData.get('phone') as string,
         website: formData.get('website') as string,
       })
       if (result.success) {
+        if (name) {
+          const initials = name
+            .split(' ')
+            .map((n: string) => n[0])
+            .join('')
+            .toUpperCase()
+            .slice(0, 2) || '--'
+          setUserInitials(initials)
+        }
         toast.success('Profile updated', 'Your profile has been saved')
       } else {
         toast.error('Update failed', result.error || 'Could not save profile')
@@ -170,7 +206,7 @@ export default function SettingsPage() {
     const newNotifications = { ...notifications, [key]: checked }
     setNotifications(newNotifications)
     try {
-      const result = await settingsWorkflows.updateNotificationPrefs(newNotifications)
+      const result = await updateUserProfile({ notification_prefs: newNotifications })
       if (result.success) {
         toast.success('Preferences saved', 'Notification settings updated')
       } else {
@@ -188,10 +224,12 @@ export default function SettingsPage() {
     if (!inviteEmail) return
     setInviteLoading(true)
     try {
-      const result = await settingsWorkflows.inviteTeamMember(inviteEmail, 'Member')
+      const result = await inviteTeamMember(inviteEmail, 'Member')
       if (result.success) {
         toast.success('Invitation sent', `${inviteEmail} has been invited`)
         setInviteEmail('')
+        const refreshed = await getTeamMembers()
+        if (refreshed.data) setTeamMembersList(refreshed.data)
       } else {
         toast.error('Invite failed', result.error || 'Could not send invitation')
       }
@@ -205,9 +243,10 @@ export default function SettingsPage() {
   const handleRemoveMember = useCallback(async (memberId: string, memberName: string) => {
     setRemovingMember(memberId)
     try {
-      const result = await settingsWorkflows.removeTeamMember(memberId)
+      const result = await removeTeamMember(memberId)
       if (result.success) {
         toast.success('Member removed', `${memberName} has been removed from the team`)
+        setTeamMembersList(prev => prev.filter(m => m.id !== memberId))
       } else {
         toast.error('Remove failed', result.error || 'Could not remove member')
       }
@@ -221,9 +260,12 @@ export default function SettingsPage() {
   const handleRoleChange = useCallback(async (memberId: string, newRole: string) => {
     setUpdatingRole(memberId)
     try {
-      const result = await settingsWorkflows.updateMemberRole(memberId, newRole)
+      const result = await updateTeamMemberRole(memberId, newRole)
       if (result.success) {
         toast.success('Role updated', `Member role changed to ${newRole}`)
+        setTeamMembersList(prev => prev.map(m =>
+          m.id === memberId ? { ...m, role: newRole as TeamMember['role'] } : m
+        ))
       } else {
         toast.error('Update failed', result.error || 'Could not update role')
       }
@@ -235,30 +277,12 @@ export default function SettingsPage() {
   }, [toast])
 
   const handleRegenerateApiKey = useCallback(async () => {
-    setRegeneratingKey(true)
-    try {
-      const result = await settingsWorkflows.regenerateApiKey()
-      if (result.success && result.data?.apiKey) {
-        setApiKey(result.data.apiKey)
-        toast.success('API key regenerated', 'Your new API key is ready')
-      } else {
-        toast.error('Regeneration failed', result.error || 'Could not regenerate API key')
-      }
-    } catch {
-      toast.error('Regeneration failed', 'An unexpected error occurred')
-    } finally {
-      setRegeneratingKey(false)
-    }
+    toast.info('Coming soon', 'API key management will be available in a future update')
   }, [toast])
 
   const handleCopyApiKey = useCallback(async () => {
-    try {
-      await navigator.clipboard.writeText(apiKey)
-      toast.success('Copied', 'API key copied to clipboard')
-    } catch {
-      toast.error('Copy failed', 'Could not copy to clipboard')
-    }
-  }, [apiKey, toast])
+    toast.info('Coming soon', 'API key management will be available in a future update')
+  }, [toast])
 
   const handlePasswordChange = useCallback(async () => {
     setPasswordError('')
@@ -310,7 +334,7 @@ export default function SettingsPage() {
       const base64 = reader.result as string
       setAvatarPreview(base64)
       try {
-        const result = await settingsWorkflows.updateProfile({ avatar: base64 })
+        const result = await updateUserProfile({ avatar_url: base64 })
         if (result.success) {
           toast.success('Avatar updated', 'Your profile picture has been saved')
         } else {
@@ -691,9 +715,17 @@ export default function SettingsPage() {
                       <label className="block text-sm font-medium mb-2">Default Meeting Duration</label>
                       <select
                         value={meetingDuration}
-                        onChange={(e) => {
-                          setMeetingDuration(e.target.value)
-                          toast.success('Preference saved', `Meeting duration set to ${e.target.value} minutes`)
+                        onChange={async (e) => {
+                          const value = e.target.value
+                          setMeetingDuration(value)
+                          try {
+                            await updateUserProfile({
+                              calendar_prefs: { meetingDuration: value, meetingBuffer }
+                            })
+                            toast.success('Preference saved', `Meeting duration set to ${value} minutes`)
+                          } catch {
+                            toast.error('Save failed', 'Could not save preference')
+                          }
                         }}
                         className="w-full px-4 py-2.5 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/50"
                       >
@@ -707,9 +739,17 @@ export default function SettingsPage() {
                       <label className="block text-sm font-medium mb-2">Buffer Between Meetings</label>
                       <select
                         value={meetingBuffer}
-                        onChange={(e) => {
-                          setMeetingBuffer(e.target.value)
-                          toast.success('Preference saved', `Buffer set to ${e.target.value === '0' ? 'none' : e.target.value + ' minutes'}`)
+                        onChange={async (e) => {
+                          const value = e.target.value
+                          setMeetingBuffer(value)
+                          try {
+                            await updateUserProfile({
+                              calendar_prefs: { meetingDuration, meetingBuffer: value }
+                            })
+                            toast.success('Preference saved', `Buffer set to ${value === '0' ? 'none' : value + ' minutes'}`)
+                          } catch {
+                            toast.error('Save failed', 'Could not save preference')
+                          }
                         }}
                         className="w-full px-4 py-2.5 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/50"
                       >
@@ -738,7 +778,7 @@ export default function SettingsPage() {
                     <CardTitle>Team Members</CardTitle>
                     <CardDescription>Manage who has access to your dashboard</CardDescription>
                   </div>
-                  <Badge variant="secondary">{teamMembers.length} members</Badge>
+                  <Badge variant="secondary">{teamMembersList.length} members</Badge>
                 </div>
               </CardHeader>
               <CardContent className="space-y-6">
@@ -766,49 +806,62 @@ export default function SettingsPage() {
                 </form>
 
                 {/* Team Members List */}
-                <div className="divide-y divide-border rounded-lg border border-border overflow-hidden">
-                  {teamMembers.map((member) => (
-                    <div key={member.id} className="flex items-center justify-between p-4 hover:bg-muted/50 transition-colors">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-sm font-medium text-foreground">
-                          {member.avatar}
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <p className="font-medium">{member.name}</p>
-                            {member.status === 'pending' && (
-                              <Badge variant="warning">Pending</Badge>
-                            )}
+                {teamLoading ? (
+                  <div className="flex items-center justify-center p-8 text-muted-foreground">
+                    <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                    Loading team members...
+                  </div>
+                ) : teamMembersList.length === 0 ? (
+                  <div className="p-8 text-center border border-dashed border-border rounded-xl">
+                    <Users className="w-10 h-10 mx-auto text-muted-foreground/50 mb-3" />
+                    <p className="font-medium mb-1">No team members yet</p>
+                    <p className="text-sm text-muted-foreground">Invite your first team member using the form above</p>
+                  </div>
+                ) : (
+                  <div className="divide-y divide-border rounded-lg border border-border overflow-hidden">
+                    {teamMembersList.map((member) => (
+                      <div key={member.id} className="flex items-center justify-between p-4 hover:bg-muted/50 transition-colors">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-sm font-medium text-foreground">
+                            {member.avatar || member.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
                           </div>
-                          <p className="text-sm text-muted-foreground">{member.email}</p>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <p className="font-medium">{member.name}</p>
+                              {member.status === 'pending' && (
+                                <Badge variant="warning">Pending</Badge>
+                              )}
+                            </div>
+                            <p className="text-sm text-muted-foreground">{member.email}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <select
+                            defaultValue={member.role}
+                            disabled={updatingRole === member.id}
+                            onChange={(e) => handleRoleChange(member.id, e.target.value)}
+                            className="px-3 py-1.5 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:opacity-50"
+                          >
+                            <option value="Admin">Admin</option>
+                            <option value="Member">Member</option>
+                            <option value="Viewer">Viewer</option>
+                          </select>
+                          <button
+                            onClick={() => handleRemoveMember(member.id, member.name)}
+                            disabled={removingMember === member.id}
+                            className="p-2 hover:bg-muted rounded-lg transition-colors text-muted-foreground hover:text-destructive disabled:opacity-50"
+                          >
+                            {removingMember === member.id ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                              <Trash2 className="w-4 h-4" />
+                            )}
+                          </button>
                         </div>
                       </div>
-                      <div className="flex items-center gap-3">
-                        <select
-                          defaultValue={member.role}
-                          disabled={updatingRole === member.id}
-                          onChange={(e) => handleRoleChange(member.id, e.target.value)}
-                          className="px-3 py-1.5 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:opacity-50"
-                        >
-                          <option value="Admin">Admin</option>
-                          <option value="Member">Member</option>
-                          <option value="Viewer">Viewer</option>
-                        </select>
-                        <button
-                          onClick={() => handleRemoveMember(member.id, member.name)}
-                          disabled={removingMember === member.id}
-                          className="p-2 hover:bg-muted rounded-lg transition-colors text-muted-foreground hover:text-destructive disabled:opacity-50"
-                        >
-                          {removingMember === member.id ? (
-                            <Loader2 className="w-4 h-4 animate-spin" />
-                          ) : (
-                            <Trash2 className="w-4 h-4" />
-                          )}
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                )}
               </CardContent>
             </Card>
           </motion.div>
@@ -870,7 +923,10 @@ export default function SettingsPage() {
           >
             <Card variant="futuristic">
               <CardHeader>
-                <CardTitle>API Access</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  API Access
+                  <Badge variant="secondary" className="text-xs">Coming Soon</Badge>
+                </CardTitle>
                 <CardDescription>Use our API to build custom integrations</CardDescription>
               </CardHeader>
               <CardContent>
@@ -879,10 +935,8 @@ export default function SettingsPage() {
                     <p className="font-medium">API Key</p>
                     <button
                       onClick={handleRegenerateApiKey}
-                      disabled={regeneratingKey}
-                      className="text-sm text-primary hover:underline disabled:opacity-50 flex items-center gap-1"
+                      className="text-sm text-primary hover:underline flex items-center gap-1"
                     >
-                      {regeneratingKey && <Loader2 className="w-3 h-3 animate-spin" />}
                       Regenerate
                     </button>
                   </div>

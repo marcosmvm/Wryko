@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowLeft, Check, X, Minus, Pause, Play, FlaskConical, TrendingUp, AlertCircle, Mail, Calendar, Users, Target, Download, Loader2 } from 'lucide-react'
@@ -8,7 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
-import { getCampaignById } from '@/lib/data/dashboard'
+import { getCampaignById } from '@/lib/supabase/dashboard-actions'
+import type { Campaign } from '@/lib/types/dashboard'
 import { cn } from '@/lib/utils'
 import { format, parseISO } from 'date-fns'
 import { useToastActions } from '@/components/ui/toast'
@@ -21,11 +22,29 @@ export default function CampaignDetailPage({
   params: { id: string }
 }) {
   const { id } = params
-  const [campaignData, setCampaignData] = useState(() => getCampaignById(id))
+  const [campaignData, setCampaignData] = useState<Campaign | null>(null)
+  const [loading, setLoading] = useState(true)
   const [isPausing, setIsPausing] = useState(false)
   const [isResuming, setIsResuming] = useState(false)
   const [isExporting, setIsExporting] = useState(false)
   const toast = useToastActions()
+
+  useEffect(() => {
+    async function load() {
+      const result = await getCampaignById(id)
+      setCampaignData(result.data)
+      setLoading(false)
+    }
+    load()
+  }, [id])
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+      </div>
+    )
+  }
 
   const campaign = campaignData
 

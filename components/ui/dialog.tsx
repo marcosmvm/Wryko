@@ -8,9 +8,10 @@ interface DialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   children: ReactNode
+  className?: string
 }
 
-export function Dialog({ open, onOpenChange, children }: DialogProps) {
+export function Dialog({ open, onOpenChange, children, className }: DialogProps) {
   const dialogRef = useRef<HTMLDivElement>(null)
 
   // Handle escape key
@@ -83,7 +84,10 @@ export function Dialog({ open, onOpenChange, children }: DialogProps) {
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <div
           ref={dialogRef}
-          className="relative bg-card border border-border rounded-xl shadow-lg w-full max-w-md animate-in fade-in-0 zoom-in-95 duration-200"
+          className={cn(
+            "relative bg-card border border-border rounded-xl shadow-lg w-full max-w-md animate-in fade-in-0 zoom-in-95 duration-200",
+            className
+          )}
         >
           {children}
         </div>

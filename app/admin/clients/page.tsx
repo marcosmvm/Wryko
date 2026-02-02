@@ -9,7 +9,7 @@ import {
   getStatusColor,
   getHealthColor,
   getHealthBgColor,
-} from '@/lib/data/admin-mock'
+} from '@/lib/constants/admin'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { fadeInUp, defaultTransition, getStaggerDelay } from '@/lib/animations'

@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { Calendar, ArrowRight, Building2, User } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { getUpcomingMeetings, mockMeetings } from '@/lib/data/dashboard'
+import type { Meeting } from '@/lib/types/dashboard'
 import { format, parseISO, isToday, isTomorrow } from 'date-fns'
 
 function formatMeetingDate(dateStr: string): string {
@@ -19,11 +19,33 @@ function formatMeetingDate(dateStr: string): string {
   return format(date, 'MMM d, h:mm a')
 }
 
-export function RecentMeetings() {
-  const upcomingMeetings = getUpcomingMeetings().slice(0, 4)
-  const recentCompleted = mockMeetings
+export function RecentMeetings({ meetings }: { meetings: Meeting[] }) {
+  const upcomingMeetings = meetings
+    .filter(m => m.status === 'scheduled')
+    .sort((a, b) => new Date(a.scheduledAt).getTime() - new Date(b.scheduledAt).getTime())
+    .slice(0, 4)
+  const recentCompleted = meetings
     .filter(m => m.status === 'completed')
     .slice(0, 2)
+
+  if (meetings.length === 0) {
+    return (
+      <Card variant="futuristic">
+        <CardHeader className="flex flex-row items-center justify-between pb-2">
+          <CardTitle className="text-base font-medium">Meetings</CardTitle>
+          <Link
+            href="/dashboard/meetings"
+            className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1"
+          >
+            View all <ArrowRight className="w-4 h-4" />
+          </Link>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground text-center py-6">No meetings yet</p>
+        </CardContent>
+      </Card>
+    )
+  }
 
   return (
     <Card variant="futuristic">

@@ -10,8 +10,10 @@ import {
   ResponsiveContainer,
   Legend
 } from 'recharts'
+import Link from 'next/link'
+import { ArrowRight } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { mockWeeklyTrends } from '@/lib/data/dashboard'
+import type { WeeklyTrendData } from '@/lib/types/dashboard'
 import { motion } from 'framer-motion'
 
 interface TrendChartProps {
@@ -19,13 +21,15 @@ interface TrendChartProps {
   showMeetings?: boolean
   showReplyRate?: boolean
   showOpenRate?: boolean
+  data?: WeeklyTrendData[]
 }
 
 export function TrendChart({
   title = '12-Week Performance',
   showMeetings = true,
   showReplyRate = true,
-  showOpenRate = false
+  showOpenRate = false,
+  data = []
 }: TrendChartProps) {
   return (
     <motion.div
@@ -34,14 +38,20 @@ export function TrendChart({
       transition={{ delay: 0.2, duration: 0.5 }}
     >
       <Card variant="futuristic">
-        <CardHeader className="pb-2">
+        <CardHeader className="flex flex-row items-center justify-between pb-2">
           <CardTitle className="text-base font-medium">{title}</CardTitle>
+          <Link
+            href="/dashboard/reports"
+            className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1"
+          >
+            View reports <ArrowRight className="w-4 h-4" />
+          </Link>
         </CardHeader>
         <CardContent>
           <div className="h-[300px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart
-                data={mockWeeklyTrends}
+                data={data}
                 margin={{ top: 10, right: 10, left: -10, bottom: 0 }}
               >
                 <defs>

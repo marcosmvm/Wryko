@@ -1,11 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Loader2, CheckCircle2, XCircle, Clock } from 'lucide-react'
 import { engineDetails } from '@/lib/data/engine-details'
-import { mockEngineRuns } from '@/lib/data/admin-mock'
+import { getEngineRuns } from '@/lib/supabase/admin-actions'
+import type { EngineRun } from '@/lib/types/admin'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { IconWrapper } from '@/components/ui/icon-wrapper'
@@ -15,6 +16,15 @@ type SuiteFilter = 'all' | 'lead-gen' | 'csm'
 
 export default function WorkflowsPage() {
   const [suiteFilter, setSuiteFilter] = useState<SuiteFilter>('all')
+  const [allEngineRuns, setAllEngineRuns] = useState<EngineRun[]>([])
+
+  useEffect(() => {
+    async function load() {
+      const result = await getEngineRuns()
+      setAllEngineRuns(result.data)
+    }
+    load()
+  }, [])
 
   const allEngines = Object.values(engineDetails)
   const filteredEngines =
@@ -23,7 +33,7 @@ export default function WorkflowsPage() {
       : allEngines.filter((e) => e.suite === suiteFilter)
 
   const getEngineStatus = (slug: string) => {
-    const runs = mockEngineRuns.filter((r) => r.engineSlug === slug)
+    const runs = allEngineRuns.filter((r) => r.engineSlug === slug)
     if (runs.length === 0) return { status: 'idle', lastRun: null, runsToday: 0 }
 
     const latestRun = runs[0]

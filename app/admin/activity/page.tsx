@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Search, Filter, ChevronDown, User, Users, Cog, Settings, Mail } from 'lucide-react'
-import { mockAdminActivity, AdminActivity } from '@/lib/data/admin-mock'
+import { Search, Filter, ChevronDown, User, Users, Cog, Settings, Mail, Loader2 } from 'lucide-react'
+import { getAdminActivity } from '@/lib/supabase/admin-actions'
+import type { AdminActivity } from '@/lib/types/admin'
 import { fadeInUp, defaultTransition, getStaggerDelay } from '@/lib/animations'
 import { Card } from '@/components/ui/card'
 
@@ -12,8 +13,27 @@ type ResourceFilter = AdminActivity['resourceType'] | 'all'
 export default function ActivityPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [resourceFilter, setResourceFilter] = useState<ResourceFilter>('all')
+  const [activities, setActivities] = useState<AdminActivity[]>([])
+  const [loading, setLoading] = useState(true)
 
-  const filteredActivity = mockAdminActivity.filter((activity) => {
+  useEffect(() => {
+    async function load() {
+      const result = await getAdminActivity()
+      setActivities(result.data)
+      setLoading(false)
+    }
+    load()
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+      </div>
+    )
+  }
+
+  const filteredActivity = activities.filter((activity) => {
     // Apply search filter
     if (searchQuery) {
       const query = searchQuery.toLowerCase()

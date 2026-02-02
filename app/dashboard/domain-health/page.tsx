@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { fadeInUp, getStaggerDelay } from '@/lib/animations'
 import { Shield, CheckCircle, AlertTriangle, XCircle, RefreshCw, Mail, ArrowUp, ArrowDown, Loader2 } from 'lucide-react'
@@ -16,8 +16,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { mockDomains } from '@/lib/data/dashboard'
+import { getDomains } from '@/lib/supabase/dashboard-actions'
+import type { DomainHealth } from '@/lib/types/dashboard'
 import { format, parseISO } from 'date-fns'
 import { useToastActions } from '@/components/ui/toast'
 import { domainWorkflows } from '@/lib/n8n/client'
@@ -35,8 +37,33 @@ const authStatusConfig = {
 }
 
 export default function DomainHealthPage() {
+  const router = useRouter()
+  const [domains, setDomains] = useState<DomainHealth[]>([])
+  const [loading, setLoading] = useState(true)
   const [isChecking, setIsChecking] = useState(false)
   const toast = useToastActions()
+  const issuesSectionRef = useRef<HTMLDivElement>(null)
+
+  const scrollToIssues = useCallback(() => {
+    issuesSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }, [])
+
+  useEffect(() => {
+    async function load() {
+      const result = await getDomains()
+      setDomains(result.data)
+      setLoading(false)
+    }
+    load()
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+      </div>
+    )
+  }
 
   const handleRunHealthCheck = useCallback(async () => {
     setIsChecking(true)
@@ -44,6 +71,8 @@ export default function DomainHealthPage() {
       const result = await domainWorkflows.runHealthCheck('current')
       if (result.success) {
         toast.success('Health check complete', 'Domain health data has been updated')
+        const refreshed = await getDomains()
+        setDomains(refreshed.data)
       } else {
         toast.error('Health check failed', result.error || 'Could not run health check')
       }
@@ -54,15 +83,15 @@ export default function DomainHealthPage() {
     }
   }, [toast])
 
-  const healthyDomains = mockDomains.filter(d => d.status === 'healthy').length
-  const warningDomains = mockDomains.filter(d => d.status === 'warning').length
-  const criticalDomains = mockDomains.filter(d => d.status === 'critical').length
+  const healthyDomains = domains.filter(d => d.status === 'healthy').length
+  const warningDomains = domains.filter(d => d.status === 'warning').length
+  const criticalDomains = domains.filter(d => d.status === 'critical').length
 
-  const avgDeliverability = mockDomains.reduce((sum, d) => sum + d.deliverabilityRate, 0) / mockDomains.length
-  const avgBounceRate = mockDomains.reduce((sum, d) => sum + d.bounceRate, 0) / mockDomains.length
-  const totalSent = mockDomains.reduce((sum, d) => sum + d.totalSent, 0)
+  const avgDeliverability = domains.reduce((sum, d) => sum + d.deliverabilityRate, 0) / domains.length
+  const avgBounceRate = domains.reduce((sum, d) => sum + d.bounceRate, 0) / domains.length
+  const totalSent = domains.reduce((sum, d) => sum + d.totalSent, 0)
 
-  const allIssues = mockDomains.flatMap(d => d.issues.map(i => ({ ...i, domain: d.domain })))
+  const allIssues = domains.flatMap(d => d.issues.map(i => ({ ...i, domain: d.domain })))
   const unresolvedIssues = allIssues.filter(i => !i.resolvedAt)
 
   return (
@@ -135,7 +164,11 @@ export default function DomainHealthPage() {
                 </p>
               </div>
               {unresolvedIssues.length > 0 && (
-                <Badge variant={criticalDomains > 0 ? "destructive" : "warning"}>
+                <Badge
+                  variant={criticalDomains > 0 ? "destructive" : "warning"}
+                  className="cursor-pointer hover:opacity-80 transition-opacity"
+                  onClick={scrollToIssues}
+                >
                   {unresolvedIssues.length} unresolved {unresolvedIssues.length === 1 ? 'issue' : 'issues'}
                 </Badge>
               )}
@@ -150,7 +183,7 @@ export default function DomainHealthPage() {
           <Card variant="futuristic">
             <CardContent className="p-4">
               <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Active Domains</p>
-              <p className="text-3xl font-bold font-heading">{mockDomains.length}</p>
+              <p className="text-3xl font-bold font-heading">{domains.length}</p>
             </CardContent>
           </Card>
         </motion.div>
@@ -210,12 +243,24 @@ export default function DomainHealthPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {mockDomains.map((domain) => {
+              {domains.map((domain) => {
                 const config = statusConfig[domain.status]
                 const StatusIcon = config.icon
 
                 return (
-                  <TableRow key={domain.id} className="hover:bg-muted/50 transition-colors">
+                  <TableRow
+                    key={domain.id}
+                    className="hover:bg-muted/50 transition-colors cursor-pointer"
+                    onClick={() => router.push(`/dashboard/domain-health/${domain.id}`)}
+                    role="link"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault()
+                        router.push(`/dashboard/domain-health/${domain.id}`)
+                      }
+                    }}
+                  >
                     <TableCell className="font-medium">
                       <div className="flex items-center gap-2">
                         <Mail className="w-4 h-4 text-muted-foreground" />
@@ -272,7 +317,7 @@ export default function DomainHealthPage() {
 
       {/* Issues Section */}
       {allIssues.length > 0 && (
-        <Card variant="futuristic">
+        <Card variant="futuristic" ref={issuesSectionRef}>
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
               <AlertTriangle className="w-5 h-5 text-amber-500" />

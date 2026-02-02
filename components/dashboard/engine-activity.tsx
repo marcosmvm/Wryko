@@ -1,10 +1,11 @@
 'use client'
 
+import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { CheckCircle, Circle, AlertCircle, Clock, Zap } from 'lucide-react'
+import { CheckCircle, Circle, AlertCircle, Clock, Zap, ArrowRight } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
-import { mockEngineActivity } from '@/lib/data/dashboard'
+import type { EngineActivityItem } from '@/lib/types/dashboard'
 
 const statusConfig = {
   completed: {
@@ -29,16 +30,22 @@ const statusConfig = {
   },
 }
 
-export function EngineActivity() {
-  const recentActivity = mockEngineActivity.slice(0, 5)
+export function EngineActivity({ activities }: { activities: EngineActivityItem[] }) {
+  const recentActivity = activities.slice(0, 5)
 
   return (
     <Card variant="futuristic">
-      <CardHeader className="pb-2">
+      <CardHeader className="flex flex-row items-center justify-between pb-2">
         <div className="flex items-center gap-2">
           <Zap className="w-5 h-5 text-muted-foreground" />
           <CardTitle className="text-base font-medium">Engine Activity</CardTitle>
         </div>
+        <Link
+          href="/dashboard/reports"
+          className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1"
+        >
+          View reports <ArrowRight className="w-4 h-4" />
+        </Link>
       </CardHeader>
       <CardContent>
         <div className="space-y-3">

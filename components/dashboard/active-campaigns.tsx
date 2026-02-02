@@ -7,11 +7,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { cn } from '@/lib/utils'
-import { getActiveCampaigns } from '@/lib/data/dashboard'
+import type { Campaign } from '@/lib/types/dashboard'
 
-export function ActiveCampaigns() {
-  const campaigns = getActiveCampaigns()
-
+export function ActiveCampaigns({ campaigns }: { campaigns: Campaign[] }) {
   return (
     <Card variant="futuristic">
       <CardHeader className="flex flex-row items-center justify-between pb-2">

@@ -125,7 +125,9 @@ export async function updateUserProfile(data: {
   company?: string
   phone?: string
   website?: string
+  avatar_url?: string
   notification_prefs?: Record<string, boolean>
+  calendar_prefs?: Record<string, string>
 }) {
   const supabase = await createClient()
 
@@ -158,7 +160,9 @@ export async function getCurrentUser() {
       phone: user.user_metadata?.phone || '',
       website: user.user_metadata?.website || '',
       role: user.user_metadata?.role || 'client',
+      avatar_url: user.user_metadata?.avatar_url || '',
       notification_prefs: user.user_metadata?.notification_prefs || {},
+      calendar_prefs: user.user_metadata?.calendar_prefs || {},
     },
   }
 }

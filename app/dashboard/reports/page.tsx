@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { fadeInUp } from '@/lib/animations'
 import {
@@ -18,6 +19,7 @@ import {
   FileText,
   Filter,
   Search,
+  ExternalLink,
   Loader2
 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -30,7 +32,8 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
-import { mockReports } from '@/lib/data/dashboard'
+import { getWeeklyReports } from '@/lib/supabase/dashboard-actions'
+import type { WeeklyReport } from '@/lib/types/dashboard'
 import { useToastActions } from '@/components/ui/toast'
 import { reportWorkflows } from '@/lib/n8n/client'
 
@@ -81,12 +84,32 @@ function TrendIndicator({ value, suffix = '%' }: { value: number; suffix?: strin
 }
 
 export default function ReportsPage() {
+  const [reports, setReports] = useState<WeeklyReport[]>([])
+  const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState<'all' | 'recent'>('all')
   const [search, setSearch] = useState('')
   const [downloadingReport, setDownloadingReport] = useState<string | null>(null)
   const [sharingReport, setSharingReport] = useState<string | null>(null)
   const toast = useToastActions()
-  const [latestReport, ...previousReports] = mockReports
+
+  useEffect(() => {
+    async function load() {
+      const result = await getWeeklyReports()
+      setReports(result.data)
+      setLoading(false)
+    }
+    load()
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+      </div>
+    )
+  }
+
+  const [latestReport, ...previousReports] = reports
 
   const handleDownloadReport = useCallback(async (reportId: string) => {
     setDownloadingReport(reportId)
@@ -165,9 +188,11 @@ export default function ReportsPage() {
             <div className="flex items-start justify-between mb-6">
               <div>
                 <Badge className="mb-2">Latest Report</Badge>
-                <h2 className="text-xl font-semibold">
-                  Week of {formatDateRange(latestReport.periodStart, latestReport.periodEnd)}
-                </h2>
+                <Link href={`/dashboard/reports/${latestReport.id}`} className="hover:text-primary transition-colors">
+                  <h2 className="text-xl font-semibold">
+                    Week of {formatDateRange(latestReport.periodStart, latestReport.periodEnd)}
+                  </h2>
+                </Link>
                 <p className="text-sm text-muted-foreground mt-1">
                   Generated on {formatDate(latestReport.generatedAt)}
                 </p>
@@ -213,40 +238,52 @@ export default function ReportsPage() {
               </p>
             </div>
 
-            {/* Key Metrics with WoW */}
+            {/* Key Metrics with WoW - Clickable */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-              <div className="border border-border rounded-xl p-4">
+              <Link href="/dashboard/campaigns" className="border border-border rounded-xl p-4 hover:border-primary/50 hover:shadow-sm cursor-pointer transition-all group">
                 <div className="flex items-center justify-between mb-1">
                   <p className="text-sm text-muted-foreground">Emails Sent</p>
                   <TrendIndicator value={weekOverWeek.sent} suffix="" />
                 </div>
                 <p className="text-2xl font-bold font-heading">{latestReport.metrics.emailsSent.toLocaleString()}</p>
-                <p className="text-xs text-muted-foreground">vs last week</p>
-              </div>
-              <div className="border border-border rounded-xl p-4">
+                <div className="flex items-center justify-between">
+                  <p className="text-xs text-muted-foreground">vs last week</p>
+                  <ExternalLink className="w-3 h-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+              </Link>
+              <Link href="/dashboard/campaigns" className="border border-border rounded-xl p-4 hover:border-primary/50 hover:shadow-sm cursor-pointer transition-all group">
                 <div className="flex items-center justify-between mb-1">
                   <p className="text-sm text-muted-foreground">Open Rate</p>
                   <TrendIndicator value={weekOverWeek.openRate} />
                 </div>
                 <p className="text-2xl font-bold font-heading">{latestReport.metrics.openRate}%</p>
-                <p className="text-xs text-muted-foreground">Industry avg: 18%</p>
-              </div>
-              <div className="border border-border rounded-xl p-4">
+                <div className="flex items-center justify-between">
+                  <p className="text-xs text-muted-foreground">Industry avg: 18%</p>
+                  <ExternalLink className="w-3 h-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+              </Link>
+              <Link href="/dashboard/campaigns" className="border border-border rounded-xl p-4 hover:border-primary/50 hover:shadow-sm cursor-pointer transition-all group">
                 <div className="flex items-center justify-between mb-1">
                   <p className="text-sm text-muted-foreground">Reply Rate</p>
                   <TrendIndicator value={weekOverWeek.replyRate} />
                 </div>
                 <p className="text-2xl font-bold font-heading">{latestReport.metrics.replyRate}%</p>
-                <p className="text-xs text-muted-foreground">Industry avg: 5.1%</p>
-              </div>
-              <div className="border border-border rounded-xl p-4">
+                <div className="flex items-center justify-between">
+                  <p className="text-xs text-muted-foreground">Industry avg: 5.1%</p>
+                  <ExternalLink className="w-3 h-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+              </Link>
+              <Link href="/dashboard/meetings" className="border border-border rounded-xl p-4 hover:border-primary/50 hover:shadow-sm cursor-pointer transition-all group">
                 <div className="flex items-center justify-between mb-1">
                   <p className="text-sm text-muted-foreground">Meetings Booked</p>
                   <TrendIndicator value={weekOverWeek.meetings} suffix="" />
                 </div>
                 <p className="text-2xl font-bold font-heading">{latestReport.metrics.meetingsBooked}</p>
-                <p className="text-xs text-muted-foreground">Target: 4/week</p>
-              </div>
+                <div className="flex items-center justify-between">
+                  <p className="text-xs text-muted-foreground">Target: 4/week</p>
+                  <ExternalLink className="w-3 h-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+              </Link>
             </div>
 
             {/* Key Wins & Recommendations */}
@@ -258,14 +295,23 @@ export default function ReportsPage() {
                   <h3 className="font-semibold">Key Wins This Week</h3>
                 </div>
                 <ul className="space-y-3">
-                  {latestReport.keyWins.map((win, index) => (
-                    <li key={index} className="flex items-start gap-2 text-sm">
-                      <span className="w-5 h-5 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0 text-xs font-medium">
-                        {index + 1}
-                      </span>
-                      <span>{win}</span>
-                    </li>
-                  ))}
+                  {latestReport.keyWins.map((win, index) => {
+                    const winHref = /meeting/i.test(win) ? '/dashboard/meetings' : /campaign/i.test(win) ? '/dashboard/campaigns' : null
+                    const content = (
+                      <li className="flex items-start gap-2 text-sm">
+                        <span className="w-5 h-5 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0 text-xs font-medium">
+                          {index + 1}
+                        </span>
+                        <span className={winHref ? 'hover:underline text-primary cursor-pointer' : ''}>{win}</span>
+                        {winHref && <ExternalLink className="w-3 h-3 text-primary mt-0.5 shrink-0" />}
+                      </li>
+                    )
+                    return winHref ? (
+                      <Link key={index} href={winHref}>{content}</Link>
+                    ) : (
+                      <div key={index}>{content}</div>
+                    )
+                  })}
                 </ul>
               </div>
 
@@ -286,6 +332,17 @@ export default function ReportsPage() {
                   ))}
                 </ul>
               </div>
+            </div>
+
+            {/* View Full Report Link */}
+            <div className="mt-6 pt-4 border-t border-border">
+              <Link
+                href={`/dashboard/reports/${latestReport.id}`}
+                className="inline-flex items-center gap-2 text-primary font-medium hover:underline"
+              >
+                View Full Report
+                <ChevronRight className="w-4 h-4" />
+              </Link>
             </div>
           </CardContent>
         </Card>
@@ -329,14 +386,14 @@ export default function ReportsPage() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: index * 0.05 }}
-                    className="flex items-center justify-between p-4 hover:bg-muted/50 transition-colors"
+                    className="flex items-center justify-between p-4 hover:bg-muted/50 transition-colors group"
                   >
-                    <div className="flex items-center gap-4">
+                    <Link href={`/dashboard/reports/${report.id}`} className="flex items-center gap-4 flex-1 min-w-0">
                       <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
                         <FileText className="w-5 h-5 text-muted-foreground" />
                       </div>
                       <div>
-                        <p className="font-medium">
+                        <p className="font-medium group-hover:text-primary transition-colors">
                           Week of {formatDateRange(report.periodStart, report.periodEnd)}
                         </p>
                         <div className="flex items-center gap-4 text-sm text-muted-foreground">
@@ -345,8 +402,11 @@ export default function ReportsPage() {
                           <span>{report.metrics.emailsSent.toLocaleString()} sent</span>
                         </div>
                       </div>
-                    </div>
+                    </Link>
                     <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                      </div>
                       <button
                         onClick={() => handleDownloadReport(report.id)}
                         disabled={downloadingReport === report.id}
@@ -399,12 +459,12 @@ export default function ReportsPage() {
                 Reports are automatically generated every Monday at 9:00 AM and sent to your email.
               </p>
             </div>
-            <button
-              onClick={() => window.location.href = '/dashboard/settings?tab=notifications'}
+            <Link
+              href="/dashboard/settings?tab=notifications"
               className="px-4 py-2 text-sm font-medium hover:bg-muted rounded-lg transition-colors"
             >
               Manage Preferences
-            </button>
+            </Link>
           </div>
         </CardContent>
       </Card>

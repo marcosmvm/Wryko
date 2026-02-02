@@ -10,29 +10,34 @@ import { HealthScore, HealthBreakdown } from '@/components/admin/health-score'
 import { NoAtRiskClients, InlineEmptyState } from '@/components/admin/empty-state'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import {
-  mockAdminMetrics,
-  mockEngineRuns,
-  mockAdminActivity,
-  formatMrr,
-} from '@/lib/data/admin-mock'
-import { HEALTH_THRESHOLDS } from '@/lib/constants/admin'
+import { HEALTH_THRESHOLDS, formatMrr } from '@/lib/constants/admin'
 import { fadeInUp, defaultTransition, getStaggerDelay } from '@/lib/animations'
 import { getClients, type ClientRecord } from '@/lib/supabase/client-actions'
+import { getAdminMetrics, getEngineRuns, getAdminActivity } from '@/lib/supabase/admin-actions'
+import type { AdminMetrics, EngineRun, AdminActivity } from '@/lib/types/admin'
 
 export default function AdminDashboardPage() {
   const [clients, setClients] = useState<ClientRecord[]>([])
+  const [metrics, setMetrics] = useState<AdminMetrics | null>(null)
+  const [engineRuns, setEngineRuns] = useState<EngineRun[]>([])
+  const [activity, setActivity] = useState<AdminActivity[]>([])
   const [statsLoaded, setStatsLoaded] = useState(false)
 
   useEffect(() => {
-    async function loadClients() {
-      const result = await getClients()
-      if (result.data) {
-        setClients(result.data)
-      }
+    async function loadData() {
+      const [clientsResult, metricsResult, runsResult, activityResult] = await Promise.all([
+        getClients(),
+        getAdminMetrics(),
+        getEngineRuns({ limit: 5 }),
+        getAdminActivity({ limit: 5 }),
+      ])
+      if (clientsResult.data) setClients(clientsResult.data)
+      if (metricsResult.data) setMetrics(metricsResult.data)
+      setEngineRuns(runsResult.data)
+      setActivity(activityResult.data)
       setStatsLoaded(true)
     }
-    loadClients()
+    loadData()
   }, [])
 
   const activeClients = clients.filter((c) => c.status === 'active')
@@ -40,8 +45,8 @@ export default function AdminDashboardPage() {
     (c) => c.health_score < HEALTH_THRESHOLDS.HEALTHY && c.status === 'active'
   )
   const totalMrr = clients.reduce((sum, c) => sum + (Number(c.mrr) || 0), 0)
-  const recentRuns = mockEngineRuns.slice(0, 5)
-  const recentActivity = mockAdminActivity.slice(0, 5)
+  const recentRuns = engineRuns
+  const recentActivity = activity
 
   return (
     <div className="space-y-6">
@@ -74,18 +79,17 @@ export default function AdminDashboardPage() {
         />
         <AdminStatsCard
           label="Engines Running"
-          value={mockAdminMetrics.enginesRunning}
+          value={statsLoaded && metrics ? metrics.enginesRunning : '...'}
           icon={Cog}
           variant="violet"
           index={2}
         />
         <AdminStatsCard
           label="Meetings This Week"
-          value={mockAdminMetrics.meetingsThisWeek}
+          value={statsLoaded && metrics ? metrics.meetingsThisWeek : '...'}
           icon={Calendar}
           variant="amber"
           index={3}
-          trend={{ value: 15, isPositive: true }}
         />
       </div>
 

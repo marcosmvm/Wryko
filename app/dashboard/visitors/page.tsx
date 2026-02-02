@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { fadeInUp, getStaggerDelay } from '@/lib/animations'
-import { Users, Flame, Building2, Globe, Clock, ExternalLink, UserPlus, Eye, Filter, Zap, Loader2 } from 'lucide-react'
+import { Users, Flame, Building2, Globe, Clock, ExternalLink, UserPlus, Eye, EyeOff, Mail, Filter, Zap, Loader2 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -15,7 +16,8 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
-import { mockVisitors, getHighIntentVisitors, WebsiteVisitor } from '@/lib/data/dashboard'
+import { getVisitors } from '@/lib/supabase/dashboard-actions'
+import type { WebsiteVisitor } from '@/lib/types/dashboard'
 import { formatDistanceToNow, parseISO } from 'date-fns'
 import { useToastActions } from '@/components/ui/toast'
 import { visitorWorkflows } from '@/lib/n8n/client'
@@ -29,8 +31,10 @@ const intentConfig = {
 export default function VisitorsPage() {
   const [intentFilter, setIntentFilter] = useState<string>('all')
   const [statusFilter, setStatusFilter] = useState<string>('all')
-  const [visitors, setVisitors] = useState<WebsiteVisitor[]>(mockVisitors)
+  const [visitors, setVisitors] = useState<WebsiteVisitor[]>([])
+  const [loading, setLoading] = useState(true)
   const [addingToCampaign, setAddingToCampaign] = useState<string | null>(null)
+  const [ignoringVisitor, setIgnoringVisitor] = useState<string | null>(null)
   const toast = useToastActions()
 
   const handleAddToCampaign = useCallback(async (visitorId: string, companyName: string) => {
@@ -38,9 +42,10 @@ export default function VisitorsPage() {
     try {
       const result = await visitorWorkflows.addToCampaign(visitorId, 'default')
       if (result.success) {
+        const campaignId = (result.data as { campaignId?: string })?.campaignId
         setVisitors(prev =>
           prev.map(v =>
-            v.id === visitorId ? { ...v, status: 'pushed_to_campaign' as const } : v
+            v.id === visitorId ? { ...v, status: 'pushed_to_campaign' as const, campaignId: campaignId || v.campaignId } : v
           )
         )
         toast.success('Added to campaign', `${companyName} has been added to your campaign`)
@@ -54,11 +59,49 @@ export default function VisitorsPage() {
     }
   }, [toast])
 
+  const handleIgnoreVisitor = useCallback(async (visitorId: string, companyName: string) => {
+    setIgnoringVisitor(visitorId)
+    try {
+      const result = await visitorWorkflows.ignore(visitorId)
+      if (result.success) {
+        setVisitors(prev =>
+          prev.map(v =>
+            v.id === visitorId ? { ...v, status: 'ignored' as const } : v
+          )
+        )
+        toast.success('Visitor ignored', `${companyName} has been ignored`)
+      } else {
+        toast.error('Failed to ignore', result.error || 'Could not ignore visitor')
+      }
+    } catch {
+      toast.error('Failed to ignore', 'An unexpected error occurred')
+    } finally {
+      setIgnoringVisitor(null)
+    }
+  }, [toast])
+
+  useEffect(() => {
+    async function load() {
+      const result = await getVisitors()
+      setVisitors(result.data)
+      setLoading(false)
+    }
+    load()
+  }, [])
+
   const handleOpenLinkedIn = useCallback((linkedInUrl: string) => {
     window.open(linkedInUrl, '_blank', 'noopener,noreferrer')
   }, [])
 
-  const highIntentVisitors = getHighIntentVisitors()
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+      </div>
+    )
+  }
+
+  const highIntentVisitors = visitors.filter(v => v.intentScore === 'high')
   const totalCompanies = visitors.length
   const pushedToCampaign = visitors.filter(v => v.status === 'pushed_to_campaign').length
 
@@ -128,7 +171,7 @@ export default function VisitorsPage() {
                 <div>
                   <p className="text-xs text-muted-foreground uppercase tracking-wider">Contacts Found</p>
                   <p className="text-3xl font-bold font-heading">
-                    {mockVisitors.reduce((sum, v) => sum + (v.contacts?.length || 0), 0)}
+                    {visitors.reduce((sum, v) => sum + (v.contacts?.length || 0), 0)}
                   </p>
                   <p className="text-xs text-muted-foreground">Decision makers</p>
                 </div>
@@ -224,12 +267,20 @@ export default function VisitorsPage() {
                             {visitor.status === 'pushed_to_campaign' && (
                               <Badge variant="success">In Campaign</Badge>
                             )}
+                            {visitor.status === 'ignored' && (
+                              <Badge variant="secondary">Ignored</Badge>
+                            )}
                           </div>
                           <div className="flex items-center gap-4 mt-1 text-sm text-muted-foreground">
-                            <span className="flex items-center gap-1">
+                            <a
+                              href={visitor.companyDomain.startsWith('http') ? visitor.companyDomain : `https://${visitor.companyDomain}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-1 hover:text-foreground transition-colors"
+                            >
                               <Globe className="w-4 h-4" />
                               {visitor.companyDomain}
-                            </span>
+                            </a>
                             {visitor.industry && (
                               <span>{visitor.industry}</span>
                             )}
@@ -243,18 +294,51 @@ export default function VisitorsPage() {
                         </div>
                         <div className="flex items-center gap-2">
                           {visitor.status === 'new' && (
+                            <>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="gap-1"
+                                onClick={() => handleIgnoreVisitor(visitor.id, visitor.companyName)}
+                                disabled={ignoringVisitor === visitor.id || addingToCampaign === visitor.id}
+                              >
+                                {ignoringVisitor === visitor.id ? (
+                                  <Loader2 className="w-4 h-4 animate-spin" />
+                                ) : (
+                                  <EyeOff className="w-4 h-4" />
+                                )}
+                                Ignore
+                              </Button>
+                              <Button
+                                size="sm"
+                                className="gap-1"
+                                onClick={() => handleAddToCampaign(visitor.id, visitor.companyName)}
+                                disabled={addingToCampaign === visitor.id || ignoringVisitor === visitor.id}
+                              >
+                                {addingToCampaign === visitor.id ? (
+                                  <Loader2 className="w-4 h-4 animate-spin" />
+                                ) : (
+                                  <UserPlus className="w-4 h-4" />
+                                )}
+                                Add to Campaign
+                              </Button>
+                            </>
+                          )}
+                          {visitor.status === 'pushed_to_campaign' && (
                             <Button
+                              variant="outline"
                               size="sm"
                               className="gap-1"
-                              onClick={() => handleAddToCampaign(visitor.id, visitor.companyName)}
-                              disabled={addingToCampaign === visitor.id}
+                              asChild
                             >
-                              {addingToCampaign === visitor.id ? (
-                                <Loader2 className="w-4 h-4 animate-spin" />
-                              ) : (
-                                <UserPlus className="w-4 h-4" />
-                              )}
-                              Add to Campaign
+                              <Link href={
+                                visitor.campaignId
+                                  ? `/dashboard/campaigns/${visitor.campaignId}`
+                                  : '/dashboard/campaigns'
+                              }>
+                                <ExternalLink className="w-4 h-4" />
+                                View Campaign
+                              </Link>
                             </Button>
                           )}
                         </div>
@@ -319,6 +403,15 @@ export default function VisitorsPage() {
                                 <div className="flex-1 min-w-0">
                                   <p className="font-medium">{contact.name}</p>
                                   <p className="text-sm text-muted-foreground">{contact.title}</p>
+                                  {contact.email && (
+                                    <a
+                                      href={`mailto:${contact.email}`}
+                                      className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 mt-0.5"
+                                    >
+                                      <Mail className="w-3 h-3" />
+                                      {contact.email}
+                                    </a>
+                                  )}
                                 </div>
                                 {contact.linkedIn && (
                                   <Button

@@ -87,3 +87,33 @@ export function getHealthStatus(score: number): 'healthy' | 'at-risk' | 'critica
   if (score >= HEALTH_THRESHOLDS.AT_RISK) return 'at-risk'
   return 'critical'
 }
+
+// Format MRR as currency
+export function formatMrr(mrr: number): string {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 0,
+  }).format(mrr)
+}
+
+// Health color helpers (Tailwind classes)
+export function getHealthColor(score: number): string {
+  if (score >= 80) return 'text-green-500'
+  if (score >= 50) return 'text-yellow-500'
+  return 'text-red-500'
+}
+
+export function getHealthBgColor(score: number): string {
+  if (score >= 80) return 'bg-green-500/10'
+  if (score >= 50) return 'bg-yellow-500/10'
+  return 'bg-red-500/10'
+}
+
+export function getStatusColor(status: ClientStatus): string {
+  return STATUS_COLORS[status] || 'bg-muted text-muted-foreground'
+}
+
+export function getEngineRunStatusColor(status: EngineRunStatus): string {
+  return ENGINE_STATUS_COLORS[status] || 'bg-muted text-muted-foreground'
+}

@@ -1,6 +1,8 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { Calendar, Download, Building2, User, Clock, CheckCircle, XCircle, AlertCircle, Filter, Loader2 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -21,7 +23,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { mockMeetings, getUpcomingMeetings } from '@/lib/data/dashboard'
+import { getMeetings } from '@/lib/supabase/dashboard-actions'
+import type { Meeting } from '@/lib/types/dashboard'
 import { format, parseISO, isToday, isTomorrow } from 'date-fns'
 import { useToastActions } from '@/components/ui/toast'
 import { meetingsWorkflows } from '@/lib/n8n/client'
@@ -47,9 +50,29 @@ const statusConfig = {
 }
 
 export default function MeetingsPage() {
+  const [meetings, setMeetings] = useState<Meeting[]>([])
+  const [loading, setLoading] = useState(true)
   const [statusFilter, setStatusFilter] = useState<string>('all')
   const [isExporting, setIsExporting] = useState(false)
   const toast = useToastActions()
+  const router = useRouter()
+
+  useEffect(() => {
+    async function load() {
+      const result = await getMeetings()
+      setMeetings(result.data)
+      setLoading(false)
+    }
+    load()
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+      </div>
+    )
+  }
 
   const handleExportCSV = useCallback(async () => {
     setIsExporting(true)
@@ -68,16 +91,18 @@ export default function MeetingsPage() {
     }
   }, [statusFilter, toast])
 
-  const upcomingMeetings = getUpcomingMeetings()
-  const pastMeetings = mockMeetings.filter(m => m.status !== 'scheduled')
+  const upcomingMeetings = meetings
+    .filter(m => m.status === 'scheduled')
+    .sort((a, b) => new Date(a.scheduledAt).getTime() - new Date(b.scheduledAt).getTime())
+  const pastMeetings = meetings.filter(m => m.status !== 'scheduled')
 
   const filteredPastMeetings = statusFilter === 'all'
     ? pastMeetings
     : pastMeetings.filter(m => m.status === statusFilter)
 
-  const totalMeetings = mockMeetings.length
-  const completedMeetings = mockMeetings.filter(m => m.status === 'completed').length
-  const noShowMeetings = mockMeetings.filter(m => m.status === 'no_show').length
+  const totalMeetings = meetings.length
+  const completedMeetings = meetings.filter(m => m.status === 'completed').length
+  const noShowMeetings = meetings.filter(m => m.status === 'no_show').length
   const showRate = totalMeetings > 0 ? Math.round((completedMeetings / (completedMeetings + noShowMeetings)) * 100) : 0
 
   return (
@@ -189,33 +214,35 @@ export default function MeetingsPage() {
                   transition={getStaggerDelay(index)}
                   whileHover={{ y: -3 }}
                 >
-                  <div
-                    className="p-4 rounded-xl border border-border transition-all"
-                  >
-                    <div className="flex items-start justify-between mb-3">
-                      <div>
-                        <p className="font-semibold">{meeting.contactName}</p>
-                        <p className="text-sm text-muted-foreground">{meeting.contactTitle}</p>
+                  <Link href={`/dashboard/meetings/${meeting.id}`} className="block">
+                    <div
+                      className="p-4 rounded-xl border border-border transition-all hover:border-primary/30 hover:bg-muted/30 cursor-pointer"
+                    >
+                      <div className="flex items-start justify-between mb-3">
+                        <div>
+                          <p className="font-semibold">{meeting.contactName}</p>
+                          <p className="text-sm text-muted-foreground">{meeting.contactTitle}</p>
+                        </div>
+                        <Badge variant="outline" className="shrink-0">
+                          {meeting.meetingType}
+                        </Badge>
                       </div>
-                      <Badge variant="outline" className="shrink-0">
-                        {meeting.meetingType}
-                      </Badge>
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
+                        <Building2 className="w-4 h-4" />
+                        <span>{meeting.companyName}</span>
+                        {meeting.companySize && (
+                          <span className="text-xs">({meeting.companySize})</span>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-2 text-sm font-medium text-primary">
+                        <Clock className="w-4 h-4" />
+                        <span>{formatMeetingDate(meeting.scheduledAt)}</span>
+                      </div>
+                      <div className="mt-3 pt-3 border-t flex items-center justify-between">
+                        <span className="text-xs text-muted-foreground">via {meeting.campaignName}</span>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-                      <Building2 className="w-4 h-4" />
-                      <span>{meeting.companyName}</span>
-                      {meeting.companySize && (
-                        <span className="text-xs">({meeting.companySize})</span>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-2 text-sm font-medium text-primary">
-                      <Clock className="w-4 h-4" />
-                      <span>{formatMeetingDate(meeting.scheduledAt)}</span>
-                    </div>
-                    <div className="mt-3 pt-3 border-t flex items-center justify-between">
-                      <span className="text-xs text-muted-foreground">via {meeting.campaignName}</span>
-                    </div>
-                  </div>
+                  </Link>
                 </motion.div>
               ))}
             </div>
@@ -263,7 +290,7 @@ export default function MeetingsPage() {
                 const StatusIcon = config.icon
 
                 return (
-                  <TableRow key={meeting.id} className="hover:bg-muted/50 transition-colors">
+                  <TableRow key={meeting.id} className="hover:bg-muted/50 transition-colors cursor-pointer" onClick={() => router.push(`/dashboard/meetings/${meeting.id}`)}>
                     <TableCell className="font-medium">
                       {format(parseISO(meeting.scheduledAt), 'MMM d, yyyy')}
                     </TableCell>

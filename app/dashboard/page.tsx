@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { fadeInUp } from '@/lib/animations'
-import { RefreshCw } from 'lucide-react'
+import { RefreshCw, Loader2 } from 'lucide-react'
 import { MeetingsHero } from '@/components/dashboard/meetings-hero'
 import { MetricCards } from '@/components/dashboard/metric-cards'
 import { TrendChart } from '@/components/dashboard/trend-chart'
@@ -13,8 +13,23 @@ import { HealthScoreCard } from '@/components/dashboard/health-score-card'
 import { EngineActivity } from '@/components/dashboard/engine-activity'
 import { Button } from '@/components/ui/button'
 import { useToastActions } from '@/components/ui/toast'
-import { fetchDashboardMetrics } from '@/lib/n8n/client'
 import { cn } from '@/lib/utils'
+import {
+  getDashboardMetrics,
+  getWeeklyTrends,
+  getHealthScore,
+  getMeetings,
+  getCampaigns,
+  getEngineActivity,
+} from '@/lib/supabase/dashboard-actions'
+import type {
+  DashboardMetrics,
+  WeeklyTrendData,
+  HealthScore,
+  Meeting,
+  Campaign,
+  EngineActivityItem,
+} from '@/lib/types/dashboard'
 
 function formatLastUpdated(date: Date): string {
   const now = new Date()
@@ -32,25 +47,61 @@ function formatLastUpdated(date: Date): string {
 
 export default function DashboardPage() {
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date())
   const toast = useToastActions()
+
+  const [metrics, setMetrics] = useState<DashboardMetrics | null>(null)
+  const [trends, setTrends] = useState<WeeklyTrendData[]>([])
+  const [healthScore, setHealthScore] = useState<HealthScore | null>(null)
+  const [meetings, setMeetings] = useState<Meeting[]>([])
+  const [campaigns, setCampaigns] = useState<Campaign[]>([])
+  const [engineActivities, setEngineActivities] = useState<EngineActivityItem[]>([])
+
+  const loadData = useCallback(async () => {
+    const [metricsResult, trendsResult, healthResult, meetingsResult, campaignsResult, engineResult] =
+      await Promise.all([
+        getDashboardMetrics(),
+        getWeeklyTrends(),
+        getHealthScore(),
+        getMeetings(),
+        getCampaigns({ status: 'active' }),
+        getEngineActivity(),
+      ])
+
+    if (metricsResult.data) setMetrics(metricsResult.data)
+    setTrends(trendsResult.data)
+    if (healthResult.data) setHealthScore(healthResult.data)
+    setMeetings(meetingsResult.data)
+    setCampaigns(campaignsResult.data)
+    setEngineActivities(engineResult.data)
+    setLastUpdated(new Date())
+    setLoading(false)
+  }, [])
+
+  useEffect(() => {
+    loadData()
+  }, [loadData])
 
   const handleRefresh = useCallback(async () => {
     setIsRefreshing(true)
     try {
-      const result = await fetchDashboardMetrics('current')
-      if (result.success) {
-        setLastUpdated(new Date())
-        toast.success('Dashboard refreshed', 'Data has been updated')
-      } else {
-        toast.error('Refresh failed', result.error || 'Could not refresh dashboard')
-      }
+      await loadData()
+      toast.success('Dashboard refreshed', 'Data has been updated')
     } catch {
       toast.error('Refresh failed', 'An unexpected error occurred')
     } finally {
       setIsRefreshing(false)
     }
-  }, [toast])
+  }, [loadData, toast])
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-6">
@@ -62,7 +113,7 @@ export default function DashboardPage() {
       >
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Welcome back, User</h1>
+            <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
             <p className="text-muted-foreground">Here&apos;s how your campaigns are performing</p>
             <div className="flex items-center gap-2 mt-2">
               <span className="inline-flex items-center gap-2 px-3 py-1 text-sm font-medium text-muted-foreground bg-muted border border-border rounded-full">
@@ -87,10 +138,10 @@ export default function DashboardPage() {
       </motion.div>
 
       {/* Meetings Hero Section - Primary Focus */}
-      <MeetingsHero />
+      <MeetingsHero metrics={metrics} />
 
       {/* Secondary Metrics */}
-      <MetricCards />
+      <MetricCards metrics={metrics} />
 
       {/* Main Content Grid */}
       <div className="grid lg:grid-cols-3 gap-6">
@@ -101,22 +152,23 @@ export default function DashboardPage() {
             title="12-Week Performance"
             showMeetings={true}
             showReplyRate={true}
+            data={trends}
           />
 
           {/* Active Campaigns */}
-          <ActiveCampaigns />
+          <ActiveCampaigns campaigns={campaigns} />
         </div>
 
         {/* Right Column - 1/3 width */}
         <div className="space-y-6">
           {/* Health Score */}
-          <HealthScoreCard />
+          <HealthScoreCard healthScore={healthScore} />
 
           {/* Recent Meetings */}
-          <RecentMeetings />
+          <RecentMeetings meetings={meetings} />
 
           {/* Engine Activity */}
-          <EngineActivity />
+          <EngineActivity activities={engineActivities} />
         </div>
       </div>
     </div>

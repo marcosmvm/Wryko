@@ -5,13 +5,9 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { ArrowLeft, Mail, Phone, Calendar, Building2, CreditCard, Activity, Pencil, Pause, Play, Loader2 } from 'lucide-react'
-import {
-  mockEngineRuns,
-  mockAdminActivity,
-  formatMrr,
-  getEngineRunStatusColor,
-} from '@/lib/data/admin-mock'
-import { mockCampaigns } from '@/lib/data/dashboard'
+import { formatMrr, getEngineRunStatusColor } from '@/lib/constants/admin'
+import { getEngineRuns, getAdminActivity, getAdminCampaigns } from '@/lib/supabase/admin-actions'
+import type { EngineRun, AdminActivity } from '@/lib/types/admin'
 import {
   getClientById as getClientByIdFromDb,
   updateClientRecord,
@@ -46,6 +42,9 @@ export default function ClientDetailPage({
   const [isPauseDialogOpen, setIsPauseDialogOpen] = useState(false)
   const [isReactivateDialogOpen, setIsReactivateDialogOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [clientRuns, setClientRuns] = useState<EngineRun[]>([])
+  const [clientActivity, setClientActivity] = useState<AdminActivity[]>([])
+  const [clientCampaigns, setClientCampaigns] = useState<Array<{ id: string; name: string; status: string; sent: number; openRate: number; replyRate: number; meetings: number }>>([])
 
   const [editForm, setEditForm] = useState({
     companyName: '',
@@ -55,20 +54,28 @@ export default function ClientDetailPage({
     plan: 'founding_partner',
   })
 
-  // Fetch client from Supabase
+  // Fetch client and related data from Supabase
   useEffect(() => {
     async function loadClient() {
-      const result = await getClientByIdFromDb(resolvedParams.id)
-      if (result.data) {
-        setClient(result.data)
+      const [clientResult, runsResult, activityResult, campaignsResult] = await Promise.all([
+        getClientByIdFromDb(resolvedParams.id),
+        getEngineRuns({ clientId: resolvedParams.id }),
+        getAdminActivity({ clientId: resolvedParams.id }),
+        getAdminCampaigns(resolvedParams.id),
+      ])
+      if (clientResult.data) {
+        setClient(clientResult.data)
         setEditForm({
-          companyName: result.data.company_name,
-          contactName: result.data.contact_name,
-          contactEmail: result.data.contact_email,
-          phone: result.data.phone || '',
-          plan: result.data.plan,
+          companyName: clientResult.data.company_name,
+          contactName: clientResult.data.contact_name,
+          contactEmail: clientResult.data.contact_email,
+          phone: clientResult.data.phone || '',
+          plan: clientResult.data.plan,
         })
       }
+      setClientRuns(runsResult.data)
+      setClientActivity(activityResult.data)
+      setClientCampaigns(campaignsResult.data)
       setPageLoading(false)
     }
     loadClient()
@@ -85,12 +92,6 @@ export default function ClientDetailPage({
   if (!client) {
     notFound()
   }
-
-  // Get client-specific data (still from mock for engine runs/activity)
-  const clientRuns = mockEngineRuns.filter((r) => r.clientId === client.id)
-  const clientActivity = mockAdminActivity.filter(
-    (a) => a.resourceId === client.id || a.resourceName === client.company_name
-  )
 
   const handleEditSave = async () => {
     setIsLoading(true)
@@ -304,9 +305,9 @@ export default function ClientDetailPage({
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  {mockCampaigns.length > 0 ? (
+                  {clientCampaigns.length > 0 ? (
                     <div className="space-y-3">
-                      {mockCampaigns.slice(0, 3).map((campaign, index) => (
+                      {clientCampaigns.slice(0, 3).map((campaign, index) => (
                         <motion.div
                           key={campaign.id}
                           initial={fadeInUp.initial}

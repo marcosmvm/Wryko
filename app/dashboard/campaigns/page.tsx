@@ -1,10 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { fadeInUp, getStaggerDelay } from '@/lib/animations'
-import { Search, ChevronRight, Mail, MessageSquare, Calendar, FlaskConical, TrendingUp, Filter } from 'lucide-react'
+import { Search, ChevronRight, Mail, MessageSquare, Calendar, FlaskConical, TrendingUp, Filter, Loader2 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
@@ -16,23 +16,43 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
-import { mockCampaigns } from '@/lib/data/dashboard'
+import { getCampaigns } from '@/lib/supabase/dashboard-actions'
+import type { Campaign } from '@/lib/types/dashboard'
 
 type StatusFilter = 'all' | 'active' | 'paused' | 'completed' | 'draft'
 
 export default function CampaignsPage() {
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all')
+  const [campaigns, setCampaigns] = useState<Campaign[]>([])
+  const [loading, setLoading] = useState(true)
 
-  const filteredCampaigns = mockCampaigns.filter((campaign) => {
+  useEffect(() => {
+    async function load() {
+      const result = await getCampaigns()
+      setCampaigns(result.data)
+      setLoading(false)
+    }
+    load()
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+      </div>
+    )
+  }
+
+  const filteredCampaigns = campaigns.filter((campaign) => {
     const matchesSearch = campaign.name.toLowerCase().includes(search.toLowerCase())
     const matchesStatus = statusFilter === 'all' || campaign.status === statusFilter
     return matchesSearch && matchesStatus
   })
 
-  const totalMeetings = mockCampaigns.reduce((sum, c) => sum + c.meetings, 0)
-  const activeCampaigns = mockCampaigns.filter(c => c.status === 'active').length
-  const avgReplyRate = (mockCampaigns.reduce((sum, c) => sum + c.replyRate, 0) / mockCampaigns.length).toFixed(1)
+  const totalMeetings = campaigns.reduce((sum, c) => sum + c.meetings, 0)
+  const activeCampaigns = campaigns.filter(c => c.status === 'active').length
+  const avgReplyRate = (campaigns.reduce((sum, c) => sum + c.replyRate, 0) / campaigns.length).toFixed(1)
 
   const statusConfig = {
     active: { color: 'text-emerald-500', bg: 'bg-emerald-500/10', label: 'Active' },
@@ -97,7 +117,7 @@ export default function CampaignsPage() {
               <div>
                 <p className="text-xs text-muted-foreground uppercase tracking-wider">A/B Tests Running</p>
                 <p className="text-3xl font-heading font-bold">
-                  {mockCampaigns.reduce((sum, c) => sum + (c.activeTests?.filter(t => t.status === 'running').length || 0), 0)}
+                  {campaigns.reduce((sum, c) => sum + (c.activeTests?.filter(t => t.status === 'running').length || 0), 0)}
                 </p>
               </div>
               <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
@@ -259,7 +279,7 @@ export default function CampaignsPage() {
       )}
 
       <p className="text-sm text-muted-foreground">
-        Showing {filteredCampaigns.length} of {mockCampaigns.length} campaigns
+        Showing {filteredCampaigns.length} of {campaigns.length} campaigns
       </p>
     </div>
   )

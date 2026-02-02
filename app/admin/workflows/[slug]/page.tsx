@@ -1,11 +1,13 @@
 'use client'
 
-import { use, useState, useCallback } from 'react'
+import { use, useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowLeft, Clock, CheckCircle2, XCircle, Loader2, Play, ExternalLink } from 'lucide-react'
 import { getEngineBySlug } from '@/lib/data/engine-details'
-import { mockEngineRuns, getEngineRunStatusColor } from '@/lib/data/admin-mock'
+import { getEngineRunsBySlug } from '@/lib/supabase/admin-actions'
+import { getEngineRunStatusColor } from '@/lib/constants/admin'
+import type { EngineRun } from '@/lib/types/admin'
 import { notFound } from 'next/navigation'
 import { fadeInUp, defaultTransition, getStaggerDelay } from '@/lib/animations'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
@@ -26,6 +28,16 @@ export default function EngineDetailPage({
   const toast = useToastActions()
   const [isManualRunDialogOpen, setIsManualRunDialogOpen] = useState(false)
   const [isRunning, setIsRunning] = useState(false)
+  const [engineRuns, setEngineRuns] = useState<EngineRun[]>([])
+
+  useEffect(() => {
+    if (!resolvedParams.slug) return
+    async function load() {
+      const result = await getEngineRunsBySlug(resolvedParams.slug)
+      setEngineRuns(result.data)
+    }
+    load()
+  }, [resolvedParams.slug])
 
   const handleManualRun = useCallback(async () => {
     setIsRunning(true)
@@ -52,7 +64,6 @@ export default function EngineDetailPage({
   }
 
   const Icon = engine.icon
-  const engineRuns = mockEngineRuns.filter((r) => r.engineSlug === engine.slug)
 
   // Calculate stats
   const completedRuns = engineRuns.filter((r) => r.status === 'completed')

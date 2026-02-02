@@ -6,10 +6,25 @@ import { TrendingUp, TrendingDown, Minus, AlertTriangle, CheckCircle, ArrowRight
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { cn } from '@/lib/utils'
-import { mockHealthScore } from '@/lib/data/dashboard'
+import type { HealthScore } from '@/lib/types/dashboard'
 
-export function HealthScoreCard() {
-  const { overall, status, domainHealth, replyQuality, engagementLevel, meetingConversion, trend, riskSignals } = mockHealthScore
+export function HealthScoreCard({ healthScore }: { healthScore: HealthScore | null }) {
+  if (!healthScore) {
+    return (
+      <Card variant="futuristic">
+        <CardHeader className="flex flex-row items-center justify-between pb-2">
+          <CardTitle className="text-base font-medium">Health Score</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-center py-8 text-muted-foreground">
+            <p className="text-sm">Health data not available yet</p>
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  const { overall, status, domainHealth, replyQuality, engagementLevel, meetingConversion, trend, riskSignals } = healthScore
 
   const TrendIcon = trend === 'improving' ? TrendingUp : trend === 'declining' ? TrendingDown : Minus
   const trendColor = trend === 'improving' ? 'text-success' : trend === 'declining' ? 'text-destructive' : 'text-muted-foreground'
