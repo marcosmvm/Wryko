@@ -48,23 +48,6 @@ export default function DomainHealthPage() {
     issuesSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }, [])
 
-  useEffect(() => {
-    async function load() {
-      const result = await getDomains()
-      setDomains(result.data ?? [])
-      setLoading(false)
-    }
-    load()
-  }, [])
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
-      </div>
-    )
-  }
-
   const handleRunHealthCheck = useCallback(async () => {
     setIsChecking(true)
     try {
@@ -82,6 +65,23 @@ export default function DomainHealthPage() {
       setIsChecking(false)
     }
   }, [toast])
+
+  useEffect(() => {
+    async function load() {
+      const result = await getDomains()
+      setDomains(result.data ?? [])
+      setLoading(false)
+    }
+    load()
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+      </div>
+    )
+  }
 
   const healthyDomains = domains.filter(d => d.status === 'healthy').length
   const warningDomains = domains.filter(d => d.status === 'warning').length

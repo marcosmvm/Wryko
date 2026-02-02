@@ -29,11 +29,11 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { href: '/dashboard', label: 'Overview', icon: LayoutDashboard },
-  { href: '/dashboard/meetings', label: 'Meetings', icon: Calendar, badge: 3, badgeVariant: 'success' },
+  { href: '/dashboard/meetings', label: 'Meetings', icon: Calendar },
   { href: '/dashboard/campaigns', label: 'Campaigns', icon: Mail },
   { href: '/dashboard/reports', label: 'Reports', icon: FileText },
   { href: '/dashboard/domain-health', label: 'Domain Health', icon: Shield },
-  { href: '/dashboard/visitors', label: 'Visitors', icon: Users, badge: 12, badgeVariant: 'info' },
+  { href: '/dashboard/visitors', label: 'Visitors', icon: Users },
   { href: '/dashboard/requests', label: 'Requests', icon: MessageSquare },
   { href: '/dashboard/settings', label: 'Settings', icon: Settings },
 ]

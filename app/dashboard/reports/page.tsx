@@ -92,6 +92,39 @@ export default function ReportsPage() {
   const [sharingReport, setSharingReport] = useState<string | null>(null)
   const toast = useToastActions()
 
+  const handleDownloadReport = useCallback(async (reportId: string) => {
+    setDownloadingReport(reportId)
+    try {
+      const result = await reportWorkflows.download(reportId)
+      if (result.success && result.data?.downloadUrl) {
+        window.open(result.data.downloadUrl, '_blank')
+        toast.success('Download started', 'Your report PDF is downloading')
+      } else {
+        toast.error('Download failed', result.error || 'Could not download report')
+      }
+    } catch {
+      toast.error('Download failed', 'An unexpected error occurred')
+    } finally {
+      setDownloadingReport(null)
+    }
+  }, [toast])
+
+  const handleShareReport = useCallback(async (reportId: string) => {
+    setSharingReport(reportId)
+    try {
+      const result = await reportWorkflows.share(reportId, 'team')
+      if (result.success) {
+        toast.success('Report shared', 'The report has been sent to your team')
+      } else {
+        toast.error('Share failed', result.error || 'Could not share report')
+      }
+    } catch {
+      toast.error('Share failed', 'An unexpected error occurred')
+    } finally {
+      setSharingReport(null)
+    }
+  }, [toast])
+
   useEffect(() => {
     async function load() {
       const result = await getWeeklyReports()
@@ -130,39 +163,6 @@ export default function ReportsPage() {
   }
 
   const [latestReport, ...previousReports] = reports
-
-  const handleDownloadReport = useCallback(async (reportId: string) => {
-    setDownloadingReport(reportId)
-    try {
-      const result = await reportWorkflows.download(reportId)
-      if (result.success && result.data?.downloadUrl) {
-        window.open(result.data.downloadUrl, '_blank')
-        toast.success('Download started', 'Your report PDF is downloading')
-      } else {
-        toast.error('Download failed', result.error || 'Could not download report')
-      }
-    } catch {
-      toast.error('Download failed', 'An unexpected error occurred')
-    } finally {
-      setDownloadingReport(null)
-    }
-  }, [toast])
-
-  const handleShareReport = useCallback(async (reportId: string) => {
-    setSharingReport(reportId)
-    try {
-      const result = await reportWorkflows.share(reportId, 'team')
-      if (result.success) {
-        toast.success('Report shared', 'The report has been sent to your team')
-      } else {
-        toast.error('Share failed', result.error || 'Could not share report')
-      }
-    } catch {
-      toast.error('Share failed', 'An unexpected error occurred')
-    } finally {
-      setSharingReport(null)
-    }
-  }, [toast])
 
   const filteredReports = previousReports.filter(report => {
     if (filter === 'recent') {

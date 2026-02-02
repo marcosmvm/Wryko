@@ -29,25 +29,6 @@ export default function CampaignDetailPage({
   const [isExporting, setIsExporting] = useState(false)
   const toast = useToastActions()
 
-  useEffect(() => {
-    async function load() {
-      const result = await getCampaignById(id)
-      setCampaignData(result.data)
-      setLoading(false)
-    }
-    load()
-  }, [id])
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
-      </div>
-    )
-  }
-
-  const campaign = campaignData
-
   const handlePause = useCallback(async () => {
     setIsPausing(true)
     try {
@@ -98,6 +79,25 @@ export default function CampaignDetailPage({
       setIsExporting(false)
     }
   }, [id, toast])
+
+  useEffect(() => {
+    async function load() {
+      const result = await getCampaignById(id)
+      setCampaignData(result.data)
+      setLoading(false)
+    }
+    load()
+  }, [id])
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+      </div>
+    )
+  }
+
+  const campaign = campaignData
 
   if (!campaign) {
     return (
