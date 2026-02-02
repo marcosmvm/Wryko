@@ -125,14 +125,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           </div>
 
           {/* Footer */}
-          <div className="p-4 border-t border-border">
-            <Link
-              href="/"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              ← Back to website
-            </Link>
-          </div>
+          <div className="p-4 border-t border-border" />
         </div>
       </aside>
     </>
