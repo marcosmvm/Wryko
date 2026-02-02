@@ -1,8 +1,8 @@
 import { ImageResponse } from 'next/og'
 
 export const size = {
-  width: 32,
-  height: 32,
+  width: 192,
+  height: 192,
 }
 export const contentType = 'image/png'
 
@@ -17,13 +17,13 @@ export default function Icon() {
           alignItems: 'center',
           justifyContent: 'center',
           background: 'linear-gradient(135deg, #9333EA, #7C3AED, #6366F1)',
-          borderRadius: '8px',
+          borderRadius: '48px',
         }}
       >
         {/* Orbit mark for favicon */}
         <svg
-          width="26"
-          height="26"
+          width="156"
+          height="156"
           viewBox="0 0 80 80"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"

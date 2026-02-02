@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Users, DollarSign, Cog, Calendar, AlertTriangle, Loader2, ArrowRight } from 'lucide-react'
+import { Users, DollarSign, Cog, Calendar, AlertTriangle, Loader2, ArrowRight, Inbox, ShieldAlert, Rocket, FileText, TrendingDown, Clock, XCircle } from 'lucide-react'
 import Link from 'next/link'
 import { AdminStatsCard } from '@/components/admin/admin-stats-card'
 import { EngineRunStatusBadge } from '@/components/admin/status-badge'
@@ -13,28 +13,31 @@ import { Button } from '@/components/ui/button'
 import { HEALTH_THRESHOLDS, formatMrr } from '@/lib/constants/admin'
 import { fadeInUp, defaultTransition, getStaggerDelay } from '@/lib/animations'
 import { getClients, type ClientRecord } from '@/lib/supabase/client-actions'
-import { getAdminMetrics, getEngineRuns, getAdminActivity } from '@/lib/supabase/admin-actions'
-import type { AdminMetrics, EngineRun, AdminActivity } from '@/lib/types/admin'
+import { getAdminMetrics, getEngineRuns, getAdminActivity, getAdminCsmMetrics } from '@/lib/supabase/admin-actions'
+import type { AdminMetrics, EngineRun, AdminActivity, AdminCsmMetrics } from '@/lib/types/admin'
 
 export default function AdminDashboardPage() {
   const [clients, setClients] = useState<ClientRecord[]>([])
   const [metrics, setMetrics] = useState<AdminMetrics | null>(null)
   const [engineRuns, setEngineRuns] = useState<EngineRun[]>([])
   const [activity, setActivity] = useState<AdminActivity[]>([])
+  const [csmMetrics, setCsmMetrics] = useState<AdminCsmMetrics | null>(null)
   const [statsLoaded, setStatsLoaded] = useState(false)
 
   useEffect(() => {
     async function loadData() {
-      const [clientsResult, metricsResult, runsResult, activityResult] = await Promise.all([
+      const [clientsResult, metricsResult, runsResult, activityResult, csmResult] = await Promise.all([
         getClients(),
         getAdminMetrics(),
         getEngineRuns({ limit: 5 }),
         getAdminActivity({ limit: 5 }),
+        getAdminCsmMetrics(),
       ])
       if (clientsResult.data) setClients(clientsResult.data)
       if (metricsResult.data) setMetrics(metricsResult.data)
       setEngineRuns(runsResult.data)
       setActivity(activityResult.data)
+      if (csmResult.data) setCsmMetrics(csmResult.data)
       setStatsLoaded(true)
     }
     loadData()
@@ -92,6 +95,100 @@ export default function AdminDashboardPage() {
           index={3}
         />
       </div>
+
+      {/* CSM Summary */}
+      {csmMetrics && (
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <Link href="/admin/requests" className="block">
+            <motion.div className="p-4 bg-card border border-border rounded-xl hover:border-primary/30 transition-all" whileHover={{ y: -2 }}>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                  <Inbox className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold font-heading">{csmMetrics.pendingRequests}</p>
+                  <p className="text-xs text-muted-foreground">Pending Requests</p>
+                </div>
+              </div>
+            </motion.div>
+          </Link>
+          <Link href="/admin/issues" className="block">
+            <motion.div className="p-4 bg-card border border-border rounded-xl hover:border-primary/30 transition-all" whileHover={{ y: -2 }}>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-destructive/10 flex items-center justify-center">
+                  <ShieldAlert className="w-5 h-5 text-destructive" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold font-heading">{csmMetrics.activeIssues}</p>
+                  <p className="text-xs text-muted-foreground">Active Issues</p>
+                </div>
+              </div>
+            </motion.div>
+          </Link>
+          <Link href="/admin/onboarding" className="block">
+            <motion.div className="p-4 bg-card border border-border rounded-xl hover:border-primary/30 transition-all" whileHover={{ y: -2 }}>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-info/10 flex items-center justify-center">
+                  <Rocket className="w-5 h-5 text-info" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold font-heading">{csmMetrics.onboardingClients}</p>
+                  <p className="text-xs text-muted-foreground">Onboarding</p>
+                </div>
+              </div>
+            </motion.div>
+          </Link>
+          <Link href="/admin/reports" className="block">
+            <motion.div className="p-4 bg-card border border-border rounded-xl hover:border-primary/30 transition-all" whileHover={{ y: -2 }}>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-success/10 flex items-center justify-center">
+                  <FileText className="w-5 h-5 text-success" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold font-heading">{csmMetrics.reportsThisWeek}</p>
+                  <p className="text-xs text-muted-foreground">Reports This Week</p>
+                </div>
+              </div>
+            </motion.div>
+          </Link>
+        </div>
+      )}
+
+      {/* Proactive Alerts */}
+      {csmMetrics && (csmMetrics.decliningClients > 0 || csmMetrics.criticalIssues > 0 || csmMetrics.pendingRequests > 0) && (
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+          <Card variant="elevated">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 text-warning" />
+                Proactive Alerts
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                {csmMetrics.decliningClients > 0 && (
+                  <Link href="/admin/health" className="flex items-center gap-3 p-3 bg-warning/5 border border-warning/20 rounded-lg hover:bg-warning/10 transition-colors">
+                    <TrendingDown className="w-4 h-4 text-warning flex-shrink-0" />
+                    <span className="text-sm"><strong>{csmMetrics.decliningClients}</strong> client(s) with declining health scores</span>
+                  </Link>
+                )}
+                {csmMetrics.criticalIssues > 0 && (
+                  <Link href="/admin/issues" className="flex items-center gap-3 p-3 bg-destructive/5 border border-destructive/20 rounded-lg hover:bg-destructive/10 transition-colors">
+                    <XCircle className="w-4 h-4 text-destructive flex-shrink-0" />
+                    <span className="text-sm"><strong>{csmMetrics.criticalIssues}</strong> critical issue(s) need attention</span>
+                  </Link>
+                )}
+                {csmMetrics.pendingRequests > 0 && (
+                  <Link href="/admin/requests" className="flex items-center gap-3 p-3 bg-primary/5 border border-primary/20 rounded-lg hover:bg-primary/10 transition-colors">
+                    <Clock className="w-4 h-4 text-primary flex-shrink-0" />
+                    <span className="text-sm"><strong>{csmMetrics.pendingRequests}</strong> pending client request(s)</span>
+                  </Link>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      )}
 
       {/* Main Content Grid */}
       <div className="grid lg:grid-cols-3 gap-6">

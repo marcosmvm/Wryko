@@ -48,7 +48,10 @@ export const metadata: Metadata = {
       '11 AI engines replace your SDR team. Prospecting to booked meetings — autonomous, compliant, launched in 14 days.',
   },
   icons: {
-    icon: '/icon',
+    icon: [
+      { url: '/favicon.ico', sizes: '48x48' },
+      { url: '/icon', sizes: '192x192', type: 'image/png' },
+    ],
     apple: '/apple-icon',
   },
   robots: {

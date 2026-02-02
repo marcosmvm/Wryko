@@ -261,3 +261,37 @@ export const settingsWorkflows = {
   regenerateApiKey: () =>
     callWorkflow<{ apiKey: string }>('api-key-regenerate', {}),
 }
+
+// =============================================================================
+// Admin CSM Workflows (Engines I-N)
+// =============================================================================
+
+export const adminCsmWorkflows = {
+  /** Engine I: Regenerate a client's weekly report */
+  regenerateReport: (clientId: string) =>
+    callWorkflow('admin-report-regenerate', { clientId }),
+
+  /** Engine I: Share report with client contact */
+  shareReport: (reportId: string, email: string) =>
+    callWorkflow('admin-report-share', { reportId, email }),
+
+  /** Engine J: Manually trigger issue scan for a client */
+  runIssueScan: (clientId: string) =>
+    callWorkflow('admin-issue-scan', { clientId }),
+
+  /** Engine J: Mark issue as resolved */
+  resolveIssue: (issueId: string) =>
+    callWorkflow('admin-issue-resolve', { issueId }),
+
+  /** Engine L: Advance onboarding step */
+  advanceOnboarding: (clientId: string, step: string) =>
+    callWorkflow('admin-onboarding-advance', { clientId, step }),
+
+  /** Engine M: Trigger churn risk analysis */
+  runChurnAnalysis: (clientId: string) =>
+    callWorkflow('admin-churn-analysis', { clientId }),
+
+  /** Engine N: Process/complete a client request */
+  processRequest: (requestId: string, action: string, notes?: string) =>
+    callWorkflow('admin-request-process', { requestId, action, notes }),
+}

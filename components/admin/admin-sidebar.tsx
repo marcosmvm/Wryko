@@ -3,13 +3,24 @@
 import { useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Users, Cog, Activity, Settings, X, ArrowRight } from 'lucide-react'
+import { LayoutDashboard, Users, Cog, Activity, Settings, X, ArrowRight, HeartPulse, Inbox, FileText, Rocket, ShieldAlert } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Logo } from '@/components/ui/logo'
 
-const navItems = [
+const mainNavItems = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/admin/clients', label: 'Clients', icon: Users },
+]
+
+const csmNavItems = [
+  { href: '/admin/health', label: 'Health Center', icon: HeartPulse },
+  { href: '/admin/requests', label: 'Requests', icon: Inbox },
+  { href: '/admin/reports', label: 'Reports', icon: FileText },
+  { href: '/admin/onboarding', label: 'Onboarding', icon: Rocket },
+  { href: '/admin/issues', label: 'Issues', icon: ShieldAlert },
+]
+
+const systemNavItems = [
   { href: '/admin/workflows', label: 'Engines', icon: Cog },
   { href: '/admin/activity', label: 'Activity', icon: Activity },
   { href: '/admin/settings', label: 'Settings', icon: Settings },
@@ -86,28 +97,73 @@ export function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
           <div className="border-t border-border" />
 
           {/* Navigation */}
-          <nav className="flex-1 p-4 space-y-1" aria-label="Main navigation">
-            {navItems.map((item, index) => {
+          <nav className="flex-1 p-4 space-y-1 overflow-y-auto" aria-label="Main navigation">
+            {mainNavItems.map((item) => {
               const isActive = pathname === item.href ||
                 (item.href !== '/admin' && pathname.startsWith(item.href))
-
               return (
-                <div key={item.href}>
-                  <Link
-                    href={item.href}
-                    onClick={onClose}
-                    aria-current={isActive ? 'page' : undefined}
-                    className={cn(
-                      'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors duration-200 border-l-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary',
-                      isActive
-                        ? 'text-foreground border-l-primary font-semibold'
-                        : 'text-muted-foreground hover:text-foreground border-l-transparent'
-                    )}
-                  >
-                    <item.icon className="w-5 h-5" aria-hidden="true" />
-                    {item.label}
-                  </Link>
-                </div>
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={onClose}
+                  aria-current={isActive ? 'page' : undefined}
+                  className={cn(
+                    'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors duration-200 border-l-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+                    isActive
+                      ? 'text-foreground border-l-primary font-semibold'
+                      : 'text-muted-foreground hover:text-foreground border-l-transparent'
+                  )}
+                >
+                  <item.icon className="w-5 h-5" aria-hidden="true" />
+                  {item.label}
+                </Link>
+              )
+            })}
+
+            {/* CSM Suite */}
+            <p className="px-3 pt-4 pb-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/60">CSM Suite</p>
+            {csmNavItems.map((item) => {
+              const isActive = pathname === item.href || pathname.startsWith(item.href + '/')
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={onClose}
+                  aria-current={isActive ? 'page' : undefined}
+                  className={cn(
+                    'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors duration-200 border-l-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+                    isActive
+                      ? 'text-foreground border-l-primary font-semibold'
+                      : 'text-muted-foreground hover:text-foreground border-l-transparent'
+                  )}
+                >
+                  <item.icon className="w-5 h-5" aria-hidden="true" />
+                  {item.label}
+                </Link>
+              )
+            })}
+
+            {/* System */}
+            <p className="px-3 pt-4 pb-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/60">System</p>
+            {systemNavItems.map((item) => {
+              const isActive = pathname === item.href ||
+                (item.href !== '/admin' && pathname.startsWith(item.href))
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={onClose}
+                  aria-current={isActive ? 'page' : undefined}
+                  className={cn(
+                    'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors duration-200 border-l-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+                    isActive
+                      ? 'text-foreground border-l-primary font-semibold'
+                      : 'text-muted-foreground hover:text-foreground border-l-transparent'
+                  )}
+                >
+                  <item.icon className="w-5 h-5" aria-hidden="true" />
+                  {item.label}
+                </Link>
               )
             })}
           </nav>

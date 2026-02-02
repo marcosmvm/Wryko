@@ -4,10 +4,10 @@ import { use, useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Mail, Phone, Calendar, Building2, CreditCard, Activity, Pencil, Pause, Play, Loader2 } from 'lucide-react'
+import { ArrowLeft, Mail, Phone, Calendar, Building2, CreditCard, Activity, Pencil, Pause, Play, Loader2, HeartPulse, TrendingUp, TrendingDown, Minus, Inbox, FileText, AlertTriangle } from 'lucide-react'
 import { formatMrr, getEngineRunStatusColor } from '@/lib/constants/admin'
-import { getEngineRuns, getAdminActivity, getAdminCampaigns } from '@/lib/supabase/admin-actions'
-import type { EngineRun, AdminActivity } from '@/lib/types/admin'
+import { getEngineRuns, getAdminActivity, getAdminCampaigns, getClientHealthScore, getClientRequests, getClientReports } from '@/lib/supabase/admin-actions'
+import type { EngineRun, AdminActivity, AdminHealthOverview, AdminClientRequest, AdminWeeklyReport } from '@/lib/types/admin'
 import {
   getClientById as getClientByIdFromDb,
   updateClientRecord,
@@ -45,6 +45,9 @@ export default function ClientDetailPage({
   const [clientRuns, setClientRuns] = useState<EngineRun[]>([])
   const [clientActivity, setClientActivity] = useState<AdminActivity[]>([])
   const [clientCampaigns, setClientCampaigns] = useState<Array<{ id: string; name: string; status: string; sent: number; openRate: number; replyRate: number; meetings: number }>>([])
+  const [healthData, setHealthData] = useState<AdminHealthOverview | null>(null)
+  const [clientRequests, setClientRequests] = useState<AdminClientRequest[]>([])
+  const [clientReports, setClientReports] = useState<AdminWeeklyReport[]>([])
 
   const [editForm, setEditForm] = useState({
     companyName: '',
@@ -57,11 +60,14 @@ export default function ClientDetailPage({
   // Fetch client and related data from Supabase
   useEffect(() => {
     async function loadClient() {
-      const [clientResult, runsResult, activityResult, campaignsResult] = await Promise.all([
+      const [clientResult, runsResult, activityResult, campaignsResult, healthResult, requestsResult, reportsResult] = await Promise.all([
         getClientByIdFromDb(resolvedParams.id),
         getEngineRuns({ clientId: resolvedParams.id }),
         getAdminActivity({ clientId: resolvedParams.id }),
         getAdminCampaigns(resolvedParams.id),
+        getClientHealthScore(resolvedParams.id),
+        getClientRequests(resolvedParams.id),
+        getClientReports(resolvedParams.id),
       ])
       if (clientResult.data) {
         setClient(clientResult.data)
@@ -76,6 +82,9 @@ export default function ClientDetailPage({
       setClientRuns(runsResult.data)
       setClientActivity(activityResult.data)
       setClientCampaigns(campaignsResult.data)
+      if (healthResult.data) setHealthData(healthResult.data)
+      setClientRequests(requestsResult.data)
+      setClientReports(reportsResult.data)
       setPageLoading(false)
     }
     loadClient()
@@ -378,6 +387,261 @@ export default function ClientDetailPage({
                     </div>
                   ) : (
                     <InlineEmptyState message="No engine runs for this client yet." />
+                  )}
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Health Breakdown */}
+            {healthData && (
+              <motion.div
+                initial={fadeInUp.initial}
+                animate={fadeInUp.animate}
+                transition={getStaggerDelay(6)}
+              >
+                <Card variant="elevated">
+                  <CardHeader>
+                    <CardTitle>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <HeartPulse className="w-4 h-4 text-primary" aria-hidden="true" />
+                          <h2 className="font-heading font-semibold">Health Breakdown</h2>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          {healthData.trend === 'improving' && <TrendingUp className="w-4 h-4 text-success" />}
+                          {healthData.trend === 'declining' && <TrendingDown className="w-4 h-4 text-destructive" />}
+                          {healthData.trend === 'stable' && <Minus className="w-4 h-4 text-muted-foreground" />}
+                          <span className={`text-xs font-medium capitalize ${
+                            healthData.trend === 'improving' ? 'text-success' :
+                            healthData.trend === 'declining' ? 'text-destructive' :
+                            'text-muted-foreground'
+                          }`}>
+                            {healthData.trend}
+                          </span>
+                        </div>
+                      </div>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {/* Overall Score */}
+                      <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                        <span className="text-sm font-medium">Overall Score</span>
+                        <span className={`text-2xl font-bold font-heading ${
+                          healthData.overall >= 80 ? 'text-success' :
+                          healthData.overall >= 60 ? 'text-warning' :
+                          'text-destructive'
+                        }`}>
+                          {healthData.overall}
+                        </span>
+                      </div>
+
+                      {/* Component Breakdown */}
+                      <div className="space-y-3">
+                        {[
+                          { label: 'Domain Health', value: healthData.domainHealth },
+                          { label: 'Reply Quality', value: healthData.replyQuality },
+                          { label: 'Engagement Level', value: healthData.engagementLevel },
+                          { label: 'Meeting Conversion', value: healthData.meetingConversion },
+                        ].map((component) => (
+                          <div key={component.label} className="space-y-1">
+                            <div className="flex items-center justify-between">
+                              <span className="text-xs text-muted-foreground">{component.label}</span>
+                              <span className="text-xs font-medium">{component.value}%</span>
+                            </div>
+                            <div className="h-2 bg-muted rounded-full overflow-hidden">
+                              <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: `${component.value}%` }}
+                                transition={{ duration: 0.8, ease: 'easeOut' }}
+                                className={`h-full rounded-full ${
+                                  component.value >= 80 ? 'bg-success' :
+                                  component.value >= 60 ? 'bg-warning' :
+                                  'bg-destructive'
+                                }`}
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Risk Signals */}
+                      {healthData.riskSignals.length > 0 && (
+                        <div className="space-y-2 pt-2 border-t border-border">
+                          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Risk Signals</p>
+                          {healthData.riskSignals.map((signal, index) => (
+                            <div
+                              key={index}
+                              className={`flex items-start gap-2 p-2 rounded-lg text-xs ${
+                                signal.severity === 'high' ? 'bg-destructive/5 text-destructive' :
+                                signal.severity === 'medium' ? 'bg-warning/5 text-warning' :
+                                'bg-muted/50 text-muted-foreground'
+                              }`}
+                            >
+                              <AlertTriangle className="w-3 h-3 mt-0.5 flex-shrink-0" />
+                              <div>
+                                <p className="font-medium">{signal.signal}</p>
+                                <p className="opacity-80">{signal.description}</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      <p className="text-xs text-muted-foreground">
+                        Last updated: {new Date(healthData.lastUpdatedAt).toLocaleString()}
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
+
+            {/* Client Requests */}
+            <motion.div
+              initial={fadeInUp.initial}
+              animate={fadeInUp.animate}
+              transition={getStaggerDelay(7)}
+            >
+              <Card variant="elevated">
+                <CardHeader>
+                  <CardTitle>
+                    <div className="flex items-center gap-2">
+                      <Inbox className="w-4 h-4 text-primary" aria-hidden="true" />
+                      <h2 className="font-heading font-semibold">Client Requests</h2>
+                    </div>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {clientRequests.length > 0 ? (
+                    <div className="space-y-3">
+                      {clientRequests.slice(0, 5).map((request, index) => (
+                        <motion.div
+                          key={request.id}
+                          initial={fadeInUp.initial}
+                          animate={fadeInUp.animate}
+                          transition={getStaggerDelay(index, 0.4)}
+                          className="flex items-start justify-between p-3 bg-muted/50 rounded-lg"
+                        >
+                          <div className="flex-1 min-w-0">
+                            <p className="font-medium text-sm truncate">{request.title}</p>
+                            <div className="flex items-center gap-2 mt-1">
+                              <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-muted text-muted-foreground capitalize">
+                                {request.type.replace('_', ' ')}
+                              </span>
+                              <span className="text-xs text-muted-foreground">
+                                {new Date(request.submittedAt).toLocaleDateString()}
+                              </span>
+                            </div>
+                          </div>
+                          <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wide ml-2 flex-shrink-0 ${
+                            request.status === 'pending' ? 'bg-yellow-500/10 text-yellow-500' :
+                            request.status === 'in_progress' ? 'bg-blue-500/10 text-blue-500' :
+                            request.status === 'completed' ? 'bg-green-500/10 text-green-500' :
+                            'bg-red-500/10 text-red-500'
+                          }`}>
+                            {request.status.replace('_', ' ')}
+                          </span>
+                        </motion.div>
+                      ))}
+                    </div>
+                  ) : (
+                    <InlineEmptyState message="No requests from this client yet." />
+                  )}
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Weekly Reports */}
+            <motion.div
+              initial={fadeInUp.initial}
+              animate={fadeInUp.animate}
+              transition={getStaggerDelay(8)}
+            >
+              <Card variant="elevated">
+                <CardHeader>
+                  <CardTitle>
+                    <div className="flex items-center gap-2">
+                      <FileText className="w-4 h-4 text-primary" aria-hidden="true" />
+                      <h2 className="font-heading font-semibold">Weekly Reports</h2>
+                    </div>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {clientReports.length > 0 ? (
+                    <div className="space-y-3">
+                      {clientReports.slice(0, 3).map((report, index) => (
+                        <motion.div
+                          key={report.id}
+                          initial={fadeInUp.initial}
+                          animate={fadeInUp.animate}
+                          transition={getStaggerDelay(index, 0.4)}
+                          className="p-3 bg-muted/50 rounded-lg space-y-2"
+                        >
+                          <div className="flex items-center justify-between">
+                            <p className="text-xs font-medium text-muted-foreground">
+                              {new Date(report.periodStart).toLocaleDateString()} - {new Date(report.periodEnd).toLocaleDateString()}
+                            </p>
+                            {report.pdfUrl && (
+                              <a
+                                href={report.pdfUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-xs text-primary hover:underline"
+                              >
+                                View PDF
+                              </a>
+                            )}
+                          </div>
+
+                          {/* Metrics Row */}
+                          <div className="grid grid-cols-3 gap-2">
+                            <div className="text-center p-1.5 bg-background rounded">
+                              <p className="text-sm font-bold font-heading">{report.metrics.meetingsBooked}</p>
+                              <div className="flex items-center justify-center gap-0.5">
+                                <p className="text-[10px] text-muted-foreground">Meetings</p>
+                                {report.vsLastWeek.meetings !== 0 && (
+                                  report.vsLastWeek.meetings > 0
+                                    ? <TrendingUp className="w-2.5 h-2.5 text-success" />
+                                    : <TrendingDown className="w-2.5 h-2.5 text-destructive" />
+                                )}
+                              </div>
+                            </div>
+                            <div className="text-center p-1.5 bg-background rounded">
+                              <p className="text-sm font-bold font-heading">{report.metrics.openRate}%</p>
+                              <div className="flex items-center justify-center gap-0.5">
+                                <p className="text-[10px] text-muted-foreground">Open Rate</p>
+                                {report.vsLastWeek.openRate !== 0 && (
+                                  report.vsLastWeek.openRate > 0
+                                    ? <TrendingUp className="w-2.5 h-2.5 text-success" />
+                                    : <TrendingDown className="w-2.5 h-2.5 text-destructive" />
+                                )}
+                              </div>
+                            </div>
+                            <div className="text-center p-1.5 bg-background rounded">
+                              <p className="text-sm font-bold font-heading">{report.metrics.replyRate}%</p>
+                              <div className="flex items-center justify-center gap-0.5">
+                                <p className="text-[10px] text-muted-foreground">Reply Rate</p>
+                                {report.vsLastWeek.replyRate !== 0 && (
+                                  report.vsLastWeek.replyRate > 0
+                                    ? <TrendingUp className="w-2.5 h-2.5 text-success" />
+                                    : <TrendingDown className="w-2.5 h-2.5 text-destructive" />
+                                )}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* AI Summary Preview */}
+                          {report.aiSummary && (
+                            <p className="text-xs text-muted-foreground line-clamp-2">
+                              {report.aiSummary}
+                            </p>
+                          )}
+                        </motion.div>
+                      ))}
+                    </div>
+                  ) : (
+                    <InlineEmptyState message="No reports generated yet." />
                   )}
                 </CardContent>
               </Card>
