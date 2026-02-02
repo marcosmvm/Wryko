@@ -59,24 +59,29 @@ export default function DashboardPage() {
   const [engineActivities, setEngineActivities] = useState<EngineActivityItem[]>([])
 
   const loadData = useCallback(async () => {
-    const [metricsResult, trendsResult, healthResult, meetingsResult, campaignsResult, engineResult] =
-      await Promise.all([
-        getDashboardMetrics(),
-        getWeeklyTrends(),
-        getHealthScore(),
-        getMeetings(),
-        getCampaigns({ status: 'active' }),
-        getEngineActivity(),
-      ])
+    try {
+      const [metricsResult, trendsResult, healthResult, meetingsResult, campaignsResult, engineResult] =
+        await Promise.all([
+          getDashboardMetrics(),
+          getWeeklyTrends(),
+          getHealthScore(),
+          getMeetings(),
+          getCampaigns({ status: 'active' }),
+          getEngineActivity(),
+        ])
 
-    if (metricsResult.data) setMetrics(metricsResult.data)
-    setTrends(trendsResult.data)
-    if (healthResult.data) setHealthScore(healthResult.data)
-    setMeetings(meetingsResult.data)
-    setCampaigns(campaignsResult.data)
-    setEngineActivities(engineResult.data)
-    setLastUpdated(new Date())
-    setLoading(false)
+      if (metricsResult.data) setMetrics(metricsResult.data)
+      setTrends(trendsResult.data ?? [])
+      if (healthResult.data) setHealthScore(healthResult.data)
+      setMeetings(meetingsResult.data ?? [])
+      setCampaigns(campaignsResult.data ?? [])
+      setEngineActivities(engineResult.data ?? [])
+      setLastUpdated(new Date())
+    } catch (err) {
+      console.error('Failed to load dashboard data:', err)
+    } finally {
+      setLoading(false)
+    }
   }, [])
 
   useEffect(() => {

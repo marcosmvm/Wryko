@@ -83,7 +83,7 @@ export default function VisitorsPage() {
   useEffect(() => {
     async function load() {
       const result = await getVisitors()
-      setVisitors(result.data)
+      setVisitors(result.data ?? [])
       setLoading(false)
     }
     load()

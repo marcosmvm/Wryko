@@ -51,7 +51,7 @@ export default function DomainHealthPage() {
   useEffect(() => {
     async function load() {
       const result = await getDomains()
-      setDomains(result.data)
+      setDomains(result.data ?? [])
       setLoading(false)
     }
     load()

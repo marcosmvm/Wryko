@@ -111,9 +111,9 @@ export default function CampaignDetailPage({
   }
 
   const totalReplies = campaign.positiveReplies + campaign.neutralReplies + campaign.negativeReplies
-  const positivePercent = Math.round((campaign.positiveReplies / totalReplies) * 100)
-  const neutralPercent = Math.round((campaign.neutralReplies / totalReplies) * 100)
-  const negativePercent = Math.round((campaign.negativeReplies / totalReplies) * 100)
+  const positivePercent = totalReplies > 0 ? Math.round((campaign.positiveReplies / totalReplies) * 100) : 0
+  const neutralPercent = totalReplies > 0 ? Math.round((campaign.neutralReplies / totalReplies) * 100) : 0
+  const negativePercent = totalReplies > 0 ? Math.round((campaign.negativeReplies / totalReplies) * 100) : 0
 
   const statusConfig = {
     active: { color: 'text-emerald-500', bg: 'bg-emerald-500/10', icon: Play },

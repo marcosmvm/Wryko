@@ -60,7 +60,7 @@ export default function MeetingsPage() {
   useEffect(() => {
     async function load() {
       const result = await getMeetings()
-      setMeetings(result.data)
+      setMeetings(result.data ?? [])
       setLoading(false)
     }
     load()

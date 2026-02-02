@@ -37,10 +37,14 @@ export async function getMyClientId(): Promise<{ clientId: string | null; error:
     .select('client_id')
     .eq('user_id', user.id)
     .limit(1)
-    .single()
+    .maybeSingle()
 
   if (error) {
     return { clientId: null, error: error.message }
+  }
+
+  if (!data) {
+    return { clientId: null, error: 'No client mapping found for this user' }
   }
 
   return { clientId: data.client_id, error: null }

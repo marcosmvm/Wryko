@@ -95,7 +95,7 @@ export default function ReportsPage() {
   useEffect(() => {
     async function load() {
       const result = await getWeeklyReports()
-      setReports(result.data)
+      setReports(result.data ?? [])
       setLoading(false)
     }
     load()
@@ -105,6 +105,26 @@ export default function ReportsPage() {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+      </div>
+    )
+  }
+
+  if (reports.length === 0) {
+    return (
+      <div className="space-y-6">
+        <motion.div {...fadeInUp} transition={{ duration: 0.5 }}>
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight">Weekly Reports</h1>
+            <p className="text-muted-foreground">AI-generated performance insights delivered every Monday</p>
+          </div>
+        </motion.div>
+        <Card variant="futuristic">
+          <CardContent className="p-12 text-center">
+            <FileText className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
+            <h3 className="font-semibold mb-2">No reports yet</h3>
+            <p className="text-muted-foreground text-sm">Your first weekly report will be generated on Monday</p>
+          </CardContent>
+        </Card>
       </div>
     )
   }

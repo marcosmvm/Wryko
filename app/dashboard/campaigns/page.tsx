@@ -30,7 +30,7 @@ export default function CampaignsPage() {
   useEffect(() => {
     async function load() {
       const result = await getCampaigns()
-      setCampaigns(result.data)
+      setCampaigns(result.data ?? [])
       setLoading(false)
     }
     load()

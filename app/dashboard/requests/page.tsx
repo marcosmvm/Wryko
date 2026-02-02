@@ -165,7 +165,7 @@ export default function RequestsPage() {
   useEffect(() => {
     async function load() {
       const result = await getRequests()
-      setRequests(result.data)
+      setRequests(result.data ?? [])
       setLoading(false)
     }
     load()
