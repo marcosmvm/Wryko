@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import EngineDetailClient from './client'
 import { engineDetails, getAllEngineSlugs } from '@/lib/data/engine-details'
+import { breadcrumbSchema } from '@/lib/seo/schemas'
 
 // Generate static params for all 11 engines
 export async function generateStaticParams() {
@@ -29,6 +30,9 @@ export async function generateMetadata({
       description: engine.heroDescription,
       type: 'website',
     },
+    alternates: {
+      canonical: `https://www.wryko.com/engines/${slug}`,
+    },
   }
 }
 
@@ -44,6 +48,23 @@ export default async function EngineDetailPage({
     notFound()
   }
 
+  const engine = engineDetails[slug]
+
   // Pass only the slug - client component will import the data
-  return <EngineDetailClient slug={slug} />
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbSchema([
+              { name: 'Engines', path: '/how-it-works' },
+              { name: engine.name, path: `/engines/${slug}` },
+            ])
+          ),
+        }}
+      />
+      <EngineDetailClient slug={slug} />
+    </>
+  )
 }

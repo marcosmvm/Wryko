@@ -1,6 +1,11 @@
 import type { Metadata } from 'next'
 import { Sora, Figtree } from 'next/font/google'
 import './globals.css'
+import {
+  organizationSchema,
+  webSiteSchema,
+  siteNavigationSchema,
+} from '@/lib/seo/schemas'
 
 const sora = Sora({
   subsets: ['latin'],
@@ -58,6 +63,9 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  alternates: {
+    canonical: 'https://www.wryko.com',
+  },
 }
 
 export default function RootLayout({
@@ -68,6 +76,24 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${sora.variable} ${figtree.variable} font-sans antialiased`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationSchema()),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(webSiteSchema()),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(siteNavigationSchema()),
+          }}
+        />
         {children}
       </body>
     </html>

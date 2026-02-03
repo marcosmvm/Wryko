@@ -32,6 +32,9 @@ export async function generateMetadata({
       description: resource.description,
       type: 'article',
     },
+    alternates: {
+      canonical: `https://www.wryko.com/resources/${slug}`,
+    },
   }
 }
 

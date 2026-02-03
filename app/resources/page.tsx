@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: 'Resources',
   description:
     'Free guides, templates, and tools for B2B lead generation. Download whitepapers, email templates, and outbound strategy resources.',
+  alternates: {
+    canonical: 'https://www.wryko.com/resources',
+  },
 }
 
 export default function ResourcesPage() {
