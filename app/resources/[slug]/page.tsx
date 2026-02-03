@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import ResourcePageClient from './client'
-import { resources } from '@/lib/data/resources-data'
+import { resourceMeta } from '@/lib/data/server-metadata'
 import { resourceContent } from '@/lib/data/resource-content'
 
 export async function generateStaticParams() {
-  return resources.map((r) => ({
+  return resourceMeta.map((r) => ({
     slug: r.id,
   }))
 }
@@ -16,7 +16,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
-  const resource = resources.find((r) => r.id === slug)
+  const resource = resourceMeta.find((r) => r.id === slug)
 
   if (!resource) {
     return {
@@ -44,7 +44,7 @@ export default async function ResourcePage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const resource = resources.find((r) => r.id === slug)
+  const resource = resourceMeta.find((r) => r.id === slug)
 
   if (!resource || !resourceContent[slug]) {
     notFound()

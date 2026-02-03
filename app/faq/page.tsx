@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import FAQClient from './client'
-import { faqCategories } from '@/lib/data/faq-data'
+import { faqCategoriesServer } from '@/lib/data/server-metadata'
 import { faqPageSchema, breadcrumbSchema } from '@/lib/seo/schemas'
 
 export const metadata: Metadata = {
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 }
 
 export default function FAQPage() {
-  const allQuestions = faqCategories.flatMap((cat) => cat.items)
+  const allQuestions = faqCategoriesServer.flatMap((cat) => cat.items)
 
   return (
     <>

@@ -129,6 +129,10 @@ const config: Config = {
           '0%, 100%': { opacity: '0.3', transform: 'scale(1)' },
           '50%': { opacity: '0.8', transform: 'scale(1.2)' },
         },
+        marquee: {
+          from: { transform: 'translateX(0)' },
+          to: { transform: 'translateX(-50%)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -143,6 +147,7 @@ const config: Config = {
         'gradient-shift': 'gradient-shift 3s ease-in-out infinite',
         'scan-line': 'scan-line 8s linear infinite',
         'node-pulse': 'node-pulse 2s ease-in-out infinite',
+        marquee: 'marquee 30s linear infinite',
       },
     },
   },

@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { ArrowRight, Shield, Play } from 'lucide-react'
+import { ArrowRight, ShieldCheck, Play } from '@phosphor-icons/react'
 
 import { Navigation } from '@/components/marketing/navigation'
 import { Footer } from '@/components/marketing/footer'
@@ -12,11 +12,14 @@ import { ComplianceBadges } from '@/components/marketing/compliance-badges'
 import { ProcessSteps } from '@/components/marketing/process-steps'
 import { HeroBackground } from '@/components/backgrounds'
 import { CaseSnippetsSection } from '@/components/marketing/case-snippets-section'
+import { ReviewBadges } from '@/components/marketing/review-badges'
+import { ProductShowcase } from '@/components/marketing/product-showcase'
+import { TeamStrip } from '@/components/marketing/team-strip'
 
 import { AnnouncementBar } from '@/components/marketing/hero/announcement-bar'
 import { RotatingText } from '@/components/marketing/hero/rotating-text'
 import { EnginePipelineVisual } from '@/components/marketing/hero/engine-pipeline-visual'
-import { TrustLogosStrip } from '@/components/marketing/hero/trust-logos-strip'
+import { PartnerLogoMarquee } from '@/components/marketing/partner-logo-marquee'
 import { HeroStatsBar } from '@/components/marketing/hero/hero-stats-bar'
 import { HeroVideoSection } from '@/components/marketing/hero/hero-video-section'
 
@@ -82,20 +85,20 @@ export default function HomeContent() {
                     className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-secondary text-white px-8 py-4 rounded-lg font-semibold text-lg hover:opacity-90 transition-all shadow-lg shadow-primary/15"
                   >
                     Apply for Your Pilot
-                    <ArrowRight className="w-5 h-5" />
+                    <ArrowRight className="w-5 h-5" weight="bold" />
                   </Link>
                   <Link
                     href="/how-it-works"
                     className="inline-flex items-center justify-center gap-2 border border-border px-8 py-4 rounded-lg font-semibold text-lg hover:bg-muted transition-colors"
                   >
-                    <Play className="w-4 h-4" />
+                    <Play className="w-4 h-4" weight="fill" />
                     See How It Works
                   </Link>
                 </div>
 
                 {/* Micro-trust line */}
                 <p className="mt-4 text-sm text-muted-foreground flex items-center gap-2">
-                  <Shield className="w-4 h-4 text-primary flex-shrink-0" />
+                  <ShieldCheck className="w-4 h-4 text-primary flex-shrink-0" weight="duotone" />
                   No contracts. Performance-aligned pricing. Cancel anytime.
                 </p>
               </motion.div>
@@ -111,8 +114,11 @@ export default function HomeContent() {
               </motion.div>
             </div>
 
-            {/* Trust Logos Strip */}
-            <TrustLogosStrip className="mt-16" />
+            {/* Partner Logo Marquee */}
+            <PartnerLogoMarquee className="mt-16" />
+
+            {/* Review Badges */}
+            <ReviewBadges className="mt-8" />
 
             {/* Animated Stats */}
             <HeroStatsBar stats={heroStatsEnhanced} className="mt-12" />
@@ -126,7 +132,10 @@ export default function HomeContent() {
           // videoUrl="https://www.youtube.com/watch?v=YOUR_VIDEO_ID"
         />
 
-        {/* Case Snippets Section - Social Proof */}
+        {/* Product Showcase */}
+        <ProductShowcase />
+
+        {/* Performance Metrics */}
         <CaseSnippetsSection className="py-20" />
 
         {/* Tech Line Divider */}
@@ -140,6 +149,9 @@ export default function HomeContent() {
 
         {/* Compliance & Trust Section */}
         <ComplianceBadges className="py-20" />
+
+        {/* Team Strip */}
+        <TeamStrip />
 
         {/* CTA Section */}
         <CTASection

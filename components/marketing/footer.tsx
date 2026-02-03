@@ -1,6 +1,29 @@
+import { type ComponentType } from 'react'
 import Link from 'next/link'
-import { Linkedin, Twitter } from 'lucide-react'
+import { LinkedinLogo, XLogo, Envelope } from '@phosphor-icons/react'
 import { Logo } from '@/components/ui/logo'
+import { partnerLogos } from '@/lib/data/partner-logos'
+import {
+  InstantlyLogo,
+  ApolloLogo,
+  HubSpotLogo,
+  SalesforceLogo,
+  GoogleWorkspaceLogo,
+  SlackLogo,
+  N8nLogo,
+  SupabaseLogo,
+} from '@/components/marketing/logos'
+
+const footerLogoMap: Record<string, ComponentType<{ className?: string }>> = {
+  Instantly: InstantlyLogo,
+  'Apollo.io': ApolloLogo,
+  HubSpot: HubSpotLogo,
+  Salesforce: SalesforceLogo,
+  'Google Workspace': GoogleWorkspaceLogo,
+  Slack: SlackLogo,
+  n8n: N8nLogo,
+  Supabase: SupabaseLogo,
+}
 
 const footerLinks = {
   platform: [
@@ -37,25 +60,34 @@ export function Footer() {
               11 AI Engines. Qualified Meetings. On Autopilot.
             </p>
 
+            {/* Contact */}
+            <a
+              href="mailto:hello@wryko.com"
+              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4"
+            >
+              <Envelope className="w-3.5 h-3.5" weight="duotone" />
+              hello@wryko.com
+            </a>
+
             {/* Social Links */}
             <div className="flex items-center gap-3 mb-4">
               <a
-                href="https://linkedin.com"
+                href="https://linkedin.com/company/wryko"
                 target="_blank"
                 rel="noopener noreferrer nofollow"
                 className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center hover:bg-primary/10 hover:text-primary transition-colors text-muted-foreground"
                 aria-label="LinkedIn"
               >
-                <Linkedin className="w-4 h-4" />
+                <LinkedinLogo className="w-4 h-4" weight="fill" />
               </a>
               <a
-                href="https://x.com"
+                href="https://x.com/wryko"
                 target="_blank"
                 rel="noopener noreferrer nofollow"
                 className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center hover:bg-primary/10 hover:text-primary transition-colors text-muted-foreground"
                 aria-label="X (Twitter)"
               >
-                <Twitter className="w-4 h-4" />
+                <XLogo className="w-4 h-4" weight="fill" />
               </a>
             </div>
 
@@ -117,6 +149,32 @@ export function Footer() {
                 </li>
               ))}
             </ul>
+          </div>
+        </div>
+
+        {/* Partner Logos Row */}
+        <div className="relative mt-8 pt-8">
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+          <p className="text-xs uppercase tracking-widest text-muted-foreground/60 text-center mb-4">
+            Integrations
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
+            {partnerLogos.map((logo) => {
+              const LogoSvg = footerLogoMap[logo.name]
+              return LogoSvg ? (
+                <LogoSvg
+                  key={logo.name}
+                  className="h-5 w-auto text-muted-foreground/40 hover:text-muted-foreground/70 transition-colors duration-200"
+                />
+              ) : (
+                <span
+                  key={logo.name}
+                  className="text-xs font-medium text-muted-foreground/40"
+                >
+                  {logo.name}
+                </span>
+              )
+            })}
           </div>
         </div>
 
