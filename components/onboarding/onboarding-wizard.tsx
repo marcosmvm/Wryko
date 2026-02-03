@@ -5,13 +5,14 @@ import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, ArrowRight, Rocket, Loader2 } from 'lucide-react'
 import { OnboardingProgress } from './onboarding-progress'
-import { StepCompanyProfile, type CompanyProfileData } from './step-company-profile'
-import { StepInstantlySetup, type InstantlySetupData } from './step-instantly-setup'
-import { StepCampaignPreferences, type CampaignPreferencesData } from './step-campaign-preferences'
+import { StepWelcomeCompany, type CompanyProfileData } from './step-welcome-company'
+import { StepInstantlyConnection, type InstantlyConnectionData } from './step-instantly-connection'
+import { StepWorkspaceConfig, type WorkspaceConfigData } from './step-workspace-config'
+import { StepCampaignPrefs, type CampaignPreferencesData } from './step-campaign-prefs'
 import { StepReviewLaunch } from './step-review-launch'
 import { completeOnboarding } from '@/lib/supabase/actions'
 
-const TOTAL_STEPS = 4
+const TOTAL_STEPS = 5
 
 interface OnboardingWizardProps {
   userName: string
@@ -22,83 +23,103 @@ interface OnboardingWizardProps {
 export function OnboardingWizard({ userName, userEmail, userCompany }: OnboardingWizardProps) {
   const router = useRouter()
   const [currentStep, setCurrentStep] = useState(1)
+  const [direction, setDirection] = useState(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [agreedToTerms, setAgreedToTerms] = useState(false)
 
-  // Step 1
+  // Step 1: Company Profile
   const [companyProfile, setCompanyProfile] = useState<CompanyProfileData>({
     companyName: userCompany || '',
     industry: '',
     website: '',
     phone: '',
     companySize: '',
+    targetIcp: '',
   })
   const [companyErrors, setCompanyErrors] = useState<Partial<Record<keyof CompanyProfileData, string>>>({})
 
-  // Step 2
-  const [instantlySetup, setInstantlySetup] = useState<InstantlySetupData>({
+  // Step 2: Instantly Connection
+  const [instantlySetup, setInstantlySetup] = useState<InstantlyConnectionData>({
     hasInstantly: false,
     instantlyApiKey: '',
+    readAccessVerified: false,
+    writeAccessVerified: false,
     campaignsConfigured: false,
   })
-  const [instantlyErrors, setInstantlyErrors] = useState<Partial<Record<keyof InstantlySetupData, string>>>({})
+  const [instantlyErrors, setInstantlyErrors] = useState<Partial<Record<keyof InstantlyConnectionData, string>>>({})
 
-  // Step 3
+  // Step 3: Workspace Configuration
+  const [workspaceConfig, setWorkspaceConfig] = useState<WorkspaceConfigData>({
+    workspaceSheetId: '',
+    telegramChatId: '',
+    leadsSheetId: '',
+  })
+  const [workspaceErrors, setWorkspaceErrors] = useState<Partial<Record<keyof WorkspaceConfigData, string>>>({})
+
+  // Step 4: Campaign Preferences
   const [campaignPreferences, setCampaignPreferences] = useState<CampaignPreferencesData>({
-    blockedDomains: '',
+    blockedDomains: [],
     blockedCountries: [],
     defaultNiche: 'General',
     nicheDefinitions: '',
-    targetIcp: '',
   })
   const [campaignErrors, setCampaignErrors] = useState<Partial<Record<keyof CampaignPreferencesData, string>>>({})
 
-  const validateStep = useCallback((step: number): boolean => {
-    switch (step) {
-      case 1: {
-        const errors: Partial<Record<keyof CompanyProfileData, string>> = {}
-        if (!companyProfile.companyName.trim()) {
-          errors.companyName = 'Company name is required'
-        }
-        if (!companyProfile.industry) {
-          errors.industry = 'Please select your industry'
-        }
-        setCompanyErrors(errors)
-        return Object.keys(errors).length === 0
-      }
-      case 2: {
-        const errors: Partial<Record<keyof InstantlySetupData, string>> = {}
-        if (instantlySetup.hasInstantly && !instantlySetup.instantlyApiKey.trim()) {
-          errors.instantlyApiKey = 'API key is required when Instantly is enabled'
-        }
-        setInstantlyErrors(errors)
-        return Object.keys(errors).length === 0
-      }
-      case 3: {
-        const errors: Partial<Record<keyof CampaignPreferencesData, string>> = {}
-        if (campaignPreferences.nicheDefinitions) {
-          try {
-            JSON.parse(campaignPreferences.nicheDefinitions)
-          } catch {
-            errors.nicheDefinitions = 'Must be valid JSON'
+  const validateStep = useCallback(
+    (step: number): boolean => {
+      switch (step) {
+        case 1: {
+          const errors: Partial<Record<keyof CompanyProfileData, string>> = {}
+          if (!companyProfile.companyName.trim()) {
+            errors.companyName = 'Company name is required'
           }
+          if (!companyProfile.industry) {
+            errors.industry = 'Please select your industry'
+          }
+          setCompanyErrors(errors)
+          return Object.keys(errors).length === 0
         }
-        setCampaignErrors(errors)
-        return Object.keys(errors).length === 0
+        case 2: {
+          const errors: Partial<Record<keyof InstantlyConnectionData, string>> = {}
+          if (instantlySetup.hasInstantly && !instantlySetup.instantlyApiKey.trim()) {
+            errors.instantlyApiKey = 'API key is required when Instantly is enabled'
+          }
+          setInstantlyErrors(errors)
+          return Object.keys(errors).length === 0
+        }
+        case 3: {
+          setWorkspaceErrors({})
+          return true
+        }
+        case 4: {
+          const errors: Partial<Record<keyof CampaignPreferencesData, string>> = {}
+          if (campaignPreferences.nicheDefinitions) {
+            try {
+              JSON.parse(campaignPreferences.nicheDefinitions)
+            } catch {
+              errors.nicheDefinitions = 'Must be valid JSON'
+            }
+          }
+          setCampaignErrors(errors)
+          return Object.keys(errors).length === 0
+        }
+        default:
+          return true
       }
-      default:
-        return true
-    }
-  }, [companyProfile, instantlySetup, campaignPreferences])
+    },
+    [companyProfile, instantlySetup, campaignPreferences]
+  )
 
   const handleNext = () => {
     if (validateStep(currentStep)) {
+      setDirection(1)
       setCurrentStep((prev) => Math.min(prev + 1, TOTAL_STEPS))
     }
   }
 
   const handleBack = () => {
+    setDirection(-1)
     setCurrentStep((prev) => Math.max(prev - 1, 1))
   }
 
@@ -120,15 +141,22 @@ export function OnboardingWizard({ userName, userEmail, userCompany }: Onboardin
         website: companyProfile.website || undefined,
         phone: companyProfile.phone || undefined,
         companySize: companyProfile.companySize || undefined,
+        targetIcp: companyProfile.targetIcp || undefined,
         hasInstantly: instantlySetup.hasInstantly,
         instantlyApiKey: instantlySetup.hasInstantly ? instantlySetup.instantlyApiKey : undefined,
-        blockedDomains: campaignPreferences.blockedDomains || undefined,
+        readAccessVerified: instantlySetup.readAccessVerified,
+        writeAccessVerified: instantlySetup.writeAccessVerified,
+        workspaceSheetId: workspaceConfig.workspaceSheetId || undefined,
+        telegramChatId: workspaceConfig.telegramChatId || undefined,
+        leadsSheetId: workspaceConfig.leadsSheetId || undefined,
+        blockedDomains: campaignPreferences.blockedDomains.length > 0
+          ? campaignPreferences.blockedDomains.join(', ')
+          : undefined,
         blockedCountries: campaignPreferences.blockedCountries.length > 0
           ? campaignPreferences.blockedCountries.join(',')
           : undefined,
         defaultNiche: campaignPreferences.defaultNiche,
         nicheDefinitions: campaignPreferences.nicheDefinitions || undefined,
-        targetIcp: campaignPreferences.targetIcp || undefined,
       })
 
       if (result.error) {
@@ -144,27 +172,25 @@ export function OnboardingWizard({ userName, userEmail, userCompany }: Onboardin
   }
 
   const slideVariants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? 30 : -30,
+    enter: (dir: number) => ({
+      x: dir > 0 ? 30 : -30,
       opacity: 0,
     }),
     center: {
       x: 0,
       opacity: 1,
     },
-    exit: (direction: number) => ({
-      x: direction > 0 ? -30 : 30,
+    exit: (dir: number) => ({
+      x: dir > 0 ? -30 : 30,
       opacity: 0,
     }),
   }
-
-  const direction = 1
 
   return (
     <div className="w-full max-w-2xl mx-auto">
       <OnboardingProgress currentStep={currentStep} totalSteps={TOTAL_STEPS} />
 
-      <div className="bg-card border border-border rounded-2xl p-6 sm:p-8 shadow-lg shadow-black/5 dark:shadow-black/20 relative overflow-hidden">
+      <div className="glass-premium rounded-2xl p-6 sm:p-8 shadow-lg shadow-black/5 dark:shadow-black/20 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-secondary/60 to-primary" />
 
         <AnimatePresence mode="wait" custom={direction}>
@@ -178,17 +204,18 @@ export function OnboardingWizard({ userName, userEmail, userCompany }: Onboardin
             transition={{ duration: 0.25 }}
           >
             {currentStep === 1 && (
-              <StepCompanyProfile
+              <StepWelcomeCompany
                 data={companyProfile}
                 onChange={(updates) => {
                   setCompanyProfile((prev) => ({ ...prev, ...updates }))
                   setCompanyErrors({})
                 }}
                 errors={companyErrors}
+                userName={userName}
               />
             )}
             {currentStep === 2 && (
-              <StepInstantlySetup
+              <StepInstantlyConnection
                 data={instantlySetup}
                 onChange={(updates) => {
                   setInstantlySetup((prev) => ({ ...prev, ...updates }))
@@ -198,7 +225,17 @@ export function OnboardingWizard({ userName, userEmail, userCompany }: Onboardin
               />
             )}
             {currentStep === 3 && (
-              <StepCampaignPreferences
+              <StepWorkspaceConfig
+                data={workspaceConfig}
+                onChange={(updates) => {
+                  setWorkspaceConfig((prev) => ({ ...prev, ...updates }))
+                  setWorkspaceErrors({})
+                }}
+                errors={workspaceErrors}
+              />
+            )}
+            {currentStep === 4 && (
+              <StepCampaignPrefs
                 data={campaignPreferences}
                 onChange={(updates) => {
                   setCampaignPreferences((prev) => ({ ...prev, ...updates }))
@@ -207,10 +244,11 @@ export function OnboardingWizard({ userName, userEmail, userCompany }: Onboardin
                 errors={campaignErrors}
               />
             )}
-            {currentStep === 4 && (
+            {currentStep === 5 && (
               <StepReviewLaunch
                 companyProfile={companyProfile}
                 instantlySetup={instantlySetup}
+                workspaceConfig={workspaceConfig}
                 campaignPreferences={campaignPreferences}
                 agreedToTerms={agreedToTerms}
                 onToggleTerms={setAgreedToTerms}

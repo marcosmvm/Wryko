@@ -1,23 +1,29 @@
 'use client'
 
+import { useMemo } from 'react'
 import { motion } from 'framer-motion'
 import {
-  Building2,
-  Zap,
-  Target,
-  Globe2,
-  ShieldBan,
-  Check,
   Rocket,
-  Loader2,
+  Zap,
+  Building2,
+  Target,
+  Database,
+  Settings,
+  FlaskConical,
+  Check,
 } from 'lucide-react'
-import type { CompanyProfileData } from './step-company-profile'
-import type { InstantlySetupData } from './step-instantly-setup'
-import type { CampaignPreferencesData } from './step-campaign-preferences'
+import { StepHeader } from './step-header'
+import { AnimatedChecklist, type ChecklistSection } from './animated-checklist'
+import { WorkflowTimeline } from './workflow-timeline'
+import type { CompanyProfileData } from './step-welcome-company'
+import type { InstantlyConnectionData } from './step-instantly-connection'
+import type { WorkspaceConfigData } from './step-workspace-config'
+import type { CampaignPreferencesData } from './step-campaign-prefs'
 
 interface StepReviewLaunchProps {
   companyProfile: CompanyProfileData
-  instantlySetup: InstantlySetupData
+  instantlySetup: InstantlyConnectionData
+  workspaceConfig: WorkspaceConfigData
   campaignPreferences: CampaignPreferencesData
   agreedToTerms: boolean
   onToggleTerms: (agreed: boolean) => void
@@ -25,130 +31,106 @@ interface StepReviewLaunchProps {
   submitError: string | null
 }
 
-function SummaryRow({ label, value }: { label: string; value: string }) {
-  if (!value) return null
-  return (
-    <div className="flex justify-between items-start py-2">
-      <span className="text-muted-foreground text-sm">{label}</span>
-      <span className="text-sm font-medium text-right max-w-[60%]">{value}</span>
-    </div>
-  )
-}
-
-function SummarySection({
-  icon: Icon,
-  title,
-  children,
-  delay,
-}: {
-  icon: React.ElementType
-  title: string
-  children: React.ReactNode
-  delay: number
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay, duration: 0.3 }}
-      className="rounded-xl border border-border bg-card p-5"
-    >
-      <div className="flex items-center gap-2 mb-3">
-        <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-          <Icon className="w-4 h-4 text-primary" />
-        </div>
-        <h3 className="font-heading text-sm font-semibold">{title}</h3>
-      </div>
-      <div className="divide-y divide-border">{children}</div>
-    </motion.div>
-  )
-}
-
 export function StepReviewLaunch({
   companyProfile,
   instantlySetup,
+  workspaceConfig,
   campaignPreferences,
   agreedToTerms,
   onToggleTerms,
   isSubmitting,
   submitError,
 }: StepReviewLaunchProps) {
+  const checklistSections = useMemo<ChecklistSection[]>(() => {
+    const s = (val: string | boolean | string[] | undefined): 'complete' | 'pending' => {
+      if (typeof val === 'boolean') return val ? 'complete' : 'pending'
+      if (Array.isArray(val)) return val.length > 0 ? 'complete' : 'pending'
+      return val && String(val).trim() ? 'complete' : 'pending'
+    }
+
+    return [
+      {
+        title: 'Instantly.AI Connection',
+        icon: Zap,
+        items: instantlySetup.hasInstantly
+          ? [
+              { label: 'API Key generated', status: s(instantlySetup.instantlyApiKey) },
+              { label: 'Read access verified', status: s(instantlySetup.readAccessVerified) },
+              { label: 'Write access verified', status: s(instantlySetup.writeAccessVerified), detail: 'WF3, WF5' },
+              { label: 'Campaigns have sequences configured', status: s(instantlySetup.campaignsConfigured) },
+            ]
+          : [
+              { label: 'Instantly.AI', status: 'pending' as const, detail: 'Will set up later' },
+            ],
+      },
+      {
+        title: 'Client Profile',
+        icon: Building2,
+        items: [
+          { label: 'Client Name', status: s(companyProfile.companyName) },
+          { label: 'Industry', status: s(companyProfile.industry) },
+          { label: 'Workspace Sheet ID', status: s(workspaceConfig.workspaceSheetId), detail: 'WF2, WF3' },
+          { label: 'Telegram Chat ID', status: s(workspaceConfig.telegramChatId), detail: 'WF1-3' },
+          { label: 'Leads Sheet ID', status: s(workspaceConfig.leadsSheetId), detail: 'WF5' },
+        ],
+      },
+      {
+        title: 'Campaign Configuration',
+        icon: Target,
+        items: [
+          { label: 'Default Niche', status: s(campaignPreferences.defaultNiche) },
+          { label: 'Blocked Domains', status: s(campaignPreferences.blockedDomains) },
+          { label: 'Blocked Countries', status: s(campaignPreferences.blockedCountries) },
+          {
+            label: 'Niche Definitions',
+            status: s(campaignPreferences.nicheDefinitions),
+            detail: 'optional',
+          },
+        ],
+      },
+      {
+        title: 'Workspace Setup',
+        icon: Database,
+        items: [
+          { label: 'Master Library sheet', status: 'auto' as const },
+          { label: 'Staged Updates sheet', status: 'auto' as const },
+          { label: 'DNC List', status: 'auto' as const },
+          { label: 'Scraped Leads sheet', status: 'auto' as const, detail: 'WF5' },
+          { label: 'Client Leads sheet', status: 'auto' as const, detail: 'WF5' },
+        ],
+      },
+      {
+        title: 'System Credentials',
+        icon: Settings,
+        items: [
+          { label: 'OpenAI (GPT-4o)', status: 'auto' as const, detail: 'WF2, WF5' },
+          { label: 'Telegram bot', status: 'auto' as const, detail: 'WF1-3' },
+          { label: 'Gmail', status: 'auto' as const, detail: 'All workflows' },
+        ],
+      },
+      {
+        title: 'Pre-Launch Testing',
+        icon: FlaskConical,
+        items: [
+          { label: 'Manual webhook trigger', status: 'auto' as const },
+          { label: 'Notifications received', status: 'auto' as const },
+        ],
+      },
+    ]
+  }, [companyProfile, instantlySetup, workspaceConfig, campaignPreferences])
+
   return (
     <div className="space-y-5">
-      <div className="mb-6">
-        <h2 className="font-heading text-xl font-semibold mb-1">Review & Launch</h2>
-        <p className="text-muted-foreground text-sm">
-          Review your details below. Once you launch, our engines will start building your campaigns.
-        </p>
-      </div>
+      <StepHeader
+        icon={Rocket}
+        supportingIcons={[Check, Zap]}
+        title="Review & Launch"
+        subtitle="Review your setup below. Our engines will activate once you launch."
+        stepNumber={5}
+      />
 
-      {/* Company Profile Summary */}
-      <SummarySection icon={Building2} title="Company Profile" delay={0}>
-        <SummaryRow label="Company" value={companyProfile.companyName} />
-        <SummaryRow label="Industry" value={companyProfile.industry} />
-        <SummaryRow label="Website" value={companyProfile.website} />
-        <SummaryRow label="Phone" value={companyProfile.phone} />
-        <SummaryRow label="Size" value={companyProfile.companySize} />
-      </SummarySection>
-
-      {/* Instantly.AI Summary */}
-      <SummarySection icon={Zap} title="Instantly.AI" delay={0.1}>
-        <SummaryRow
-          label="Connected"
-          value={instantlySetup.hasInstantly ? 'Yes' : 'No (will set up later)'}
-        />
-        {instantlySetup.hasInstantly && (
-          <>
-            <SummaryRow
-              label="API Key"
-              value={
-                instantlySetup.instantlyApiKey
-                  ? `${instantlySetup.instantlyApiKey.slice(0, 8)}...`
-                  : 'Not provided'
-              }
-            />
-            <SummaryRow
-              label="Campaigns Ready"
-              value={instantlySetup.campaignsConfigured ? 'Yes' : 'No'}
-            />
-          </>
-        )}
-      </SummarySection>
-
-      {/* Campaign Preferences Summary */}
-      <SummarySection icon={Target} title="Campaign Preferences" delay={0.2}>
-        <SummaryRow label="Niche" value={campaignPreferences.defaultNiche} />
-        {campaignPreferences.targetIcp && (
-          <SummaryRow label="Target ICP" value={campaignPreferences.targetIcp} />
-        )}
-        {campaignPreferences.blockedDomains && (
-          <div className="py-2">
-            <span className="text-muted-foreground text-sm flex items-center gap-1">
-              <ShieldBan className="w-3.5 h-3.5" /> Blocked Domains
-            </span>
-            <p className="text-sm font-mono mt-1 text-foreground/80">
-              {campaignPreferences.blockedDomains}
-            </p>
-          </div>
-        )}
-        {campaignPreferences.blockedCountries.length > 0 && (
-          <div className="py-2">
-            <span className="text-muted-foreground text-sm flex items-center gap-1">
-              <Globe2 className="w-3.5 h-3.5" /> Blocked Countries
-            </span>
-            <div className="flex flex-wrap gap-1.5 mt-1.5">
-              {campaignPreferences.blockedCountries.map((code) => (
-                <span
-                  key={code}
-                  className="px-2 py-0.5 rounded-full bg-destructive/10 text-destructive text-xs font-medium"
-                >
-                  {code}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-      </SummarySection>
+      {/* Animated Checklist */}
+      <AnimatedChecklist sections={checklistSections} />
 
       {/* Terms Agreement */}
       <motion.label
@@ -166,11 +148,11 @@ export function StepReviewLaunch({
         <div>
           <p className="text-sm">
             I agree to the{' '}
-            <a href="/terms" className="text-primary hover:underline" target="_blank">
+            <a href="/terms" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">
               Terms of Service
             </a>{' '}
             and{' '}
-            <a href="/privacy" className="text-primary hover:underline" target="_blank">
+            <a href="/privacy" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">
               Privacy Policy
             </a>
           </p>
@@ -191,30 +173,18 @@ export function StepReviewLaunch({
         </motion.div>
       )}
 
-      {/* What happens next */}
+      {/* Workflow Schedule Timeline */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
         className="rounded-xl border border-primary/20 bg-primary/5 p-5"
       >
-        <div className="flex items-center gap-2 mb-3">
+        <div className="flex items-center gap-2 mb-4">
           <Rocket className="w-5 h-5 text-primary" />
-          <h3 className="font-heading text-sm font-semibold">What happens next?</h3>
+          <h3 className="font-heading text-sm font-semibold">Your Engine G Workflow Schedule</h3>
         </div>
-        <ul className="space-y-2">
-          {[
-            'Our AI engines begin analyzing your market and building lead lists',
-            'Campaign sequences are configured based on your preferences',
-            'Your dedicated dashboard activates with real-time metrics',
-            'A CSM will reach out within 24 hours to finalize setup',
-          ].map((item, i) => (
-            <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
-              <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-              {item}
-            </li>
-          ))}
-        </ul>
+        <WorkflowTimeline />
       </motion.div>
     </div>
   )

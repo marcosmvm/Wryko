@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Check, Building2, Zap, Target, Rocket } from 'lucide-react'
+import { Check, Sparkles, Zap, Database, Target, Rocket } from 'lucide-react'
 
 interface OnboardingProgressProps {
   currentStep: number
@@ -9,9 +9,10 @@ interface OnboardingProgressProps {
 }
 
 const steps = [
-  { label: 'Company', icon: Building2 },
+  { label: 'Welcome', icon: Sparkles },
   { label: 'Instantly', icon: Zap },
-  { label: 'Preferences', icon: Target },
+  { label: 'Workspace', icon: Database },
+  { label: 'Targeting', icon: Target },
   { label: 'Launch', icon: Rocket },
 ]
 
@@ -55,7 +56,9 @@ export function OnboardingProgress({ currentStep, totalSteps }: OnboardingProgre
                     : 'hsl(var(--border))',
                 }}
                 transition={{ duration: 0.3 }}
-                className="w-10 h-10 rounded-full border-2 flex items-center justify-center"
+                className={`w-10 h-10 rounded-full border-2 flex items-center justify-center ${
+                  isCurrent ? 'glow-pulse' : ''
+                }`}
               >
                 {isCompleted ? (
                   <Check className="w-5 h-5 text-white" />

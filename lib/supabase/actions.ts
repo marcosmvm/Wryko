@@ -155,13 +155,18 @@ export async function completeOnboarding(data: {
   website?: string
   phone?: string
   companySize?: string
+  targetIcp?: string
   hasInstantly: boolean
   instantlyApiKey?: string
+  readAccessVerified?: boolean
+  writeAccessVerified?: boolean
+  workspaceSheetId?: string
+  telegramChatId?: string
+  leadsSheetId?: string
   blockedDomains?: string
   blockedCountries?: string
   defaultNiche: string
   nicheDefinitions?: string
-  targetIcp?: string
 }): Promise<{ success?: boolean; error?: string }> {
   const supabase = await createClient()
 
@@ -203,6 +208,9 @@ export async function completeOnboarding(data: {
       niche_definitions: parsedNicheDefinitions,
       target_icp: data.targetIcp || null,
       company_size: data.companySize || null,
+      workspace_sheet_id: data.workspaceSheetId || null,
+      telegram_chat_id: data.telegramChatId || null,
+      leads_sheet_id: data.leadsSheetId || null,
       user_id: user.id,
       onboarding_started_at: new Date().toISOString(),
     })
@@ -242,6 +250,11 @@ export async function completeOnboarding(data: {
           industry: data.industry,
           has_instantly: data.hasInstantly,
           instantly_api_key: data.instantlyApiKey || null,
+          read_access_verified: data.readAccessVerified || false,
+          write_access_verified: data.writeAccessVerified || false,
+          workspace_sheet_id: data.workspaceSheetId || null,
+          telegram_chat_id: data.telegramChatId || null,
+          leads_sheet_id: data.leadsSheetId || null,
           blocked_domains: data.blockedDomains || null,
           blocked_countries: data.blockedCountries || null,
           default_niche: data.defaultNiche,
