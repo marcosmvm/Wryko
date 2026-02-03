@@ -1,6 +1,11 @@
 import type { Metadata } from 'next'
 import { Sora, Figtree } from 'next/font/google'
 import './globals.css'
+import {
+  organizationSchema,
+  webSiteSchema,
+  siteNavigationSchema,
+} from '@/lib/seo/schemas'
 
 const sora = Sora({
   subsets: ['latin'],
@@ -48,12 +53,18 @@ export const metadata: Metadata = {
       '11 AI engines replace your SDR team. Prospecting to booked meetings — autonomous, compliant, launched in 14 days.',
   },
   icons: {
-    icon: '/icon',
+    icon: [
+      { url: '/favicon.ico', sizes: '48x48' },
+      { url: '/icon', sizes: '192x192', type: 'image/png' },
+    ],
     apple: '/apple-icon',
   },
   robots: {
     index: true,
     follow: true,
+  },
+  alternates: {
+    canonical: 'https://www.wryko.com',
   },
 }
 
@@ -65,6 +76,24 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${sora.variable} ${figtree.variable} font-sans antialiased`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationSchema()),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(webSiteSchema()),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(siteNavigationSchema()),
+          }}
+        />
         {children}
       </body>
     </html>

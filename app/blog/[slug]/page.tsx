@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import BlogPostClient from './client'
 import { notFound } from 'next/navigation'
+import { articleSchema, breadcrumbSchema } from '@/lib/seo/schemas'
 
 // Blog posts data (same as in blog/client.tsx)
 const blogPosts = [
@@ -342,6 +343,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: `${post.title} | Wryko Blog`,
     description: post.excerpt,
+    alternates: {
+      canonical: `https://www.wryko.com/blog/${slug}`,
+    },
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      type: 'article',
+      publishedTime: post.publishedAt,
+      authors: [post.author],
+    },
   }
 }
 
@@ -353,5 +364,26 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     notFound()
   }
 
-  return <BlogPostClient post={post} />
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(articleSchema(post)),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbSchema([
+              { name: 'Blog', path: '/blog' },
+              { name: post.title, path: `/blog/${post.slug}` },
+            ])
+          ),
+        }}
+      />
+      <BlogPostClient post={post} />
+    </>
+  )
 }

@@ -42,7 +42,7 @@ export function Footer() {
               <a
                 href="https://linkedin.com"
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="noopener noreferrer nofollow"
                 className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center hover:bg-primary/10 hover:text-primary transition-colors text-muted-foreground"
                 aria-label="LinkedIn"
               >
@@ -51,7 +51,7 @@ export function Footer() {
               <a
                 href="https://x.com"
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="noopener noreferrer nofollow"
                 className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center hover:bg-primary/10 hover:text-primary transition-colors text-muted-foreground"
                 aria-label="X (Twitter)"
               >
