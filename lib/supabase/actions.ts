@@ -333,41 +333,101 @@ export async function completeClientOnboarding(data: {
     return { error: 'Not authenticated' }
   }
 
-  const { data: clientRecord, error: clientError } = await supabase
-    .from('clients')
-    .insert({
-      company_name: data.companyName,
-      contact_name: user.user_metadata?.full_name || '',
-      contact_email: user.email,
-      industry: data.industry,
-      website: data.website || null,
-      company_size: data.companySize || null,
-      plan: 'pilot',
-      status: 'onboarding',
-      health_score: 80,
-      mrr: 0,
-      target_icp: data.idealCustomerProfile || null,
-      user_id: user.id,
-      onboarding_started_at: new Date().toISOString(),
-      onboarding_metadata: {
-        role_title: data.roleTitle || null,
-        target_industries: data.targetIndustries || [],
-        target_company_size: data.targetCompanySize || null,
-        target_geographies: data.targetGeographies || [],
-        primary_goal: data.primaryGoal || null,
-        monthly_lead_target: data.monthlyLeadTarget || null,
-        communication_style: data.communicationStyle || null,
-        excluded_domains: data.excludedDomains || [],
-        existing_tools: data.existingTools || [],
-        calendar_link: data.calendarLink || null,
-      },
-    })
-    .select('id')
-    .single()
+  // Start with required fields only
+  const baseClientData = {
+    company_name: data.companyName,
+    contact_name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'User',
+    contact_email: user.email || '',
+    industry: data.industry,
+    plan: 'pilot',
+    status: 'onboarding',
+    health_score: 80,
+    mrr: 0,
+    user_id: user.id,
+  }
 
-  if (clientError) {
-    console.error('[Client Onboarding] Error creating client record:', clientError)
-    return { error: 'Failed to create your account. Please try again.' }
+  // Try progressive enhancement - first with all fields
+  let clientRecord
+  let insertError
+
+  try {
+    const { data: result, error } = await supabase
+      .from('clients')
+      .insert({
+        ...baseClientData,
+        website: data.website || null,
+        company_size: data.companySize || null,
+        target_icp: data.idealCustomerProfile || null,
+        onboarding_started_at: new Date().toISOString(),
+        onboarding_metadata: {
+          role_title: data.roleTitle || null,
+          target_industries: data.targetIndustries || [],
+          target_company_size: data.targetCompanySize || null,
+          target_geographies: data.targetGeographies || [],
+          primary_goal: data.primaryGoal || null,
+          monthly_lead_target: data.monthlyLeadTarget || null,
+          communication_style: data.communicationStyle || null,
+          excluded_domains: data.excludedDomains || [],
+          existing_tools: data.existingTools || [],
+          calendar_link: data.calendarLink || null,
+        },
+      })
+      .select('id')
+      .single()
+
+    clientRecord = result
+    insertError = error
+  } catch (err) {
+    insertError = err as any
+  }
+
+  // Fallback: try without onboarding_metadata if column doesn't exist
+  if (insertError && (insertError.code === '42703' || insertError.message?.includes('onboarding_metadata'))) {
+    console.log('[Onboarding] Retrying without onboarding_metadata column')
+    
+    try {
+      const { data: result, error } = await supabase
+        .from('clients')
+        .insert({
+          ...baseClientData,
+          website: data.website || null,
+          company_size: data.companySize || null,
+          target_icp: data.idealCustomerProfile || null,
+          onboarding_started_at: new Date().toISOString(),
+        })
+        .select('id')
+        .single()
+
+      clientRecord = result
+      insertError = error
+    } catch (err) {
+      insertError = err as any
+    }
+  }
+
+  // Final fallback: minimal required fields only
+  if (insertError) {
+    console.log('[Onboarding] Retrying with minimal fields only')
+    
+    try {
+      const { data: result, error } = await supabase
+        .from('clients')
+        .insert(baseClientData)
+        .select('id')
+        .single()
+
+      clientRecord = result
+      insertError = error
+    } catch (err) {
+      insertError = err as any
+    }
+  }
+
+  if (insertError || !clientRecord) {
+    console.error('[Client Onboarding] All insert attempts failed:', insertError)
+    return { 
+      error: `Unable to create account: ${insertError?.message || 'Unknown error'}. Please contact support.` 
+    }
   }
 
   const { error: metadataError } = await supabase.auth.updateUser({
