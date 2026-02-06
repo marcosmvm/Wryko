@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Handshake, Eye, Calendar } from 'lucide-react'
+import { Handshake, Eye, Calendar } from '@phosphor-icons/react'
 
 import { SectionHeading } from './section-heading'
 
@@ -71,7 +71,7 @@ export function PricingPhilosophy({ showHeading = true, className }: PricingPhil
                 </span>
 
                 <div className="w-14 h-14 mx-auto mb-4 rounded-xl bg-primary/10 flex items-center justify-center">
-                  <principle.icon className="w-7 h-7 text-primary" />
+                  <principle.icon className="w-7 h-7 text-primary" weight="duotone" />
                 </div>
                 <h3 className="font-heading font-semibold text-lg mb-2">{principle.title}</h3>
                 <p className="text-muted-foreground mb-4">{principle.description}</p>

@@ -263,6 +263,31 @@ export const settingsWorkflows = {
 }
 
 // =============================================================================
+// Onboarding Workflows (Engine G: The Hunter)
+// =============================================================================
+
+export interface OnboardingPayload {
+  client_id: string
+  client_name: string
+  contact_name: string
+  contact_email: string
+  industry: string
+  has_instantly: boolean
+  instantly_api_key: string | null
+  blocked_domains: string | null
+  blocked_countries: string | null
+  default_niche: string
+  niche_definitions: unknown
+  target_icp: string | null
+}
+
+export const onboardingWorkflows = {
+  /** Submit client onboarding data to Engine G */
+  submit: (data: OnboardingPayload) =>
+    callWorkflow('engine-g-onboarding', data as unknown as Record<string, unknown>, { timeout: 60000 }),
+}
+
+// =============================================================================
 // Admin CSM Workflows (Engines I-N)
 // =============================================================================
 

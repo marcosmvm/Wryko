@@ -1,4 +1,4 @@
-import { FileText, Table, BookOpen, Mail, BarChart3, Users } from 'lucide-react'
+import { FileText, Table, BookOpen, Envelope, ChartBar, Users } from '@phosphor-icons/react'
 
 export type ResourceCategory = 'guide' | 'case-study' | 'template' | 'tool'
 
@@ -44,7 +44,7 @@ export const resources: Resource[] = [
     description:
       '15 proven cold email templates across different industries and use cases. Includes subject lines, body copy, and follow-up sequences.',
     category: 'template',
-    icon: Mail,
+    icon: Envelope,
     downloadUrl: '/downloads/cold-email-templates.pdf',
     fileType: 'PDF',
     fileSize: '890 KB',
@@ -78,7 +78,7 @@ export const resources: Resource[] = [
     description:
       '50+ high-performing subject lines organized by approach: curiosity, value prop, personalization, and social proof.',
     category: 'template',
-    icon: Mail,
+    icon: Envelope,
     downloadUrl: '/downloads/subject-line-swipe-file.pdf',
     fileType: 'PDF',
     fileSize: '340 KB',

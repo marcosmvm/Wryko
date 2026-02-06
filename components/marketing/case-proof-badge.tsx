@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight } from '@phosphor-icons/react'
 import Link from 'next/link'
 
 interface CaseProofBadgeProps {
@@ -30,7 +30,7 @@ export function CaseProofBadge({ snippet }: CaseProofBadgeProps) {
         className="text-primary hover:underline inline-flex items-center gap-1"
       >
         {snippet.source}
-        <ArrowUpRight className="w-3 h-3" />
+        <ArrowUpRight className="w-3 h-3" weight="bold" />
       </Link>
     </motion.div>
   )

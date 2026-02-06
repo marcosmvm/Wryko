@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Zap } from 'lucide-react'
+import { Lightning } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 
 interface AnnouncementBarProps {
@@ -20,7 +20,7 @@ export function AnnouncementBar({ className }: AnnouncementBarProps) {
       transition={{ duration: 0.5, delay: 0.1 }}
     >
       <p className="text-sm text-center flex items-center justify-center gap-2">
-        <Zap className="w-4 h-4 text-primary" />
+        <Lightning className="w-4 h-4 text-primary" weight="duotone" />
         <span className="text-muted-foreground">Founding Partner Program</span>
         <span className="font-semibold text-primary">
           Now accepting pilot applications

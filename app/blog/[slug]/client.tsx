@@ -1,12 +1,10 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Clock, User, ArrowLeft, Calendar } from 'lucide-react'
 import Link from 'next/link'
-
+import { Clock, User, ArrowLeft, Calendar } from '@phosphor-icons/react'
 import { Navigation } from '@/components/marketing/navigation'
 import { Footer } from '@/components/marketing/footer'
-import { CTASection } from '@/components/marketing/cta-section'
 
 interface BlogPost {
   id: number
@@ -18,175 +16,120 @@ interface BlogPost {
   author: string
   publishedAt: string
   readTime: string
-  featured?: boolean
+  featured: boolean
 }
 
-const categories: Record<string, string> = {
-  'ai-automation': 'AI & Automation',
-  'lead-generation': 'Lead Generation',
-  'sales-tips': 'Sales Tips',
-  'industry-news': 'Industry News',
+interface BlogPostClientProps {
+  post: BlogPost
 }
 
-export default function BlogPostClient({ post }: { post: BlogPost }) {
+export default function BlogPostClient({ post }: BlogPostClientProps) {
   return (
-    <main className="min-h-screen">
+    <div className="min-h-screen flex flex-col">
       <Navigation />
-
-      {/* Header */}
-      <section className="pt-32 pb-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto">
+      <main className="flex-1">
+        <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+          {/* Back link */}
           <motion.div
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8"
+            >
+              <ArrowLeft className="w-4 h-4" weight="bold" />
+              Back to Blog
+            </Link>
+          </motion.div>
+
+          {/* Header */}
+          <motion.header
+            className="mb-10"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            {/* Back Link */}
-            <Link
-              href="/blog"
-              className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Back to Blog
-            </Link>
-
-            {/* Category */}
-            <span className="inline-block px-3 py-1 text-xs font-medium text-primary bg-primary/10 rounded-full mb-4">
-              {categories[post.category] || post.category}
-            </span>
-
-            {/* Title */}
-            <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-6">
-              {post.title}
-            </h1>
-
-            {/* Meta */}
-            <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground pb-8 border-b border-border">
-              <span className="flex items-center gap-1.5">
-                <User className="w-4 h-4" />
-                {post.author}
-              </span>
-              <span className="flex items-center gap-1.5">
-                <Calendar className="w-4 h-4" />
+            <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
+              <span className="inline-flex items-center gap-1.5">
+                <Calendar className="w-4 h-4" weight="bold" />
                 {post.publishedAt}
               </span>
-              <span className="flex items-center gap-1.5">
-                <Clock className="w-4 h-4" />
+              <span className="inline-flex items-center gap-1.5">
+                <Clock className="w-4 h-4" weight="bold" />
                 {post.readTime}
               </span>
             </div>
-          </motion.div>
-        </div>
-      </section>
 
-      {/* Content */}
-      <section className="pb-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto">
-          <motion.article
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="prose prose-neutral dark:prose-invert max-w-none"
-          >
-            {post.content.split('\n\n').map((paragraph, index) => {
-              // Handle headings
-              if (paragraph.startsWith('## ')) {
-                return (
-                  <h2 key={index} className="font-heading text-2xl font-bold mt-10 mb-4">
-                    {paragraph.replace('## ', '')}
-                  </h2>
-                )
-              }
-              if (paragraph.startsWith('### ')) {
-                return (
-                  <h3 key={index} className="font-heading text-xl font-semibold mt-8 mb-3">
-                    {paragraph.replace('### ', '')}
-                  </h3>
-                )
-              }
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold leading-tight mb-4">
+              {post.title}
+            </h1>
 
-              // Handle bullet lists
-              if (paragraph.includes('\n- ')) {
-                const lines = paragraph.split('\n')
-                const intro = lines[0]
-                const items = lines.slice(1).filter(line => line.startsWith('- '))
+            <p className="text-lg text-muted-foreground">{post.excerpt}</p>
 
-                return (
-                  <div key={index}>
-                    {intro && <p className="text-muted-foreground leading-relaxed mb-3">{intro}</p>}
-                    <ul className="list-disc list-inside space-y-2 text-muted-foreground">
-                      {items.map((item, i) => (
-                        <li key={i}>{item.replace('- ', '')}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )
-              }
+            <div className="flex items-center gap-3 mt-6 pt-6 border-t border-border/50">
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                <User className="w-5 h-5 text-primary" weight="duotone" />
+              </div>
+              <div>
+                <p className="text-sm font-medium">{post.author}</p>
+                <p className="text-xs text-muted-foreground">Wryko</p>
+              </div>
+            </div>
+          </motion.header>
 
-              // Handle bold text patterns
-              if (paragraph.includes('**')) {
-                const parts = paragraph.split(/(\*\*[^*]+\*\*)/)
-                return (
-                  <p key={index} className="text-muted-foreground leading-relaxed mb-4">
-                    {parts.map((part, i) => {
-                      if (part.startsWith('**') && part.endsWith('**')) {
-                        return <strong key={i} className="text-foreground font-semibold">{part.replace(/\*\*/g, '')}</strong>
-                      }
-                      return part
-                    })}
-                  </p>
-                )
-              }
-
-              // Regular paragraphs
-              if (paragraph.trim()) {
-                return (
-                  <p key={index} className="text-muted-foreground leading-relaxed mb-4">
-                    {paragraph}
-                  </p>
-                )
-              }
-
-              return null
-            })}
-          </motion.article>
-
-          {/* Author Box */}
+          {/* Content */}
           <motion.div
+            className="prose prose-neutral dark:prose-invert max-w-none prose-headings:font-heading prose-headings:font-semibold prose-a:text-primary prose-strong:text-foreground"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="mt-12 p-6 bg-muted/30 border border-border rounded-xl"
+            dangerouslySetInnerHTML={{
+              __html: post.content
+                .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+                .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                .replace(/^- (.+)$/gm, '<li>$1</li>')
+                .replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>')
+                .replace(/\n{2,}/g, '</p><p>')
+                .replace(/^(.+)$/gm, (match) => {
+                  if (
+                    match.startsWith('<h') ||
+                    match.startsWith('<ul') ||
+                    match.startsWith('<li') ||
+                    match.startsWith('</') ||
+                    match.trim() === ''
+                  )
+                    return match
+                  return `<p>${match}</p>`
+                }),
+            }}
+          />
+
+          {/* Footer CTA */}
+          <motion.div
+            className="mt-16 pt-10 border-t border-border/50 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
           >
-            <div className="flex items-start gap-4">
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                <span className="text-xl font-bold text-primary">MM</span>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-1">{post.author}</h3>
-                <p className="text-sm text-muted-foreground mb-3">
-                  Founder & CEO at Wryko. Building the future of autonomous B2B lead generation.
-                </p>
-                <Link
-                  href="/about"
-                  className="text-sm text-primary font-medium hover:underline"
-                >
-                  Learn more about the author →
-                </Link>
-              </div>
-            </div>
+            <h3 className="text-xl font-heading font-semibold mb-3">
+              Ready to automate your outbound?
+            </h3>
+            <p className="text-muted-foreground mb-6">
+              See how Wryko&apos;s 11 AI engines can transform your lead generation.
+            </p>
+            <Link
+              href="/book-demo"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-secondary text-white px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition-all"
+            >
+              Book a Demo
+            </Link>
           </motion.div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <CTASection
-        title="Ready to Transform Your Lead Generation?"
-        subtitle="See how Wryko can help you generate qualified B2B meetings on autopilot."
-        primaryCta={{ href: '/book-demo', label: 'Book Your Discovery Call' }}
-      />
-
+        </article>
+      </main>
       <Footer />
-    </main>
+    </div>
   )
 }

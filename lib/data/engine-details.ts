@@ -1,17 +1,17 @@
-import { LucideIcon } from 'lucide-react'
+import type { Icon } from '@phosphor-icons/react'
 import {
-  Shield,
+  ShieldCheck,
   Target,
   Brain,
-  Zap,
+  Lightning,
   Eye,
-  BarChart3,
-  Scale,
+  ChartBar,
+  Scales,
   BookOpen,
   Rocket,
-  Activity,
+  Pulse,
   Compass,
-} from 'lucide-react'
+} from '@phosphor-icons/react'
 
 // Type definitions
 export interface EnginePhase {
@@ -68,7 +68,7 @@ export interface EngineDetail {
   name: string
   tagline: string
   letter: string
-  icon: LucideIcon
+  icon: Icon
   suite: 'lead-gen' | 'csm'
   heroDescription: string
   purpose: string
@@ -91,7 +91,7 @@ export const engineDetails: Record<string, EngineDetail> = {
     name: 'The Guardian',
     tagline: 'Compliance & Deliverability Protection',
     letter: 'A',
-    icon: Shield,
+    icon: ShieldCheck,
     suite: 'lead-gen',
     heroDescription:
       'Protect your sender reputation with real-time domain health monitoring, DNC verification, blacklist checking, and automatic compliance with Gmail/Yahoo 2024-2025 requirements.',
@@ -486,7 +486,7 @@ export const engineDetails: Record<string, EngineDetail> = {
     name: 'The Hunter',
     tagline: 'Lead Expansion from Positive Replies',
     letter: 'D',
-    icon: Zap,
+    icon: Lightning,
     suite: 'lead-gen',
     heroDescription:
       'Multiply pipeline opportunities from every positive reply. Automatically identify 25-50 lookalike prospects and launch targeted campaigns within 24 hours.',
@@ -757,7 +757,7 @@ export const engineDetails: Record<string, EngineDetail> = {
     name: 'The Informant',
     tagline: 'Automated Performance Reporting',
     letter: 'I',
-    icon: BarChart3,
+    icon: ChartBar,
     suite: 'csm',
     heroDescription:
       'Eliminate manual reporting with AI-powered executive summaries. Branded weekly reports delivered every Sunday at 8 PM with trend analysis and actionable insights.',
@@ -871,7 +871,7 @@ export const engineDetails: Record<string, EngineDetail> = {
     name: 'The Judge',
     tagline: 'Issue Detection & Auto-Healing',
     letter: 'J',
-    icon: Scale,
+    icon: Scales,
     suite: 'csm',
     heroDescription:
       'Transform operations from reactive firefighting to proactive resolution. Automatically detect and fix infrastructure issues before clients notice them.',
@@ -1244,7 +1244,7 @@ export const engineDetails: Record<string, EngineDetail> = {
     name: 'The Monitor',
     tagline: 'Churn Risk Detection & Intervention',
     letter: 'M',
-    icon: Activity,
+    icon: Pulse,
     suite: 'csm',
     heroDescription:
       'Protect revenue through early warning detection. Analyze behavioral and performance signals to identify at-risk accounts before they churn.',

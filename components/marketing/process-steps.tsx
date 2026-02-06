@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Bot, User, Clock, Check } from 'lucide-react'
+import { Robot, User, Clock, Check } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 
 import { SectionHeading } from './section-heading'
@@ -102,7 +102,7 @@ export function ProcessSteps({ className }: ProcessStepsProps) {
                     'inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full border mb-4',
                     style.badge
                   )}>
-                    <Clock className="w-3 h-3" />
+                    <Clock className="w-3 h-3" weight="duotone" />
                     {step.dayRange}
                   </span>
 
@@ -111,7 +111,7 @@ export function ProcessSteps({ className }: ProcessStepsProps) {
                     'w-14 h-14 rounded-xl flex items-center justify-center mb-4',
                     style.iconBg
                   )}>
-                    <StepIcon className={cn('w-7 h-7', style.iconColor)} />
+                    <StepIcon className={cn('w-7 h-7', style.iconColor)} weight="duotone" />
                   </div>
 
                   {/* Title */}
@@ -132,7 +132,7 @@ export function ProcessSteps({ className }: ProcessStepsProps) {
                         transition={{ delay: index * 0.15 + dIndex * 0.05 + 0.3, duration: 0.3 }}
                       >
                         <div className="w-4 h-4 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <Check className="w-2.5 h-2.5 text-primary" />
+                          <Check className="w-2.5 h-2.5 text-primary" weight="bold" />
                         </div>
                         <span className="text-xs text-muted-foreground">{deliverable}</span>
                       </motion.li>
@@ -145,13 +145,13 @@ export function ProcessSteps({ className }: ProcessStepsProps) {
                       'inline-flex items-center gap-1 px-2.5 py-0.5 text-xs font-medium rounded-full border',
                       style.badge
                     )}>
-                      {step.type === 'ai' && <Bot className="w-3 h-3" />}
-                      {step.type === 'human' && <User className="w-3 h-3" />}
+                      {step.type === 'ai' && <Robot className="w-3 h-3" weight="duotone" />}
+                      {step.type === 'human' && <User className="w-3 h-3" weight="duotone" />}
                       {step.type === 'hybrid' && (
                         <>
-                          <User className="w-3 h-3" />
+                          <User className="w-3 h-3" weight="duotone" />
                           <span>+</span>
-                          <Bot className="w-3 h-3" />
+                          <Robot className="w-3 h-3" weight="duotone" />
                         </>
                       )}
                       {style.label}
@@ -200,20 +200,20 @@ export function ProcessSteps({ className }: ProcessStepsProps) {
                       'inline-flex items-center gap-1.5 px-2.5 py-0.5 text-xs font-semibold rounded-full border',
                       style.badge
                     )}>
-                      <Clock className="w-3 h-3" />
+                      <Clock className="w-3 h-3" weight="duotone" />
                       {step.dayRange}
                     </span>
                     <span className={cn(
                       'inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full border',
                       style.badge
                     )}>
-                      {step.type === 'ai' && <Bot className="w-3 h-3" />}
-                      {step.type === 'human' && <User className="w-3 h-3" />}
+                      {step.type === 'ai' && <Robot className="w-3 h-3" weight="duotone" />}
+                      {step.type === 'human' && <User className="w-3 h-3" weight="duotone" />}
                       {step.type === 'hybrid' && (
                         <>
-                          <User className="w-3 h-3" />
+                          <User className="w-3 h-3" weight="duotone" />
                           <span>+</span>
-                          <Bot className="w-3 h-3" />
+                          <Robot className="w-3 h-3" weight="duotone" />
                         </>
                       )}
                       {style.label}
@@ -226,7 +226,7 @@ export function ProcessSteps({ className }: ProcessStepsProps) {
                       'w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0',
                       style.iconBg
                     )}>
-                      <StepIcon className={cn('w-5 h-5', style.iconColor)} />
+                      <StepIcon className={cn('w-5 h-5', style.iconColor)} weight="duotone" />
                     </div>
                     <h3 className="font-heading font-semibold text-lg">{step.title}</h3>
                   </div>
@@ -239,7 +239,7 @@ export function ProcessSteps({ className }: ProcessStepsProps) {
                     {step.deliverables.map((deliverable, dIndex) => (
                       <li key={dIndex} className="flex items-start gap-2">
                         <div className="w-4 h-4 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <Check className="w-2.5 h-2.5 text-primary" />
+                          <Check className="w-2.5 h-2.5 text-primary" weight="bold" />
                         </div>
                         <span className="text-xs text-muted-foreground">{deliverable}</span>
                       </li>

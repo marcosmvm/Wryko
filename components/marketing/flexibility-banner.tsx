@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Check, ArrowRight } from 'lucide-react'
+import { Check, ArrowRight } from '@phosphor-icons/react'
 import Link from 'next/link'
 
 const flexibilityPoints = [
@@ -48,7 +48,7 @@ export function FlexibilityBanner({ className }: FlexibilityBannerProps) {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1, duration: 0.3 }}
                 >
-                  <Check className="w-5 h-5 text-primary flex-shrink-0" />
+                  <Check className="w-5 h-5 text-primary flex-shrink-0" weight="bold" />
                   <span className="text-sm">{point}</span>
                 </motion.div>
               ))}
@@ -59,7 +59,7 @@ export function FlexibilityBanner({ className }: FlexibilityBannerProps) {
               className="inline-flex items-center justify-center gap-2 bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors"
             >
               Start Your 90-Day Pilot
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-4 h-4" weight="bold" />
             </Link>
           </div>
         </motion.div>

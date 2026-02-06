@@ -3,30 +3,30 @@
 import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import {
-  Shield,
+  ShieldCheck,
   Target,
   Brain,
-  Zap,
+  Lightning,
   Eye,
-  BarChart3,
-  Scale,
+  ChartBar,
+  Scales,
   BookOpen,
   Rocket,
-  Activity,
+  Pulse,
   Compass,
-  Mail,
+  Envelope,
   CheckCircle,
-  AlertTriangle,
+  Warning,
   Database,
   Users,
   Globe,
   FileText,
   Clock,
-  TrendingUp,
-  Settings,
-  Search,
+  TrendUp,
+  Gear,
+  MagnifyingGlass,
   ArrowRight,
-} from 'lucide-react'
+} from '@phosphor-icons/react'
 
 type EngineSlug =
   | 'the-guardian'
@@ -47,18 +47,18 @@ interface EngineIllustrationProps {
 }
 
 // Icon configurations for each engine
-const illustrationConfigs: Record<EngineSlug, { primary: typeof Shield; supporting: (typeof Shield)[] }> = {
-  'the-guardian': { primary: Shield, supporting: [Mail, CheckCircle, Database, AlertTriangle] },
-  'the-architect': { primary: Target, supporting: [Brain, FileText, Mail, Settings] },
-  'the-scientist': { primary: Brain, supporting: [TrendingUp, CheckCircle, BarChart3, Settings] },
-  'the-hunter': { primary: Zap, supporting: [Users, Globe, Mail, ArrowRight] },
-  'the-sentinel': { primary: Eye, supporting: [Globe, Users, Database, Search] },
-  'the-informant': { primary: BarChart3, supporting: [FileText, Mail, Clock, TrendingUp] },
-  'the-judge': { primary: Scale, supporting: [AlertTriangle, CheckCircle, Settings, Activity] },
-  'the-keeper': { primary: BookOpen, supporting: [Brain, Search, FileText, CheckCircle] },
-  'the-launcher': { primary: Rocket, supporting: [Clock, Users, Mail, CheckCircle] },
-  'the-monitor': { primary: Activity, supporting: [AlertTriangle, TrendingUp, Users, Scale] },
-  'the-navigator': { primary: Compass, supporting: [Users, Settings, FileText, CheckCircle] },
+const illustrationConfigs: Record<EngineSlug, { primary: typeof ShieldCheck; supporting: (typeof ShieldCheck)[] }> = {
+  'the-guardian': { primary: ShieldCheck, supporting: [Envelope, CheckCircle, Database, Warning] },
+  'the-architect': { primary: Target, supporting: [Brain, FileText, Envelope, Gear] },
+  'the-scientist': { primary: Brain, supporting: [TrendUp, CheckCircle, ChartBar, Gear] },
+  'the-hunter': { primary: Lightning, supporting: [Users, Globe, Envelope, ArrowRight] },
+  'the-sentinel': { primary: Eye, supporting: [Globe, Users, Database, MagnifyingGlass] },
+  'the-informant': { primary: ChartBar, supporting: [FileText, Envelope, Clock, TrendUp] },
+  'the-judge': { primary: Scales, supporting: [Warning, CheckCircle, Gear, Pulse] },
+  'the-keeper': { primary: BookOpen, supporting: [Brain, MagnifyingGlass, FileText, CheckCircle] },
+  'the-launcher': { primary: Rocket, supporting: [Clock, Users, Envelope, CheckCircle] },
+  'the-monitor': { primary: Pulse, supporting: [Warning, TrendUp, Users, Scales] },
+  'the-navigator': { primary: Compass, supporting: [Users, Gear, FileText, CheckCircle] },
 }
 
 export function EngineIllustration({ slug, className }: EngineIllustrationProps) {
@@ -118,7 +118,7 @@ export function EngineIllustration({ slug, className }: EngineIllustrationProps)
             transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
           />
           <div className="relative w-24 h-24 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-xl shadow-primary/25">
-            <PrimaryIcon className="w-12 h-12 text-white" />
+            <PrimaryIcon className="w-12 h-12 text-white" weight="duotone" />
           </div>
         </div>
       </motion.div>
@@ -145,7 +145,7 @@ export function EngineIllustration({ slug, className }: EngineIllustrationProps)
             }}
             whileHover={{ scale: 1.15, boxShadow: '0 0 20px hsl(var(--primary) / 0.2)' }}
           >
-            <SupportIcon className="w-6 h-6 text-primary" />
+            <SupportIcon className="w-6 h-6 text-primary" weight="duotone" />
           </motion.div>
         )
       })}

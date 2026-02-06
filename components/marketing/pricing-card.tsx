@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Check } from 'lucide-react'
+import { Check } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 
 interface PricingCardProps {
@@ -137,7 +137,7 @@ export function PricingCard({
 function Feature({ children, muted = false }: { children: React.ReactNode; muted?: boolean }) {
   return (
     <div className="flex items-start gap-3">
-      <Check className={cn('w-5 h-5 flex-shrink-0 mt-0.5', muted ? 'text-muted-foreground/50' : 'text-primary')} />
+      <Check className={cn('w-5 h-5 flex-shrink-0 mt-0.5', muted ? 'text-muted-foreground/50' : 'text-primary')} weight="bold" />
       <span className={cn('text-sm', muted && 'text-muted-foreground')}>{children}</span>
     </div>
   )

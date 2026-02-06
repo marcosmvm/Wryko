@@ -1,6 +1,19 @@
 import type { MetadataRoute } from 'next'
-import { getAllEngineSlugs } from '@/lib/data/engine-details'
-import { resources } from '@/lib/data/resources-data'
+
+// Slugs are inlined to avoid importing data files that contain Phosphor
+// React icons (which require createContext, unavailable in route handlers).
+const engineSlugs = [
+  'the-guardian', 'the-architect', 'the-scientist', 'the-hunter',
+  'the-sentinel', 'the-informant', 'the-judge', 'the-keeper',
+  'the-launcher', 'the-monitor', 'the-navigator',
+]
+
+const resourceSlugs = [
+  'ultimate-guide-b2b-outbound', 'roi-calculator-spreadsheet',
+  'cold-email-template-pack', 'icp-definition-worksheet',
+  'email-deliverability-checklist', 'subject-line-swipe-file',
+  'outbound-metrics-tracker', 'follow-up-sequence-guide',
+]
 
 const BASE_URL = 'https://www.wryko.com'
 
@@ -80,17 +93,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ]
 
-  // Engine pages — slugs imported from canonical data source
-  const enginePages: MetadataRoute.Sitemap = getAllEngineSlugs().map((slug) => ({
+  // Engine pages
+  const enginePages: MetadataRoute.Sitemap = engineSlugs.map((slug) => ({
     url: `${BASE_URL}/engines/${slug}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.7,
   }))
 
-  // Resource pages — slugs imported from canonical data source
-  const resourcePages: MetadataRoute.Sitemap = resources.map((resource) => ({
-    url: `${BASE_URL}/resources/${resource.id}`,
+  // Resource pages
+  const resourcePages: MetadataRoute.Sitemap = resourceSlugs.map((slug) => ({
+    url: `${BASE_URL}/resources/${slug}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.7,

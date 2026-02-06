@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <path d="M24 4L6 14v10c0 11 7.7 21.3 18 24 10.3-2.7 18-13 18-24V14L24 4z" fill="#6366f1" fill-opacity="0.15" stroke="#6366f1" stroke-width="2" stroke-linejoin="round"/>
+  <rect x="14" y="17" width="20" height="14" rx="2" stroke="#6366f1" stroke-width="2"/>
+  <path d="M14 19l10 7 10-7" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="24" y="42" text-anchor="middle" font-family="system-ui" font-size="4.5" font-weight="600" fill="#6366f1">CAN-SPAM</text>
+</svg>

@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Check } from 'lucide-react'
+import { Check } from '@phosphor-icons/react'
 
 import { SectionHeading } from './section-heading'
 import { channels, type Channel } from '@/lib/data/channels'
@@ -99,7 +99,7 @@ export function ChannelGrid({ showHeading = true, showFeatures = true, className
                       <Check className={cn(
                         'w-4 h-4 flex-shrink-0 mt-0.5',
                         channel.status === 'active' ? 'text-primary' : 'text-muted-foreground/50'
-                      )} />
+                      )} weight="bold" />
                       <span className="text-muted-foreground">{feature}</span>
                     </li>
                   ))}

@@ -109,18 +109,18 @@ export const includedFeatures = [
   'GDPR & CCPA compliance built-in',
 ]
 
-import { Bot, Shield, BarChart3, Headphones, Rocket, Settings, ThumbsUp } from 'lucide-react'
-import type { LucideIcon } from 'lucide-react'
+import { Robot, ShieldCheck, ChartBar, Headset, Rocket, Gear, ThumbsUp } from '@phosphor-icons/react'
+import type { Icon } from '@phosphor-icons/react'
 
 export interface FeatureCategory {
-  icon: LucideIcon
+  icon: Icon
   title: string
   features: string[]
 }
 
 export const featureCategories: FeatureCategory[] = [
   {
-    icon: Bot,
+    icon: Robot,
     title: 'AI Engine Suite',
     features: [
       'All 11 AI engines (5 lead gen + 6 CSM)',
@@ -129,7 +129,7 @@ export const featureCategories: FeatureCategory[] = [
     ],
   },
   {
-    icon: Shield,
+    icon: ShieldCheck,
     title: 'Infrastructure',
     features: [
       'Dedicated sending domains (no sharing)',
@@ -138,7 +138,7 @@ export const featureCategories: FeatureCategory[] = [
     ],
   },
   {
-    icon: BarChart3,
+    icon: ChartBar,
     title: 'Reporting & Analytics',
     features: [
       'Automated weekly performance reports',
@@ -146,7 +146,7 @@ export const featureCategories: FeatureCategory[] = [
     ],
   },
   {
-    icon: Headphones,
+    icon: Headset,
     title: 'Support',
     features: [
       'Bi-weekly+ strategy calls',
@@ -156,7 +156,7 @@ export const featureCategories: FeatureCategory[] = [
 ]
 
 export interface PilotPhase {
-  icon: LucideIcon
+  icon: Icon
   name: string
   dayRange: string
   description: string
@@ -180,7 +180,7 @@ export const guarantee = {
       description: 'Full onboarding, domain setup, and campaign deployment',
     },
     {
-      icon: Settings,
+      icon: Gear,
       name: 'Optimize',
       dayRange: 'Days 15–60',
       description: 'AI engines learn, adapt, and scale your pipeline',

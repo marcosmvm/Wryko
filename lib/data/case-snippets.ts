@@ -47,7 +47,7 @@ export const projectedResults: ProjectedResult[] = [
       'Hyper-personalized messaging powered by continuous A/B testing targets reply rates that outperform manual outbound campaigns.',
   },
   {
-    iconName: 'TrendingUp',
+    iconName: 'TrendUp',
     metric: 'Positive Replies',
     target: '60%+',
     description:
@@ -236,7 +236,7 @@ export const foundingBenefits: FoundingBenefit[] = [
     highlight: 'Real-time collaboration',
   },
   {
-    iconName: 'TrendingUp',
+    iconName: 'TrendUp',
     title: 'First Published Results',
     description:
       'As a founding partner, your success story will be among the first we publish — with your approval and on your terms.',

@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Bot, User, Shield } from 'lucide-react'
+import { Robot, User, ShieldCheck } from '@phosphor-icons/react'
 
 import { SectionHeading } from './section-heading'
 import { collaborationRows, trustMessage } from '@/lib/data/human-ai'
@@ -82,7 +82,7 @@ export function HumanAIComparison({ showHeading = true, className }: HumanAIComp
         <div className="hidden md:grid md:grid-cols-[1fr,40px,1fr] gap-4 mb-6 px-2">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-primary/15 flex items-center justify-center">
-              <Bot className="w-4 h-4 text-primary" />
+              <Robot className="w-4 h-4 text-primary" weight="duotone" />
             </div>
             <span className="text-sm font-semibold text-foreground">AI Handles &middot; 24/7</span>
           </div>
@@ -90,7 +90,7 @@ export function HumanAIComparison({ showHeading = true, className }: HumanAIComp
           <div className="flex items-center gap-2 justify-end">
             <span className="text-sm font-semibold text-foreground">Experts Provide</span>
             <div className="w-8 h-8 rounded-lg bg-amber-500/15 flex items-center justify-center">
-              <User className="w-4 h-4 text-amber-600" />
+              <User className="w-4 h-4 text-amber-600" weight="duotone" />
             </div>
           </div>
         </div>
@@ -126,7 +126,7 @@ export function HumanAIComparison({ showHeading = true, className }: HumanAIComp
                       onMouseEnter={(e) => showTooltip(row.area, `${row.ai.task} + ${row.human.task}`, 'area', e)}
                       onMouseLeave={hideTooltip}
                     >
-                      <AreaIcon className="w-4 h-4 text-muted-foreground" />
+                      <AreaIcon className="w-4 h-4 text-muted-foreground" weight="duotone" />
                     </div>
                   </div>
 
@@ -144,12 +144,12 @@ export function HumanAIComparison({ showHeading = true, className }: HumanAIComp
                 {/* Mobile: stacked card */}
                 <div className="md:hidden glass-card p-4 space-y-3">
                   <div className="flex items-center gap-2 mb-2">
-                    <AreaIcon className="w-4 h-4 text-muted-foreground" />
+                    <AreaIcon className="w-4 h-4 text-muted-foreground" weight="duotone" />
                     <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{row.area}</span>
                   </div>
                   <div className="flex items-start gap-2">
                     <div className="w-5 h-5 rounded bg-primary/15 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <Bot className="w-3 h-3 text-primary" />
+                      <Robot className="w-3 h-3 text-primary" weight="duotone" />
                     </div>
                     <div>
                       <p className="font-medium text-sm">{row.ai.task}</p>
@@ -158,7 +158,7 @@ export function HumanAIComparison({ showHeading = true, className }: HumanAIComp
                   </div>
                   <div className="flex items-start gap-2">
                     <div className="w-5 h-5 rounded bg-amber-500/15 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <User className="w-3 h-3 text-amber-600" />
+                      <User className="w-3 h-3 text-amber-600" weight="duotone" />
                     </div>
                     <div>
                       <p className="font-medium text-sm">{row.human.task}</p>
@@ -180,7 +180,7 @@ export function HumanAIComparison({ showHeading = true, className }: HumanAIComp
           transition={{ delay: 0.3, duration: 0.5 }}
         >
           <div className="inline-flex items-center gap-3 px-6 py-3 glass-card">
-            <Shield className="w-5 h-5 text-primary flex-shrink-0" />
+            <ShieldCheck className="w-5 h-5 text-primary flex-shrink-0" weight="duotone" />
             <p className="text-sm text-muted-foreground">
               {trustMessage}
             </p>

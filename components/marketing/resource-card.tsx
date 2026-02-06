@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ArrowRight, LucideIcon } from 'lucide-react'
+import { ArrowRight, type Icon } from '@phosphor-icons/react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 
@@ -9,7 +9,7 @@ interface ResourceCardProps {
   id: string
   title: string
   description: string
-  icon: LucideIcon
+  icon: Icon
   downloadUrl: string
   fileType: 'PDF' | 'XLSX' | 'DOC'
   fileSize: string
@@ -72,6 +72,7 @@ export function ResourceCard({
                 'w-6 h-6',
                 featured ? 'text-primary' : 'text-muted-foreground'
               )}
+              weight="duotone"
             />
           </div>
           <div className="flex-1 min-w-0">
@@ -108,7 +109,7 @@ export function ResourceCard({
           )}
         >
           View Resource
-          <ArrowRight className="w-4 h-4" />
+          <ArrowRight className="w-4 h-4" weight="bold" />
         </Link>
       </div>
     </motion.div>

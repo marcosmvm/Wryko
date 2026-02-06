@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import EngineDetailClient from './client'
-import { engineDetails, getAllEngineSlugs } from '@/lib/data/engine-details'
+import { engineMeta, getAllEngineSlugsServer } from '@/lib/data/server-metadata'
 import { breadcrumbSchema } from '@/lib/seo/schemas'
 
 // Generate static params for all 11 engines
 export async function generateStaticParams() {
-  return getAllEngineSlugs().map((slug) => ({ slug }))
+  return getAllEngineSlugsServer().map((slug) => ({ slug }))
 }
 
 // Dynamic metadata based on engine
@@ -16,7 +16,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
-  const engine = engineDetails[slug]
+  const engine = engineMeta[slug]
 
   if (!engine) {
     return { title: 'Engine Not Found | Wryko' }
@@ -43,14 +43,12 @@ export default async function EngineDetailPage({
 }) {
   const { slug } = await params
 
-  // Check if engine exists (for metadata generation we already import engineDetails)
-  if (!engineDetails[slug]) {
+  if (!engineMeta[slug]) {
     notFound()
   }
 
-  const engine = engineDetails[slug]
+  const engine = engineMeta[slug]
 
-  // Pass only the slug - client component will import the data
   return (
     <>
       <script

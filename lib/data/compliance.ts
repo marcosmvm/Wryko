@@ -1,9 +1,11 @@
-import { Shield, Mail, Globe, Lock, CheckCircle, AlertTriangle, Server, Clock } from 'lucide-react'
+import { ShieldCheck, Envelope, Globe, Lock, CheckCircle, Warning, HardDrives, Clock } from '@phosphor-icons/react'
 
 export interface ComplianceBadge {
   name: string
   description: string
-  icon: typeof Shield
+  icon: typeof ShieldCheck
+  /** Optional path to a badge image in public/images/compliance/ */
+  imageSrc?: string
   status: 'active' | 'in-progress'
 }
 
@@ -11,25 +13,29 @@ export const complianceBadges: ComplianceBadge[] = [
   {
     name: 'GDPR Compliant',
     description: 'Full compliance with EU data protection regulations',
-    icon: Shield,
+    icon: ShieldCheck,
+    imageSrc: '/images/compliance/gdpr.svg',
     status: 'active',
   },
   {
     name: 'CAN-SPAM Compliant',
     description: 'Adherence to US anti-spam legislation',
-    icon: Mail,
+    icon: Envelope,
+    imageSrc: '/images/compliance/can-spam.svg',
     status: 'active',
   },
   {
     name: 'CCPA Ready',
     description: 'California Consumer Privacy Act compliance',
     icon: Lock,
+    imageSrc: '/images/compliance/ccpa.svg',
     status: 'active',
   },
   {
     name: 'Gmail/Yahoo 2024',
     description: 'Meets new sender requirements effective Feb 2024',
     icon: CheckCircle,
+    imageSrc: '/images/compliance/email-compliance.svg',
     status: 'active',
   },
 ]
@@ -37,7 +43,7 @@ export const complianceBadges: ComplianceBadge[] = [
 export interface DeliverabilityFeature {
   title: string
   description: string
-  icon: typeof Server
+  icon: typeof HardDrives
   items: string[]
 }
 
@@ -67,7 +73,7 @@ export const deliverabilityFeatures: DeliverabilityFeature[] = [
   {
     title: 'Platform TOS Adherence',
     description: 'Staying within email provider guidelines',
-    icon: AlertTriangle,
+    icon: Warning,
     items: [
       'Gmail sender requirements (Feb 2024)',
       'Yahoo sender requirements',
@@ -78,7 +84,7 @@ export const deliverabilityFeatures: DeliverabilityFeature[] = [
   {
     title: 'Legal Compliance',
     description: 'Built with privacy regulations in mind',
-    icon: Shield,
+    icon: ShieldCheck,
     items: [
       'GDPR-compliant data handling',
       'CAN-SPAM Act adherence',

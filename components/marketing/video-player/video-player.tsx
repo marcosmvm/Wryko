@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X } from 'lucide-react'
+import { X } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 
 interface VideoPlayerProps {
@@ -104,7 +104,7 @@ export function VideoPlayer({
                   'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary'
                 )}
               >
-                <X className="w-6 h-6" aria-hidden="true" />
+                <X className="w-6 h-6" weight="bold" aria-hidden="true" />
                 <span className="sr-only">Close</span>
               </button>
 

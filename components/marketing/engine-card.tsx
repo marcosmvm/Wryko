@@ -1,12 +1,12 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { LucideIcon, ArrowRight } from 'lucide-react'
+import { type Icon, ArrowRight } from '@phosphor-icons/react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 
 interface EngineCardProps {
-  icon: LucideIcon
+  icon: Icon
   name: string
   tagline: string
   description: string
@@ -29,7 +29,7 @@ export function EngineCard({
   const content = (
     <>
       <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-        <Icon className="w-6 h-6 text-primary" />
+        <Icon className="w-6 h-6 text-primary" weight="duotone" />
       </div>
       <h3 className="font-heading font-semibold text-lg mb-1">{name}</h3>
       <p className="text-sm text-primary font-medium mb-2">{tagline}</p>
@@ -37,7 +37,7 @@ export function EngineCard({
       {slug && showLearnMore && (
         <span className="inline-flex items-center gap-1 text-sm text-primary font-medium group-hover:gap-2 transition-all">
           Learn more
-          <ArrowRight className="w-4 h-4" />
+          <ArrowRight className="w-4 h-4" weight="bold" />
         </span>
       )}
     </>

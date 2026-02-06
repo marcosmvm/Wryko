@@ -1,8 +1,10 @@
 'use client'
 
+import { useState } from 'react'
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight, Shield } from 'lucide-react'
+import { ArrowRight, ShieldCheck } from '@phosphor-icons/react'
 
 import { SectionHeading } from './section-heading'
 import { complianceBadges } from '@/lib/data/compliance'
@@ -12,6 +14,29 @@ interface ComplianceBadgesProps {
   showHeading?: boolean
   variant?: 'full' | 'compact'
   className?: string
+}
+
+function BadgeIcon({
+  badge,
+}: {
+  badge: (typeof complianceBadges)[number]
+}) {
+  const [imgError, setImgError] = useState(false)
+
+  if (badge.imageSrc && !imgError) {
+    return (
+      <Image
+        src={badge.imageSrc}
+        alt={badge.name}
+        width={28}
+        height={28}
+        className="w-7 h-7 object-contain"
+        onError={() => setImgError(true)}
+      />
+    )
+  }
+
+  return <badge.icon className="w-7 h-7 text-primary" />
 }
 
 export function ComplianceBadges({
@@ -64,7 +89,7 @@ export function ComplianceBadges({
               transition={{ delay: index * 0.1, duration: 0.5 }}
             >
               <div className="relative w-14 h-14 mx-auto mb-4 rounded-xl bg-primary/10 flex items-center justify-center">
-                <badge.icon className="w-7 h-7 text-primary" />
+                <BadgeIcon badge={badge} />
                 <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-green-500 border-2 border-background" />
               </div>
               <h3 className="font-heading font-semibold mb-2">{badge.name}</h3>
@@ -82,7 +107,7 @@ export function ComplianceBadges({
           transition={{ delay: 0.4, duration: 0.5 }}
         >
           <div className="inline-flex items-center gap-3 px-6 py-3 glass-card">
-            <Shield className="w-5 h-5 text-primary flex-shrink-0" />
+            <ShieldCheck className="w-5 h-5 text-primary flex-shrink-0" weight="duotone" />
             <p className="text-sm text-muted-foreground">
               Enterprise-grade security. Dedicated sending domains. No shared infrastructure.
             </p>
@@ -101,7 +126,7 @@ export function ComplianceBadges({
             className="inline-flex items-center gap-2 text-primary font-medium hover:underline"
           >
             Learn more about our compliance practices
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4" weight="bold" />
           </Link>
         </motion.div>
       </div>

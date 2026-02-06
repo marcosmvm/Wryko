@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Check } from 'lucide-react'
+import { Check } from '@phosphor-icons/react'
 
 import { SectionHeading } from './section-heading'
 import { deliverabilityFeatures, warmupProcess } from '@/lib/data/compliance'
@@ -47,7 +47,7 @@ export function ComplianceDeepDive({ showHeading = true, className }: Compliance
               <ul className="space-y-2 ml-14">
                 {feature.items.map((item) => (
                   <li key={item} className="flex items-start gap-2 text-sm">
-                    <Check className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" weight="bold" />
                     <span className="text-muted-foreground">{item}</span>
                   </li>
                 ))}

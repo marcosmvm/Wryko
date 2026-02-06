@@ -104,7 +104,7 @@ export const aboutSolution = {
         'Issues are detected and resolved before they impact performance. Domain health, blacklists, and campaign quality — all monitored continuously.',
     },
     {
-      iconName: 'TrendingUp' as const,
+      iconName: 'TrendUp' as const,
       title: 'Self-Learning System',
       description:
         'Every campaign, reply, and conversion feeds back into the system. Templates improve, targeting sharpens, and results compound over time.',
@@ -192,7 +192,7 @@ export const heroStatsEnhanced = [
   { value: 11, suffix: '', label: 'AI Engines', subtext: 'Working autonomously around the clock', iconName: 'BarChart3' as const, decimals: 0 },
   { value: 14, suffix: '-Day', label: 'Onboarding', subtext: 'From signup to campaign launch', iconName: 'Clock' as const, decimals: 0 },
   { value: 24, suffix: '/7', label: 'Monitoring', subtext: 'Continuous optimization & compliance', iconName: 'Calendar' as const, decimals: 0 },
-  { value: 6, suffix: '+', label: 'Integrations', subtext: 'CRM, calendar, and communication tools', iconName: 'TrendingUp' as const, decimals: 0 },
+  { value: 6, suffix: '+', label: 'Integrations', subtext: 'CRM, calendar, and communication tools', iconName: 'TrendUp' as const, decimals: 0 },
 ]
 
 export const heroPainPoints = [

@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Search, X } from 'lucide-react'
+import { MagnifyingGlass, X } from '@phosphor-icons/react'
 
 interface FAQSearchProps {
   value: string
@@ -27,7 +27,7 @@ export function FAQSearch({
     >
       <div className="glass-card rounded-xl p-1.5">
         <div className="relative flex items-center">
-          <Search className="absolute left-4 w-5 h-5 text-muted-foreground pointer-events-none" />
+          <MagnifyingGlass className="absolute left-4 w-5 h-5 text-muted-foreground pointer-events-none" weight="bold" />
           <input
             type="text"
             value={value}
@@ -40,7 +40,7 @@ export function FAQSearch({
               onClick={() => onChange('')}
               className="absolute right-4 w-6 h-6 rounded-full bg-muted flex items-center justify-center hover:bg-muted/80 transition-colors"
             >
-              <X className="w-3.5 h-3.5 text-muted-foreground" />
+              <X className="w-3.5 h-3.5 text-muted-foreground" weight="bold" />
             </button>
           )}
         </div>

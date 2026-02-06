@@ -1,20 +1,20 @@
 import {
-  Shield,
+  ShieldCheck,
   Target,
   Brain,
-  Zap,
+  Lightning,
   Eye,
-  BarChart3,
-  Scale,
+  ChartBar,
+  Scales,
   BookOpen,
   Rocket,
-  Activity,
+  Pulse,
   Compass,
-} from 'lucide-react'
+} from '@phosphor-icons/react'
 
 export const leadGenEngines = [
   {
-    icon: Shield,
+    icon: ShieldCheck,
     name: 'The Guardian',
     slug: 'the-guardian',
     tagline: 'Compliance & Deliverability',
@@ -38,7 +38,7 @@ export const leadGenEngines = [
       'Runs A/B tests every Monday and Wednesday, automatically promoting winning variants. Analyzes open rates, reply rates, and meeting conversions to maximize performance.',
   },
   {
-    icon: Zap,
+    icon: Lightning,
     name: 'The Hunter',
     slug: 'the-hunter',
     tagline: 'Lead Expansion',
@@ -57,7 +57,7 @@ export const leadGenEngines = [
 
 export const csmEngines = [
   {
-    icon: BarChart3,
+    icon: ChartBar,
     name: 'The Informant',
     slug: 'the-informant',
     tagline: 'Automated Reporting',
@@ -66,7 +66,7 @@ export const csmEngines = [
     timeSaved: '30-45 min/client/week → 0 min',
   },
   {
-    icon: Scale,
+    icon: Scales,
     name: 'The Judge',
     slug: 'the-judge',
     tagline: 'Issue Detection & Auto-Healing',
@@ -93,7 +93,7 @@ export const csmEngines = [
     timeSaved: '5-6 hours → 1-2 hours per onboarding',
   },
   {
-    icon: Activity,
+    icon: Pulse,
     name: 'The Monitor',
     slug: 'the-monitor',
     tagline: 'Churn Risk Detection',

@@ -1,4 +1,4 @@
-import { Mail, Linkedin, Phone, MessageSquare } from 'lucide-react'
+import { Envelope, LinkedinLogo, Phone, ChatCircle } from '@phosphor-icons/react'
 
 export type ChannelStatus = 'active' | 'coming-soon' | 'roadmap' | 'enterprise-only'
 
@@ -6,7 +6,7 @@ export interface Channel {
   name: string
   status: ChannelStatus
   description: string
-  icon: typeof Mail
+  icon: typeof Envelope
   features: string[]
   statusLabel?: string
 }
@@ -16,7 +16,7 @@ export const channels: Channel[] = [
     name: 'Email',
     status: 'active',
     description: 'AI-powered cold email sequences with deep personalization and continuous optimization.',
-    icon: Mail,
+    icon: Envelope,
     features: [
       'Personalized sequences at scale',
       'A/B testing on every campaign',
@@ -28,7 +28,7 @@ export const channels: Channel[] = [
     name: 'LinkedIn',
     status: 'coming-soon',
     description: 'Automated connection requests, profile visits, and messaging sequences.',
-    icon: Linkedin,
+    icon: LinkedinLogo,
     features: [
       'Connection request automation',
       'Profile engagement tracking',
@@ -41,7 +41,7 @@ export const channels: Channel[] = [
     name: 'SMS',
     status: 'roadmap',
     description: 'Follow-up sequences for highly engaged prospects.',
-    icon: MessageSquare,
+    icon: ChatCircle,
     features: [
       'Warm lead follow-ups',
       'Meeting reminders',

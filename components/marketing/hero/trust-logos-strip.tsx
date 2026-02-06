@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Shield, Zap, Clock } from 'lucide-react'
+import { ShieldCheck, Lightning, Clock } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 
 interface TrustLogosStripProps {
@@ -22,15 +22,15 @@ export function TrustLogosStrip({ className }: TrustLogosStripProps) {
       </p>
       <div className="flex flex-wrap items-center justify-center gap-6 md:gap-10 text-sm text-muted-foreground">
         <span className="flex items-center gap-2">
-          <Shield className="w-4 h-4 text-primary" />
+          <ShieldCheck className="w-4 h-4 text-primary" weight="duotone" />
           GDPR & CAN-SPAM Compliant
         </span>
         <span className="flex items-center gap-2">
-          <Zap className="w-4 h-4 text-primary" />
+          <Lightning className="w-4 h-4 text-primary" weight="duotone" />
           11 AI Engines
         </span>
         <span className="flex items-center gap-2">
-          <Clock className="w-4 h-4 text-primary" />
+          <Clock className="w-4 h-4 text-primary" weight="duotone" />
           14-Day Onboarding
         </span>
       </div>

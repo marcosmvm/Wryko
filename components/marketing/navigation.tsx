@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
-import { Menu, X } from 'lucide-react'
+import { List, X } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 import { Logo } from '@/components/ui/logo'
 
@@ -57,9 +57,9 @@ export function Navigation() {
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? (
-              <X className="w-6 h-6" />
+              <X className="w-6 h-6" weight="bold" />
             ) : (
-              <Menu className="w-6 h-6" />
+              <List className="w-6 h-6" weight="bold" />
             )}
           </button>
         </div>

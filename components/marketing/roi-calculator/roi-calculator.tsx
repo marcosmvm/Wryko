@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { Calculator } from 'lucide-react'
+import { Calculator } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 import { CalculatorForm } from './calculator-form'
 import { CalculatorResults } from './calculator-results'
@@ -34,7 +34,7 @@ export function ROICalculator({ className, variant = 'default' }: ROICalculatorP
       >
         <div className="flex items-center gap-3 mb-6">
           <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-            <Calculator className="w-5 h-5 text-primary" />
+            <Calculator className="w-5 h-5 text-primary" weight="duotone" />
           </div>
           <div>
             <h3 className="font-heading font-semibold text-foreground">
@@ -66,7 +66,7 @@ export function ROICalculator({ className, variant = 'default' }: ROICalculatorP
     >
       <div className="flex items-center gap-3 mb-8">
         <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-          <Calculator className="w-6 h-6 text-primary" />
+          <Calculator className="w-6 h-6 text-primary" weight="duotone" />
         </div>
         <div>
           <h2 className="text-2xl font-heading font-bold text-foreground">

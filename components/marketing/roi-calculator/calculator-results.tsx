@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Calendar, TrendingUp, PiggyBank, Zap } from 'lucide-react'
+import { Calendar, TrendUp, PiggyBank, Lightning } from '@phosphor-icons/react'
 import { CalculatorResults as Results } from './industry-data'
 import { cn } from '@/lib/utils'
 
@@ -30,14 +30,14 @@ export function CalculatorResults({ results, className }: CalculatorResultsProps
       highlight: true,
     },
     {
-      icon: TrendingUp,
+      icon: TrendUp,
       label: 'Annual Revenue Potential',
       value: formatCurrency(results.additionalRevenuePotential),
       subtext: 'From additional meetings',
       highlight: false,
     },
     {
-      icon: Zap,
+      icon: Lightning,
       label: 'ROI Multiplier',
       value: `${results.roiMultiplier}x`,
       subtext: 'Return on investment',
@@ -90,6 +90,7 @@ export function CalculatorResults({ results, className }: CalculatorResultsProps
                     'w-4 h-4',
                     stat.highlight ? 'text-primary' : 'text-muted-foreground'
                   )}
+                  weight="duotone"
                 />
               </div>
               <div

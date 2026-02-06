@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { User, Bot, ArrowRight } from 'lucide-react'
+import { User, Robot, ArrowRight } from '@phosphor-icons/react'
 
 import { SectionHeading } from './section-heading'
 import { processSteps } from '@/lib/data/human-ai'
@@ -52,13 +52,13 @@ export function ProcessFlow({ showHeading = true, className }: ProcessFlowProps)
                           step.type === 'hybrid' && 'bg-secondary/10 text-secondary'
                         )}
                       >
-                        {step.type === 'human' && <User className="w-3 h-3" />}
-                        {step.type === 'ai' && <Bot className="w-3 h-3" />}
+                        {step.type === 'human' && <User className="w-3 h-3" weight="duotone" />}
+                        {step.type === 'ai' && <Robot className="w-3 h-3" weight="duotone" />}
                         {step.type === 'hybrid' && (
                           <>
-                            <User className="w-3 h-3" />
+                            <User className="w-3 h-3" weight="duotone" />
                             <span>+</span>
-                            <Bot className="w-3 h-3" />
+                            <Robot className="w-3 h-3" weight="duotone" />
                           </>
                         )}
                         {step.type === 'human' && 'Human-Led'}
@@ -75,7 +75,7 @@ export function ProcessFlow({ showHeading = true, className }: ProcessFlowProps)
                 {/* Arrow between steps */}
                 {index < processSteps.length - 1 && (
                   <div className="flex items-center justify-center w-8 mt-12 flex-shrink-0">
-                    <ArrowRight className="w-5 h-5 text-muted-foreground" />
+                    <ArrowRight className="w-5 h-5 text-muted-foreground" weight="bold" />
                   </div>
                 )}
               </div>
@@ -114,12 +114,12 @@ export function ProcessFlow({ showHeading = true, className }: ProcessFlowProps)
                     step.type === 'hybrid' && 'bg-secondary/10 text-secondary'
                   )}
                 >
-                  {step.type === 'human' && <User className="w-3 h-3" />}
-                  {step.type === 'ai' && <Bot className="w-3 h-3" />}
+                  {step.type === 'human' && <User className="w-3 h-3" weight="duotone" />}
+                  {step.type === 'ai' && <Robot className="w-3 h-3" weight="duotone" />}
                   {step.type === 'hybrid' && (
                     <>
-                      <User className="w-3 h-3" />
-                      <Bot className="w-3 h-3" />
+                      <User className="w-3 h-3" weight="duotone" />
+                      <Robot className="w-3 h-3" weight="duotone" />
                     </>
                   )}
                 </span>
@@ -138,20 +138,20 @@ export function ProcessFlow({ showHeading = true, className }: ProcessFlowProps)
         >
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-full bg-blue-500/10 text-blue-600">
-              <User className="w-3 h-3" />
+              <User className="w-3 h-3" weight="duotone" />
             </span>
             <span className="text-muted-foreground">Human-Led</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-full bg-primary/10 text-primary">
-              <Bot className="w-3 h-3" />
+              <Robot className="w-3 h-3" weight="duotone" />
             </span>
             <span className="text-muted-foreground">AI-Powered</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 px-2 py-1 text-xs font-medium rounded-full bg-secondary/10 text-secondary">
-              <User className="w-3 h-3" />
-              <Bot className="w-3 h-3" />
+              <User className="w-3 h-3" weight="duotone" />
+              <Robot className="w-3 h-3" weight="duotone" />
             </span>
             <span className="text-muted-foreground">Collaborative</span>
           </div>

@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { getDestinationByRole } from '@/lib/auth/redirect'
 
 export async function signIn(formData: FormData) {
   const supabase = await createClient()
@@ -12,14 +13,18 @@ export async function signIn(formData: FormData) {
     password: formData.get('password') as string,
   }
 
-  const { error } = await supabase.auth.signInWithPassword(data)
+  const { error, data: signInData } = await supabase.auth.signInWithPassword(data)
 
   if (error) {
     return { error: error.message }
   }
 
   revalidatePath('/', 'layout')
-  redirect('/dashboard')
+  const destination = getDestinationByRole(
+    signInData.user?.user_metadata?.role,
+    signInData.user?.user_metadata?.onboarding_completed
+  )
+  redirect(destination)
 }
 
 export async function signUp(formData: FormData) {
@@ -29,6 +34,7 @@ export async function signUp(formData: FormData) {
   const password = formData.get('password') as string
   const fullName = formData.get('fullName') as string
   const company = formData.get('company') as string
+  const marketingConsent = formData.get('marketingConsent') === 'true'
 
   const { error } = await supabase.auth.signUp({
     email,
@@ -37,7 +43,11 @@ export async function signUp(formData: FormData) {
       data: {
         full_name: fullName,
         company: company,
-        role: 'client', // Default role for new users
+        role: 'client',
+        onboarding_completed: false,
+        onboarding_step: 0,
+        terms_accepted_at: new Date().toISOString(),
+        marketing_consent: marketingConsent,
       },
       emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
     },
@@ -128,6 +138,8 @@ export async function updateUserProfile(data: {
   avatar_url?: string
   notification_prefs?: Record<string, boolean>
   calendar_prefs?: Record<string, string>
+  first_dashboard_visit?: boolean
+  [key: string]: unknown
 }) {
   const supabase = await createClient()
 
@@ -139,6 +151,133 @@ export async function updateUserProfile(data: {
     return { error: error.message }
   }
 
+  return { success: true }
+}
+
+export async function completeOnboarding(data: {
+  companyName: string
+  contactName: string
+  contactEmail: string
+  industry: string
+  website?: string
+  phone?: string
+  companySize?: string
+  targetIcp?: string
+  hasInstantly: boolean
+  instantlyApiKey?: string
+  readAccessVerified?: boolean
+  writeAccessVerified?: boolean
+  workspaceSheetId?: string
+  telegramChatId?: string
+  leadsSheetId?: string
+  blockedDomains?: string
+  blockedCountries?: string
+  defaultNiche: string
+  nicheDefinitions?: string
+}): Promise<{ success?: boolean; error?: string }> {
+  const supabase = await createClient()
+
+  // Get current user
+  const { data: { user }, error: userError } = await supabase.auth.getUser()
+  if (userError || !user) {
+    return { error: 'Not authenticated' }
+  }
+
+  // Parse niche definitions if provided
+  let parsedNicheDefinitions = null
+  if (data.nicheDefinitions) {
+    try {
+      parsedNicheDefinitions = JSON.parse(data.nicheDefinitions)
+    } catch {
+      return { error: 'Invalid niche definitions JSON' }
+    }
+  }
+
+  // Create client record in database
+  const { data: clientRecord, error: clientError } = await supabase
+    .from('clients')
+    .insert({
+      company_name: data.companyName,
+      contact_name: data.contactName,
+      contact_email: data.contactEmail,
+      phone: data.phone || null,
+      plan: 'pilot',
+      status: 'onboarding',
+      health_score: 80,
+      mrr: 0,
+      industry: data.industry,
+      website: data.website || null,
+      has_instantly: data.hasInstantly,
+      instantly_api_key: data.instantlyApiKey || null,
+      blocked_domains: data.blockedDomains || null,
+      blocked_countries: data.blockedCountries || null,
+      default_niche: data.defaultNiche,
+      niche_definitions: parsedNicheDefinitions,
+      target_icp: data.targetIcp || null,
+      company_size: data.companySize || null,
+      workspace_sheet_id: data.workspaceSheetId || null,
+      telegram_chat_id: data.telegramChatId || null,
+      leads_sheet_id: data.leadsSheetId || null,
+      user_id: user.id,
+      onboarding_started_at: new Date().toISOString(),
+    })
+    .select('id')
+    .single()
+
+  if (clientError) {
+    console.error('[Onboarding] Error creating client record:', clientError)
+    return { error: 'Failed to create your account. Please try again.' }
+  }
+
+  // Update user metadata to mark onboarding as complete
+  const { error: metadataError } = await supabase.auth.updateUser({
+    data: {
+      onboarding_completed: true,
+      client_id: clientRecord.id,
+    },
+  })
+
+  if (metadataError) {
+    console.error('[Onboarding] Error updating user metadata:', metadataError)
+    // Non-critical: client record exists, proceed anyway
+  }
+
+  // Trigger n8n Engine G webhook (non-blocking)
+  try {
+    const webhookUrl = process.env.N8N_WEBHOOK_URL || process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL
+    if (webhookUrl) {
+      fetch(`${webhookUrl}/engine-g-onboarding`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          client_id: clientRecord.id,
+          client_name: data.companyName,
+          contact_name: data.contactName,
+          contact_email: data.contactEmail,
+          industry: data.industry,
+          has_instantly: data.hasInstantly,
+          instantly_api_key: data.instantlyApiKey || null,
+          read_access_verified: data.readAccessVerified || false,
+          write_access_verified: data.writeAccessVerified || false,
+          workspace_sheet_id: data.workspaceSheetId || null,
+          telegram_chat_id: data.telegramChatId || null,
+          leads_sheet_id: data.leadsSheetId || null,
+          blocked_domains: data.blockedDomains || null,
+          blocked_countries: data.blockedCountries || null,
+          default_niche: data.defaultNiche,
+          niche_definitions: parsedNicheDefinitions,
+          target_icp: data.targetIcp || null,
+        }),
+      }).catch((err) => {
+        console.error('[Onboarding] n8n webhook error:', err)
+      })
+    }
+  } catch (err) {
+    console.error('[Onboarding] n8n webhook error:', err)
+    // Non-blocking: don't fail onboarding if webhook fails
+  }
+
+  revalidatePath('/', 'layout')
   return { success: true }
 }
 
@@ -163,6 +302,135 @@ export async function getCurrentUser() {
       avatar_url: user.user_metadata?.avatar_url || '',
       notification_prefs: user.user_metadata?.notification_prefs || {},
       calendar_prefs: user.user_metadata?.calendar_prefs || {},
+      onboarding_step: user.user_metadata?.onboarding_step || 0,
+      onboarding_completed: user.user_metadata?.onboarding_completed || false,
+      first_dashboard_visit: user.user_metadata?.first_dashboard_visit || false,
     },
   }
+}
+
+export async function completeClientOnboarding(data: {
+  companyName: string
+  industry: string
+  website?: string
+  companySize?: string
+  roleTitle?: string
+  idealCustomerProfile?: string
+  targetIndustries?: string[]
+  targetCompanySize?: string
+  targetGeographies?: string[]
+  primaryGoal?: string
+  monthlyLeadTarget?: string
+  communicationStyle?: string
+  excludedDomains?: string[]
+  existingTools?: string[]
+  calendarLink?: string
+}): Promise<{ success?: boolean; error?: string }> {
+  const supabase = await createClient()
+
+  const { data: { user }, error: userError } = await supabase.auth.getUser()
+  if (userError || !user) {
+    return { error: 'Not authenticated' }
+  }
+
+  const { data: clientRecord, error: clientError } = await supabase
+    .from('clients')
+    .insert({
+      company_name: data.companyName,
+      contact_name: user.user_metadata?.full_name || '',
+      contact_email: user.email,
+      industry: data.industry,
+      website: data.website || null,
+      company_size: data.companySize || null,
+      plan: 'pilot',
+      status: 'onboarding',
+      health_score: 80,
+      mrr: 0,
+      target_icp: data.idealCustomerProfile || null,
+      user_id: user.id,
+      onboarding_started_at: new Date().toISOString(),
+      onboarding_metadata: {
+        role_title: data.roleTitle || null,
+        target_industries: data.targetIndustries || [],
+        target_company_size: data.targetCompanySize || null,
+        target_geographies: data.targetGeographies || [],
+        primary_goal: data.primaryGoal || null,
+        monthly_lead_target: data.monthlyLeadTarget || null,
+        communication_style: data.communicationStyle || null,
+        excluded_domains: data.excludedDomains || [],
+        existing_tools: data.existingTools || [],
+        calendar_link: data.calendarLink || null,
+      },
+    })
+    .select('id')
+    .single()
+
+  if (clientError) {
+    console.error('[Client Onboarding] Error creating client record:', clientError)
+    return { error: 'Failed to create your account. Please try again.' }
+  }
+
+  const { error: metadataError } = await supabase.auth.updateUser({
+    data: {
+      onboarding_completed: true,
+      onboarding_step: 4,
+      client_id: clientRecord.id,
+    },
+  })
+
+  if (metadataError) {
+    console.error('[Client Onboarding] Error updating user metadata:', metadataError)
+  }
+
+  // Trigger n8n webhook for client onboarding (non-blocking)
+  try {
+    const webhookUrl = process.env.N8N_WEBHOOK_URL || process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL
+    if (webhookUrl) {
+      fetch(`${webhookUrl}/client-onboarding`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          client_id: clientRecord.id,
+          company_name: data.companyName,
+          contact_name: user.user_metadata?.full_name || '',
+          contact_email: user.email,
+          industry: data.industry,
+          primary_goal: data.primaryGoal,
+          monthly_lead_target: data.monthlyLeadTarget,
+        }),
+      }).catch((err) => {
+        console.error('[Client Onboarding] n8n webhook error:', err)
+      })
+    }
+  } catch (err) {
+    console.error('[Client Onboarding] n8n webhook error:', err)
+  }
+
+  revalidatePath('/', 'layout')
+  return { success: true }
+}
+
+export async function saveOnboardingProgress(
+  step: number,
+  partialData: Record<string, unknown>
+): Promise<{ success?: boolean; error?: string }> {
+  const supabase = await createClient()
+
+  const { data: { user }, error: userError } = await supabase.auth.getUser()
+  if (userError || !user) {
+    return { error: 'Not authenticated' }
+  }
+
+  const { error } = await supabase.auth.updateUser({
+    data: {
+      onboarding_step: step,
+      onboarding_partial_data: partialData,
+    },
+  })
+
+  if (error) {
+    return { error: error.message }
+  }
+
+  return { success: true }
 }

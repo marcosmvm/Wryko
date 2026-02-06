@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { ArrowRight, Shield, Play } from 'lucide-react'
+import { ArrowRight, ShieldCheck, Play } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 
 interface CTASectionProps {
@@ -92,14 +92,14 @@ export function CTASection({
               className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-secondary text-white px-8 py-4 rounded-lg font-semibold text-lg hover:opacity-90 transition-all shadow-lg shadow-primary/15"
             >
               {primaryCta.label}
-              <ArrowRight className="w-5 h-5" />
+              <ArrowRight className="w-5 h-5" weight="bold" />
             </Link>
             {secondaryCta && (
               <Link
                 href={secondaryCta.href}
                 className="inline-flex items-center justify-center gap-2 border border-border px-8 py-4 rounded-lg font-semibold text-lg hover:bg-muted transition-colors"
               >
-                <Play className="w-4 h-4" />
+                <Play className="w-4 h-4" weight="fill" />
                 {secondaryCta.label}
               </Link>
             )}
@@ -114,7 +114,7 @@ export function CTASection({
               viewport={{ once: true }}
               transition={{ delay: 0.3, duration: 0.5 }}
             >
-              <Shield className="w-4 h-4 text-primary flex-shrink-0" />
+              <ShieldCheck className="w-4 h-4 text-primary flex-shrink-0" weight="duotone" />
               No contracts. Performance-aligned pricing. Cancel anytime.
             </motion.p>
           )}

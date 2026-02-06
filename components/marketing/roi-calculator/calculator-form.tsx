@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { CalculatorInputs, IndustryKey, industryOptions } from './industry-data'
-import { Users, DollarSign, Calendar, Building2 } from 'lucide-react'
+import { Users, CurrencyDollar, Calendar, Buildings } from '@phosphor-icons/react'
 
 interface CalculatorFormProps {
   inputs: CalculatorInputs
@@ -34,7 +34,7 @@ export function CalculatorForm({ inputs, onChange }: CalculatorFormProps) {
         {/* Sales Reps */}
         <div className="space-y-2">
           <label className="flex items-center gap-2 text-sm font-medium text-foreground">
-            <Users className="w-4 h-4 text-primary" />
+            <Users className="w-4 h-4 text-primary" weight="duotone" />
             Number of Sales Reps
           </label>
           <Input
@@ -50,7 +50,7 @@ export function CalculatorForm({ inputs, onChange }: CalculatorFormProps) {
         {/* Average Deal Size */}
         <div className="space-y-2">
           <label className="flex items-center gap-2 text-sm font-medium text-foreground">
-            <DollarSign className="w-4 h-4 text-primary" />
+            <CurrencyDollar className="w-4 h-4 text-primary" weight="duotone" />
             Average Deal Size
           </label>
           <div className="relative">
@@ -74,7 +74,7 @@ export function CalculatorForm({ inputs, onChange }: CalculatorFormProps) {
         {/* Current Meetings */}
         <div className="space-y-2">
           <label className="flex items-center gap-2 text-sm font-medium text-foreground">
-            <Calendar className="w-4 h-4 text-primary" />
+            <Calendar className="w-4 h-4 text-primary" weight="duotone" />
             Current Meetings per Month
           </label>
           <Input
@@ -92,7 +92,7 @@ export function CalculatorForm({ inputs, onChange }: CalculatorFormProps) {
         {/* Industry */}
         <div className="space-y-2">
           <label className="flex items-center gap-2 text-sm font-medium text-foreground">
-            <Building2 className="w-4 h-4 text-primary" />
+            <Buildings className="w-4 h-4 text-primary" weight="duotone" />
             Industry
           </label>
           <Select

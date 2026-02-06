@@ -58,7 +58,8 @@ export async function middleware(request: NextRequest) {
     // Protected routes - redirect to login if not authenticated
     if (
       request.nextUrl.pathname.startsWith('/dashboard') ||
-      request.nextUrl.pathname.startsWith('/admin')
+      request.nextUrl.pathname.startsWith('/admin') ||
+      request.nextUrl.pathname.startsWith('/onboarding')
     ) {
       if (!user) {
         const url = request.nextUrl.clone()
@@ -67,33 +68,80 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(url)
       }
 
+      const userRole = user.user_metadata?.role || 'client'
+      const onboardingCompleted = user.user_metadata?.onboarding_completed === true
+
       // Admin routes require admin role
       if (request.nextUrl.pathname.startsWith('/admin')) {
-        const userRole = user.user_metadata?.role || 'client'
         if (userRole !== 'admin') {
-          // Redirect non-admins to client dashboard
           const url = request.nextUrl.clone()
           url.pathname = '/dashboard'
           return NextResponse.redirect(url)
         }
       }
+
+      // Redirect admins away from client dashboard to admin portal
+      if (request.nextUrl.pathname.startsWith('/dashboard')) {
+        if (userRole === 'admin') {
+          const url = request.nextUrl.clone()
+          url.pathname = '/admin'
+          return NextResponse.redirect(url)
+        }
+      }
+
+      // Onboarding gating for client users
+      if (userRole === 'client') {
+        // Client trying to access dashboard but hasn't completed onboarding
+        if (request.nextUrl.pathname.startsWith('/dashboard') && !onboardingCompleted) {
+          const url = request.nextUrl.clone()
+          url.pathname = '/onboarding'
+          return NextResponse.redirect(url)
+        }
+
+        // Client already completed onboarding, redirect away from onboarding page
+        if (request.nextUrl.pathname.startsWith('/onboarding') && onboardingCompleted) {
+          const url = request.nextUrl.clone()
+          url.pathname = '/dashboard'
+          return NextResponse.redirect(url)
+        }
+      }
+
+      // Admins shouldn't see client onboarding
+      if (request.nextUrl.pathname.startsWith('/onboarding') && userRole === 'admin') {
+        const url = request.nextUrl.clone()
+        url.pathname = '/admin'
+        return NextResponse.redirect(url)
+      }
     }
 
     // Redirect logged-in users away from auth pages
     if (user) {
+      const userRole = user.user_metadata?.role || 'client'
+      const onboardingCompleted = user.user_metadata?.onboarding_completed === true
+
+      // Determine correct destination based on role and onboarding status
+      let destination: string
+      if (userRole === 'admin') {
+        destination = '/admin'
+      } else if (!onboardingCompleted) {
+        destination = '/onboarding'
+      } else {
+        destination = '/dashboard'
+      }
+
       if (
         request.nextUrl.pathname === '/login' ||
         request.nextUrl.pathname === '/register'
       ) {
         const url = request.nextUrl.clone()
-        url.pathname = '/dashboard'
+        url.pathname = destination
         return NextResponse.redirect(url)
       }
 
-      // Redirect authenticated users from homepage to dashboard
+      // Redirect authenticated users from homepage
       if (request.nextUrl.pathname === '/') {
         const url = request.nextUrl.clone()
-        url.pathname = '/dashboard'
+        url.pathname = destination
         return NextResponse.redirect(url)
       }
     }

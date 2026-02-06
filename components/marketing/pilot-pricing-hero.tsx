@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Check, ArrowRight, Sparkles } from 'lucide-react'
+import { Check, ArrowRight, Sparkle } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 
 import { SectionHeading } from './section-heading'
@@ -56,7 +56,7 @@ export function PilotPricingHero({ tier, className }: PilotPricingHeroProps) {
               {/* Badge and name */}
               <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-8">
                 <span className="inline-flex items-center gap-2 px-4 py-1.5 text-sm font-semibold text-white bg-primary rounded-full w-fit">
-                  <Sparkles className="w-3.5 h-3.5" />
+                  <Sparkle className="w-3.5 h-3.5" weight="fill" />
                   {tier.badge}
                 </span>
                 <h3 className="font-heading text-2xl md:text-3xl font-bold">{tier.name}</h3>
@@ -132,7 +132,7 @@ export function PilotPricingHero({ tier, className }: PilotPricingHeroProps) {
                         transition={{ delay: 0.3 + index * 0.08, duration: 0.4 }}
                       >
                         <div className="w-6 h-6 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <Check className="w-3.5 h-3.5 text-primary" />
+                          <Check className="w-3.5 h-3.5 text-primary" weight="bold" />
                         </div>
                         <span className="text-[15px] leading-relaxed">{highlight}</span>
                       </motion.div>
@@ -156,7 +156,7 @@ export function PilotPricingHero({ tier, className }: PilotPricingHeroProps) {
                   className="inline-flex items-center justify-center gap-2 w-full sm:w-auto bg-gradient-to-r from-primary to-secondary text-white px-10 py-4 rounded-lg font-semibold text-lg hover:opacity-90 transition-all shadow-lg shadow-primary/15"
                 >
                   {tier.ctaLabel}
-                  <ArrowRight className="w-5 h-5" />
+                  <ArrowRight className="w-5 h-5" weight="bold" />
                 </Link>
                 <p className="text-sm text-muted-foreground mt-3">
                   No commitment required. Start with a discovery call.

@@ -1,6 +1,7 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
+import { getDestinationByRole } from '@/lib/auth/redirect'
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
@@ -75,8 +76,29 @@ export async function GET(request: Request) {
         )
       }
 
-      // Return the response WITH cookies attached
-      return response
+      // Determine role-based destination (with onboarding check)
+      const { data: { user } } = await supabase.auth.getUser()
+      const destination = getDestinationByRole(
+        user?.user_metadata?.role,
+        user?.user_metadata?.onboarding_completed
+      )
+
+      let roleRedirectUrl: string
+      if (isLocalEnv) {
+        roleRedirectUrl = `${origin}${destination}`
+      } else if (forwardedHost) {
+        roleRedirectUrl = `https://${forwardedHost}${destination}`
+      } else {
+        roleRedirectUrl = `${origin}${destination}`
+      }
+
+      // Create new redirect with correct destination, preserving auth cookies
+      const roleResponse = NextResponse.redirect(roleRedirectUrl)
+      response.cookies.getAll().forEach(cookie => {
+        roleResponse.cookies.set(cookie.name, cookie.value)
+      })
+
+      return roleResponse
 
     } catch (error) {
       console.error('[Auth Callback] Unexpected error during session exchange:', error)

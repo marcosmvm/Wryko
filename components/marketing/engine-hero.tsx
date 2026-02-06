@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { LucideIcon, ArrowLeft, ArrowRight } from 'lucide-react'
+import { type Icon, ArrowLeft, ArrowRight } from '@phosphor-icons/react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 
@@ -15,7 +15,7 @@ interface EngineHeroProps {
   name: string
   tagline: string
   description: string
-  icon: LucideIcon
+  icon: Icon
   suite: 'lead-gen' | 'csm'
   letter: string
   stats: EngineStat[]
@@ -49,7 +49,7 @@ export function EngineHero({
             href="/how-it-works"
             className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-4 h-4" weight="bold" />
             <span>Back to How It Works</span>
           </Link>
         </motion.div>
@@ -77,7 +77,7 @@ export function EngineHero({
             {/* Engine letter + name */}
             <div className="flex items-center gap-4 mb-4">
               <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg shadow-primary/20">
-                <Icon className="w-8 h-8 text-white" />
+                <Icon className="w-8 h-8 text-white" weight="duotone" />
               </div>
               <div>
                 <span className="label-text">Engine {letter}</span>
@@ -103,7 +103,7 @@ export function EngineHero({
                 className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-secondary text-white px-8 py-4 rounded-lg font-semibold text-lg hover:opacity-90 transition-all shadow-lg shadow-primary/15"
               >
                 See It In Action
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-5 h-5" weight="bold" />
               </Link>
               <Link
                 href="/pricing"

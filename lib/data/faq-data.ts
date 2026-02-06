@@ -1,4 +1,4 @@
-import { HelpCircle, CreditCard, Plug, Shield, Rocket } from 'lucide-react'
+import { Question, CreditCard, Plug, ShieldCheck, Rocket } from '@phosphor-icons/react'
 import { pricingFAQs } from './content'
 
 export interface FAQItem {
@@ -10,7 +10,7 @@ export interface FAQCategory {
   id: string
   title: string
   description: string
-  icon: typeof HelpCircle
+  icon: typeof Question
   items: FAQItem[]
 }
 
@@ -19,7 +19,7 @@ export const faqCategories: FAQCategory[] = [
     id: 'platform',
     title: 'Platform Questions',
     description: 'How the platform works and what to expect',
-    icon: HelpCircle,
+    icon: Question,
     items: [
       {
         question: 'How does Wryko work?',
@@ -97,7 +97,7 @@ export const faqCategories: FAQCategory[] = [
     id: 'compliance',
     title: 'Compliance & Security',
     description: 'GDPR, CAN-SPAM, and data security',
-    icon: Shield,
+    icon: ShieldCheck,
     items: [
       {
         question: 'How do you ensure GDPR compliance?',

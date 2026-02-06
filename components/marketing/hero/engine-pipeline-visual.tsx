@@ -2,24 +2,24 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Shield, Target, Brain, Zap, Eye, BarChart3, Scale, BookOpen, Rocket, Activity, Compass, Users, Calendar } from 'lucide-react'
+import { ShieldCheck, Target, Brain, Lightning, Eye, ChartBar, Scales, BookOpen, Rocket, Pulse, Compass, Users, Calendar } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 import { Logo } from '@/components/ui/logo'
 
 const leadGenEngines = [
-  { icon: Shield, label: 'The Guardian', desc: 'Compliance & deliverability protection', angle: -60 },
+  { icon: ShieldCheck, label: 'The Guardian', desc: 'Compliance & deliverability protection', angle: -60 },
   { icon: Target, label: 'The Architect', desc: 'AI-powered campaign design', angle: -20 },
   { icon: Brain, label: 'The Scientist', desc: 'Continuous A/B test optimization', angle: 20 },
-  { icon: Zap, label: 'The Hunter', desc: 'Expands leads from positive replies', angle: 60 },
+  { icon: Lightning, label: 'The Hunter', desc: 'Expands leads from positive replies', angle: 60 },
   { icon: Eye, label: 'The Sentinel', desc: 'Identifies anonymous website visitors', angle: 100 },
 ]
 
 const csmEngines = [
-  { icon: BarChart3, label: 'The Informant', desc: 'Automated weekly performance reports', angle: -75 },
-  { icon: Scale, label: 'The Judge', desc: 'Issue detection & auto-healing', angle: -35 },
+  { icon: ChartBar, label: 'The Informant', desc: 'Automated weekly performance reports', angle: -75 },
+  { icon: Scales, label: 'The Judge', desc: 'Issue detection & auto-healing', angle: -35 },
   { icon: BookOpen, label: 'The Keeper', desc: 'AI knowledge brain for instant answers', angle: 5 },
   { icon: Rocket, label: 'The Launcher', desc: 'Automated client onboarding', angle: 60 },
-  { icon: Activity, label: 'The Monitor', desc: 'Churn risk detection & alerts', angle: 100 },
+  { icon: Pulse, label: 'The Monitor', desc: 'Churn risk detection & alerts', angle: 100 },
   { icon: Compass, label: 'The Navigator', desc: 'Self-serve client portal', angle: 140 },
 ]
 
@@ -112,7 +112,7 @@ export function EnginePipelineVisual({ className }: EnginePipelineVisualProps) {
         transition={{ delay: 0.3, duration: 0.5 }}
       >
         <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center">
-          <Users className="w-4 h-4 text-blue-500" />
+          <Users className="w-4 h-4 text-blue-500" weight="duotone" />
         </div>
         <div>
           <div className="text-xs font-semibold text-foreground">Your ICP</div>
@@ -129,7 +129,7 @@ export function EnginePipelineVisual({ className }: EnginePipelineVisualProps) {
         transition={{ delay: 0.5, duration: 0.5 }}
       >
         <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-          <Calendar className="w-4 h-4 text-primary" />
+          <Calendar className="w-4 h-4 text-primary" weight="duotone" />
         </div>
         <div>
           <div className="text-xs font-semibold text-primary">Qualified Meetings</div>
@@ -185,7 +185,7 @@ export function EnginePipelineVisual({ className }: EnginePipelineVisualProps) {
             onMouseEnter={(e) => handleMouseEnter(engine.label, engine.desc, e)}
             onMouseLeave={handleMouseLeave}
           >
-            <EngineIcon className="w-5 h-5 text-primary" />
+            <EngineIcon className="w-5 h-5 text-primary" weight="duotone" />
           </motion.div>
         )
       })}
@@ -214,7 +214,7 @@ export function EnginePipelineVisual({ className }: EnginePipelineVisualProps) {
             onMouseEnter={(e) => handleMouseEnter(engine.label, engine.desc, e)}
             onMouseLeave={handleMouseLeave}
           >
-            <EngineIcon className="w-4 h-4 text-primary/60" />
+            <EngineIcon className="w-4 h-4 text-primary/60" weight="duotone" />
           </motion.div>
         )
       })}

@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { LucideIcon } from 'lucide-react'
+import { type Icon } from '@phosphor-icons/react'
 import { FAQAccordion } from './faq-accordion'
 import { cn } from '@/lib/utils'
 
@@ -13,7 +13,7 @@ interface FAQItem {
 interface FAQCategorySectionProps {
   title: string
   description?: string
-  icon: LucideIcon
+  icon: Icon
   items: FAQItem[]
   searchTerm?: string
   className?: string
@@ -39,7 +39,7 @@ export function FAQCategorySection({
     >
       <div className="flex items-center gap-4">
         <div className="relative w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-          <Icon className="w-6 h-6 text-primary" />
+          <Icon className="w-6 h-6 text-primary" weight="duotone" />
           <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-green-500 border-2 border-background" />
         </div>
         <div className="flex-1 min-w-0">

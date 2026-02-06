@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 import { engineDetails, type EngineDetail } from '@/lib/data/engine-details'
 
@@ -62,7 +62,7 @@ export function RelatedEngines({ relatedSlugs, className }: RelatedEnginesProps)
 
                 <span className="inline-flex items-center gap-1 text-sm text-primary font-medium group-hover:gap-2 transition-all">
                   Learn more
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4" weight="bold" />
                 </span>
               </div>
             </Link>

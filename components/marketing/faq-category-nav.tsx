@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { LayoutGrid } from 'lucide-react'
+import { SquaresFour } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 import type { FAQCategory } from '@/lib/data/faq-data'
 
@@ -19,7 +19,7 @@ export function FAQCategoryNav({
   className,
 }: FAQCategoryNavProps) {
   const allItems = [
-    { id: null, title: 'All', icon: LayoutGrid, count: categories.reduce((sum, c) => sum + c.items.length, 0) },
+    { id: null, title: 'All', icon: SquaresFour, count: categories.reduce((sum, c) => sum + c.items.length, 0) },
     ...categories.map((c) => ({ id: c.id as string | null, title: c.title, icon: c.icon, count: c.items.length })),
   ]
 
@@ -50,7 +50,7 @@ export function FAQCategoryNav({
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            <Icon className="w-4 h-4" />
+            <Icon className="w-4 h-4" weight="duotone" />
             <span className="hidden sm:inline">{item.title}</span>
             <span className={cn(
               'text-xs rounded-full px-1.5 py-0.5',
