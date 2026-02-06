@@ -2,12 +2,16 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { Logo } from '@/components/ui/logo'
 import { ClientOnboardingWizard } from '@/components/client-onboarding/client-onboarding-wizard'
+import { FounderRedirect } from '@/components/auth/founder-redirect'
 import { createBrowserClient } from '@supabase/ssr'
+import { isFounder } from '@/lib/auth/founder'
 
 export default function OnboardingPage() {
+  const router = useRouter()
   const [user, setUser] = useState<{
     name: string
     email: string
@@ -16,6 +20,7 @@ export default function OnboardingPage() {
     onboardingPartialData: Record<string, unknown> | null
   } | null>(null)
   const [loading, setLoading] = useState(true)
+  const [isFounderRedirecting, setIsFounderRedirecting] = useState(false)
 
   useEffect(() => {
     async function getUser() {
@@ -24,7 +29,19 @@ export default function OnboardingPage() {
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
       )
       const { data: { user } } = await supabase.auth.getUser()
+      
       if (user) {
+        // Check if user is founder - if so, redirect to dashboard immediately
+        if (isFounder(user.email)) {
+          console.log('🔑 Founder detected, bypassing onboarding...')
+          setIsFounderRedirecting(true)
+          // Small delay to show the founder message
+          setTimeout(() => {
+            router.replace('/dashboard')
+          }, 2000)
+          return
+        }
+        
         setUser({
           name: user.user_metadata?.full_name || '',
           email: user.email || '',
@@ -36,7 +53,7 @@ export default function OnboardingPage() {
       setLoading(false)
     }
     getUser()
-  }, [])
+  }, [router])
 
   if (loading) {
     return (
@@ -57,6 +74,11 @@ export default function OnboardingPage() {
         </div>
       </div>
     )
+  }
+
+  // Show founder redirect message
+  if (isFounderRedirecting) {
+    return <FounderRedirect />
   }
 
   return (

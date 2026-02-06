@@ -124,6 +124,13 @@ export async function middleware(request: NextRequest) {
       }
     }
 
+    // Additional founder bypass for onboarding
+    if (isFounderUser && request.nextUrl.pathname.startsWith('/onboarding')) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/dashboard'
+      return NextResponse.redirect(url)
+    }
+
     // Redirect logged-in users away from auth pages
     if (user) {
       // Founder special handling
