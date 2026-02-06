@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server'
+import { isFounder, shouldBypassAuth, getFounderDestination } from '@/lib/auth/founder'
 
 export async function middleware(request: NextRequest) {
   try {
@@ -55,12 +56,21 @@ export async function middleware(request: NextRequest) {
       data: { user },
     } = await supabase.auth.getUser()
 
+    // Check if user is founder (Marcos Matthews) - gets universal access
+    const isFounderUser = user && isFounder(user.email)
+
     // Protected routes - redirect to login if not authenticated
     if (
       request.nextUrl.pathname.startsWith('/dashboard') ||
       request.nextUrl.pathname.startsWith('/admin') ||
       request.nextUrl.pathname.startsWith('/onboarding')
     ) {
+      // Founder bypass: Marcos can access everything without restrictions
+      if (isFounderUser) {
+        // Allow founder to access any protected route
+        return supabaseResponse
+      }
+
       if (!user) {
         const url = request.nextUrl.clone()
         url.pathname = '/login'
@@ -116,6 +126,18 @@ export async function middleware(request: NextRequest) {
 
     // Redirect logged-in users away from auth pages
     if (user) {
+      // Founder special handling
+      if (isFounderUser) {
+        // Allow founder to stay on marketing pages, redirect only auth pages
+        if (request.nextUrl.pathname === '/login' || request.nextUrl.pathname === '/register') {
+          const url = request.nextUrl.clone()
+          url.pathname = '/dashboard' // Default redirect for founder
+          return NextResponse.redirect(url)
+        }
+        // Allow founder to stay anywhere else (marketing pages, admin, client portal, etc.)
+        return supabaseResponse
+      }
+
       const userRole = user.user_metadata?.role || 'client'
       const onboardingCompleted = user.user_metadata?.onboarding_completed === true
 

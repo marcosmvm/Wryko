@@ -6,6 +6,8 @@ import {
   webSiteSchema,
   siteNavigationSchema,
 } from '@/lib/seo/schemas'
+import { FounderUpgrade } from '@/components/auth/founder-upgrade'
+import { FounderPortalSwitcher } from '@/components/ui/founder-portal-switcher'
 
 const sora = Sora({
   subsets: ['latin'],
@@ -94,6 +96,8 @@ export default function RootLayout({
             __html: JSON.stringify(siteNavigationSchema()),
           }}
         />
+        <FounderUpgrade />
+        <FounderPortalSwitcher />
         {children}
       </body>
     </html>
