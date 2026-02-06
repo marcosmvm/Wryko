@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Play, Clock, Users, Target, Zap, BarChart } from '@phosphor-icons/react'
+import { Play, Clock, Users, Target, Lightning, ChartBar } from '@phosphor-icons/react'
 import Link from 'next/link'
 
 export function DemoVideoContent() {
@@ -21,12 +21,12 @@ export function DemoVideoContent() {
       description: 'Engine A finds your perfect leads automatically'
     },
     {
-      icon: Zap,
+      icon: Lightning,
       title: 'Smart Campaigns',
       description: 'Engine B personalizes outreach at scale'
     },
     {
-      icon: BarChart,
+      icon: ChartBar,
       title: 'Live Analytics',
       description: 'Engine F tracks performance in real-time'
     },

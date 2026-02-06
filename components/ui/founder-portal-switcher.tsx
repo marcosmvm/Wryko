@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Crown, Users, BarChart3, Globe } from 'lucide-react'
+import { Crown, Users, ChartBar, Globe } from '@phosphor-icons/react'
 import { isFounder } from '@/lib/auth/founder'
 import { createBrowserClient } from '@supabase/ssr'
 
@@ -24,7 +24,7 @@ const PORTALS: PortalOption[] = [
   {
     name: 'Client Portal',
     href: '/dashboard',
-    icon: BarChart3,
+    icon: ChartBar,
     description: 'Client dashboard and campaigns'
   },
   {
@@ -49,7 +49,7 @@ export function FounderPortalSwitcher() {
 
       const { data: { user } } = await supabase.auth.getUser()
       
-      if (user && isFounder(user.email)) {
+      if (user && user.email && isFounder(user.email)) {
         setIsVisible(true)
         setUserEmail(user.email)
       }

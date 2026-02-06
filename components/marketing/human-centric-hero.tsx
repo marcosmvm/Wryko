@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ArrowRight, Users, TrendingUp, Shield } from 'lucide-react'
+import { ArrowRight, Users, TrendUp, Shield } from '@phosphor-icons/react'
 import Image from 'next/image'
 
 export function HumanCentricHero() {
@@ -47,7 +47,7 @@ export function HumanCentricHero() {
                 <span>Built for B2B Teams</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                <TrendingUp className="w-4 h-4 text-purple-600" />
+                <TrendUp className="w-4 h-4 text-purple-600" />
                 <span>$25K+ Deal Focus</span>
               </div>
             </div>
