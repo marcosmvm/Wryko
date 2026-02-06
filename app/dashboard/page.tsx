@@ -4,6 +4,9 @@ import { useState, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { fadeInUp } from '@/lib/animations'
 import { RefreshCw, Loader2 } from 'lucide-react'
+import { createBrowserClient } from '@supabase/ssr'
+import { WelcomeLoader } from '@/components/dashboard/welcome-loader'
+import { updateUserProfile } from '@/lib/supabase/actions'
 import { MeetingsHero } from '@/components/dashboard/meetings-hero'
 import { MetricCards } from '@/components/dashboard/metric-cards'
 import { TrendChart } from '@/components/dashboard/trend-chart'
@@ -49,6 +52,8 @@ export default function DashboardPage() {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [loading, setLoading] = useState(true)
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date())
+  const [isFirstVisit, setIsFirstVisit] = useState<boolean | null>(null)
+  const [welcomeComplete, setWelcomeComplete] = useState(false)
   const toast = useToastActions()
 
   const [metrics, setMetrics] = useState<DashboardMetrics | null>(null)
@@ -88,6 +93,18 @@ export default function DashboardPage() {
     loadData()
   }, [loadData])
 
+  useEffect(() => {
+    async function checkFirstVisit() {
+      const supabase = createBrowserClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      )
+      const { data: { user } } = await supabase.auth.getUser()
+      setIsFirstVisit(!user?.user_metadata?.first_dashboard_visit)
+    }
+    checkFirstVisit()
+  }, [])
+
   const handleRefresh = useCallback(async () => {
     setIsRefreshing(true)
     try {
@@ -99,6 +116,17 @@ export default function DashboardPage() {
       setIsRefreshing(false)
     }
   }, [loadData, toast])
+
+  if (loading && isFirstVisit && !welcomeComplete) {
+    return (
+      <WelcomeLoader
+        onComplete={() => {
+          setWelcomeComplete(true)
+          updateUserProfile({ first_dashboard_visit: true }).catch(() => {})
+        }}
+      />
+    )
+  }
 
   if (loading) {
     return (

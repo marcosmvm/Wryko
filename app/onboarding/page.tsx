@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Logo } from '@/components/ui/logo'
-import { OnboardingWizard } from '@/components/onboarding/onboarding-wizard'
+import { ClientOnboardingWizard } from '@/components/client-onboarding/client-onboarding-wizard'
 import { createBrowserClient } from '@supabase/ssr'
 
 export default function OnboardingPage() {
@@ -12,6 +12,8 @@ export default function OnboardingPage() {
     name: string
     email: string
     company: string
+    onboardingStep: number
+    onboardingPartialData: Record<string, unknown> | null
   } | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -27,6 +29,8 @@ export default function OnboardingPage() {
           name: user.user_metadata?.full_name || '',
           email: user.email || '',
           company: user.user_metadata?.company || '',
+          onboardingStep: user.user_metadata?.onboarding_step || 0,
+          onboardingPartialData: user.user_metadata?.onboarding_partial_data || null,
         })
       }
       setLoading(false)
@@ -80,7 +84,7 @@ export default function OnboardingPage() {
           Welcome{user?.name ? `, ${user.name.split(' ')[0]}` : ''}!
         </h1>
         <p className="text-muted-foreground text-sm sm:text-base max-w-lg mx-auto">
-          Let&apos;s set up your campaign in a few steps. This helps our AI engines build the perfect outreach strategy for your business.
+          Let&apos;s set up your account in a few steps. This helps our AI engines build the perfect outreach strategy for your business.
         </p>
       </motion.div>
 
@@ -91,10 +95,12 @@ export default function OnboardingPage() {
         transition={{ duration: 0.5, delay: 0.2 }}
         className="w-full max-w-2xl"
       >
-        <OnboardingWizard
+        <ClientOnboardingWizard
           userName={user?.name || ''}
           userEmail={user?.email || ''}
           userCompany={user?.company || ''}
+          initialStep={user?.onboardingStep && user.onboardingStep > 0 ? user.onboardingStep : 1}
+          initialData={user?.onboardingPartialData}
         />
       </motion.div>
 
