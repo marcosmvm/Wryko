@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { DemoVideoContent } from '@/components/marketing/demo-video-content'
+import { DemoVideoContent } from '@/components/marketing/demo-video-content-fixed'
 import { cn } from '@/lib/utils'
 
 interface HeroVideoSectionProps {

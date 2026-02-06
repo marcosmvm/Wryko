@@ -61,6 +61,7 @@ export function RealMetricsDashboard({ clientId }: RealMetricsDashboardProps) {
     // Auto-refresh every 5 minutes
     const interval = setInterval(loadData, 5 * 60 * 1000);
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clientId]);
 
   const getTrendIcon = (trend: 'up' | 'down' | 'stable') => {
