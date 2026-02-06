@@ -13,7 +13,7 @@ export const STRIPE_PLANS = {
   STARTER: {
     name: 'Starter',
     price: 1500,
-    priceId: process.env.STRIPE_STARTER_PRICE_ID || 'price_starter',
+    priceId: process.env.STRIPE_STARTER_PRICE_ID || 'price_1Sxru1HdnJeEddwg3k2vUoE2',
     features: [
       '1,000 leads per month',
       'Basic email campaigns',
@@ -24,7 +24,7 @@ export const STRIPE_PLANS = {
   GROWTH: {
     name: 'Growth', 
     price: 2500,
-    priceId: process.env.STRIPE_GROWTH_PRICE_ID || 'price_growth',
+    priceId: process.env.STRIPE_GROWTH_PRICE_ID || 'price_1Sxru9HdnJeEddwg40vqSUTq',
     features: [
       '5,000 leads per month',
       'Advanced email campaigns',
@@ -36,7 +36,7 @@ export const STRIPE_PLANS = {
   SCALE: {
     name: 'Scale',
     price: 4000,
-    priceId: process.env.STRIPE_SCALE_PRICE_ID || 'price_scale',
+    priceId: process.env.STRIPE_SCALE_PRICE_ID || 'price_1SxruFHdnJeEddwgafeChnFJ',
     features: [
       'Unlimited leads',
       'Custom campaigns',
