@@ -1,8 +1,7 @@
 'use client'
 
-import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { VideoThumbnail, VideoPlayer } from '@/components/marketing/video-player'
+import { DemoVideoContent } from '@/components/marketing/demo-video-content'
 import { cn } from '@/lib/utils'
 
 interface HeroVideoSectionProps {
@@ -14,33 +13,29 @@ interface HeroVideoSectionProps {
 
 export function HeroVideoSection({
   className,
-  videoUrl,
-  thumbnailUrl,
   title = 'See Wryko in Action',
 }: HeroVideoSectionProps) {
-  const [isVideoOpen, setIsVideoOpen] = useState(false)
-
   return (
     <motion.section
-      className={cn('py-16 px-4 sm:px-6 lg:px-8', className)}
+      className={cn('py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-transparent to-gray-50/50 dark:to-gray-900/50', className)}
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
     >
-      <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-8">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-12">
           <motion.span
-            className="inline-block px-4 py-1.5 mb-4 text-sm font-medium text-primary bg-primary/10 rounded-full"
+            className="inline-block px-4 py-1.5 mb-4 text-sm font-medium text-primary bg-primary/10 rounded-full border border-primary/20"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1, duration: 0.4 }}
           >
-            Platform Demo
+            🎬 Platform Demo
           </motion.span>
           <motion.h2
-            className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold mb-3"
+            className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold mb-4"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -49,14 +44,13 @@ export function HeroVideoSection({
             {title}
           </motion.h2>
           <motion.p
-            className="text-muted-foreground max-w-xl mx-auto"
+            className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3, duration: 0.4 }}
           >
-            Watch a quick walkthrough of how our 11 AI engines work together
-            to deliver qualified meetings on autopilot.
+            Watch how our 11 autonomous AI engines work together to transform your sales pipeline from prospect discovery to booked meetings — completely on autopilot.
           </motion.p>
         </div>
 
@@ -66,20 +60,33 @@ export function HeroVideoSection({
           viewport={{ once: true }}
           transition={{ delay: 0.4, duration: 0.5 }}
         >
-          <VideoThumbnail
-            thumbnailUrl={thumbnailUrl}
-            title="Watch the Wryko Demo"
-            onClick={() => setIsVideoOpen(true)}
-          />
+          <DemoVideoContent />
+        </motion.div>
+
+        {/* Trust indicators */}
+        <motion.div
+          className="mt-12 text-center"
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.6, duration: 0.4 }}
+        >
+          <p className="text-sm text-muted-foreground mb-4">
+            Join 500+ B2B teams already scaling with Wryko
+          </p>
+          <div className="flex justify-center items-center gap-8 opacity-60">
+            <div className="text-xs font-medium bg-green-50 text-green-700 px-2 py-1 rounded">
+              ✓ SOC 2 Compliant
+            </div>
+            <div className="text-xs font-medium bg-blue-50 text-blue-700 px-2 py-1 rounded">
+              ✓ GDPR Ready
+            </div>
+            <div className="text-xs font-medium bg-purple-50 text-purple-700 px-2 py-1 rounded">
+              ✓ CAN-SPAM Compliant
+            </div>
+          </div>
         </motion.div>
       </div>
-
-      <VideoPlayer
-        open={isVideoOpen}
-        onOpenChange={setIsVideoOpen}
-        videoUrl={videoUrl}
-        title={title}
-      />
     </motion.section>
   )
 }
