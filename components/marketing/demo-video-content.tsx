@@ -8,6 +8,12 @@ import Link from 'next/link'
 export function DemoVideoContent() {
   const [showModal, setShowModal] = useState(false)
 
+  // For now, redirect directly to demo booking since we don't have video yet
+  const handleVideoClick = () => {
+    // Redirect to demo booking instead of showing placeholder
+    window.open('/book-demo', '_blank')
+  }
+
   const features = [
     {
       icon: Target,
@@ -36,7 +42,7 @@ export function DemoVideoContent() {
       {/* Main Video Thumbnail */}
       <motion.div
         className="relative group cursor-pointer rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-primary/5 via-secondary/5 to-primary/10"
-        onClick={() => setShowModal(true)}
+        onClick={handleVideoClick}
         whileHover={{ scale: 1.02 }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
       >
@@ -58,7 +64,7 @@ export function DemoVideoContent() {
                 11 AI Engines in Action
               </h3>
               <p className="text-lg text-blue-200 max-w-md mx-auto leading-relaxed">
-                Watch how autonomous lead generation transforms your sales pipeline from prospect to booking
+                Click to book a live demo and see all 11 AI engines in action for your business
               </p>
             </motion.div>
 
@@ -83,20 +89,23 @@ export function DemoVideoContent() {
           </div>
           
           {/* Play button overlay */}
-          <div className="absolute inset-0 bg-black/20 flex items-center justify-center group-hover:bg-black/30 transition-colors">
+          <div className="absolute inset-0 bg-black/20 flex flex-col items-center justify-center group-hover:bg-black/30 transition-colors">
             <motion.div
-              className="bg-white/90 backdrop-blur-sm rounded-full p-8 shadow-2xl group-hover:bg-white transition-all"
+              className="bg-white/90 backdrop-blur-sm rounded-full p-8 shadow-2xl group-hover:bg-white transition-all mb-4"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
             >
               <Play className="w-12 h-12 text-primary ml-1" weight="fill" />
             </motion.div>
+            <div className="bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 text-sm font-semibold text-gray-800">
+              Book Live Demo
+            </div>
           </div>
 
-          {/* Duration badge */}
-          <div className="absolute top-6 right-6 bg-black/70 text-white text-sm px-3 py-1.5 rounded-full flex items-center gap-1">
-            <Clock className="w-4 h-4" />
-            Coming Soon
+          {/* Live Demo badge */}
+          <div className="absolute top-6 right-6 bg-green-600 text-white text-sm px-3 py-1.5 rounded-full flex items-center gap-1 animate-pulse">
+            <div className="w-2 h-2 bg-white rounded-full animate-ping" />
+            Book Live Demo
           </div>
 
           {/* Bottom gradient */}

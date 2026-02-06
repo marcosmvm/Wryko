@@ -32,7 +32,7 @@ export function HeroVideoSection({
             viewport={{ once: true }}
             transition={{ delay: 0.1, duration: 0.4 }}
           >
-            🎬 Platform Demo
+🚀 Live Demo
           </motion.span>
           <motion.h2
             className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold mb-4"
@@ -50,7 +50,7 @@ export function HeroVideoSection({
             viewport={{ once: true }}
             transition={{ delay: 0.3, duration: 0.4 }}
           >
-            Watch how our 11 autonomous AI engines work together to transform your sales pipeline from prospect discovery to booked meetings — completely on autopilot.
+            See all 11 AI engines in action with a personalized demo for your business. Book a live walkthrough and get your questions answered by our team.
           </motion.p>
         </div>
 
