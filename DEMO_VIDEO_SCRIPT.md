@@ -77,11 +77,11 @@
 
 **Voiceover:** "All 11 engines work together as one autonomous system. No human intervention needed."
 
-### Section 5: Social Proof (3:15-3:30)
-**Visual:** Customer testimonials (text overlays)
-- "Increased our meeting rate by 340%" - SaaS CEO
-- "Cut our sales development costs by 60%" - Marketing Director  
-- "Books more meetings than our entire SDR team" - Sales VP
+### Section 5: Platform Benefits (3:15-3:30)
+**Visual:** Platform capabilities (text overlays)
+- "Autonomous lead generation from day one"
+- "Replace expensive SDR teams with AI"  
+- "Built for B2B teams with $25K+ deals"
 
 ### Closing CTA (3:30-3:45)
 **Visual:** Wryko logo with application form

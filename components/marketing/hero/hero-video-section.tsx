@@ -72,7 +72,7 @@ export function HeroVideoSection({
           transition={{ delay: 0.6, duration: 0.4 }}
         >
           <p className="text-sm text-muted-foreground mb-4">
-            Join 500+ B2B teams already scaling with Wryko
+            Launching our pilot program for select B2B teams
           </p>
           <div className="flex justify-center items-center gap-8 opacity-60">
             <div className="text-xs font-medium bg-green-50 text-green-700 px-2 py-1 rounded">

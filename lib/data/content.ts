@@ -182,17 +182,17 @@ export const aboutContent = {
 }
 
 export const heroStats = [
-  { value: '11', label: 'AI Engines', subtext: 'Working autonomously, 24/7' },
-  { value: '14-Day', label: 'Onboarding', subtext: 'From signup to campaign launch' },
-  { value: '24/7', label: 'Monitoring', subtext: 'Continuous optimization & protection' },
-  { value: '5+', label: 'Channels Planned', subtext: 'Email, LinkedIn, and more' },
+  { value: '11', label: 'AI Engines', subtext: 'Designed for autonomous operation' },
+  { value: '14-Day', label: 'Pilot Setup', subtext: 'Estimated implementation timeline' },
+  { value: '24/7', label: 'Monitoring', subtext: 'Built for continuous optimization' },
+  { value: '5+', label: 'Channels Planned', subtext: 'Email, LinkedIn, and more in development' },
 ]
 
 export const heroStatsEnhanced = [
-  { value: 11, suffix: '', label: 'AI Engines', subtext: 'Working autonomously around the clock', iconName: 'BarChart3' as const, decimals: 0 },
-  { value: 14, suffix: '-Day', label: 'Onboarding', subtext: 'From signup to campaign launch', iconName: 'Clock' as const, decimals: 0 },
-  { value: 24, suffix: '/7', label: 'Monitoring', subtext: 'Continuous optimization & compliance', iconName: 'Calendar' as const, decimals: 0 },
-  { value: 6, suffix: '+', label: 'Integrations', subtext: 'CRM, calendar, and communication tools', iconName: 'TrendUp' as const, decimals: 0 },
+  { value: 11, suffix: '', label: 'AI Engines', subtext: 'Designed to work autonomously around the clock', iconName: 'BarChart3' as const, decimals: 0 },
+  { value: 14, suffix: '-Day', label: 'Pilot Setup', subtext: 'Estimated implementation timeline', iconName: 'Clock' as const, decimals: 0 },
+  { value: 24, suffix: '/7', label: 'Monitoring', subtext: 'Built for continuous optimization & compliance', iconName: 'Calendar' as const, decimals: 0 },
+  { value: 11, suffix: '+', label: 'Integrations', subtext: 'Planned CRM, calendar, and communication tools', iconName: 'TrendUp' as const, decimals: 0 },
 ]
 
 export const heroPainPoints = [
