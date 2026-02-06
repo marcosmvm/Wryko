@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 
 export async function createCheckoutSession(plan: StripePlan) {
-  const supabase = createClient();
+  const supabase = await createClient();
   
   // Get current user
   const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -71,7 +71,7 @@ export async function createCheckoutSession(plan: StripePlan) {
 }
 
 export async function createPortalSession() {
-  const supabase = createClient();
+  const supabase = await createClient();
   
   // Get current user
   const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -99,7 +99,7 @@ export async function createPortalSession() {
 }
 
 export async function getSubscriptionStatus(userId: string) {
-  const supabase = createClient();
+  const supabase = await createClient();
   
   // Get customer ID
   const { data: profile } = await supabase
